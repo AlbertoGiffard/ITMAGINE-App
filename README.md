@@ -60,6 +60,7 @@ Hasta el momento las tareas de los integrantes se dividirán de la siguiente man
 * juego 2
 
 **Leandro Varela**
+* Vincular cuenta en firebase
 * Crear Proyecto
 * Crear app en Firebase / actualizar proyecto
 * Crear collection duenio-supervisor
