@@ -1,4 +1,4 @@
-export declare type EstadoCliente = ""
+declare type EstadoCliente = ""
 
 export declare interface ICliente {
     nombre : string,

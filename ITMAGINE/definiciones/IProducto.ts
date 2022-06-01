@@ -1,4 +1,4 @@
-declare type TipoProducto = "Cocina" | "Bar";
+declare type TipoProducto = "cocina" | "bar";
 
 export declare interface IProducto {
     nombre : string,

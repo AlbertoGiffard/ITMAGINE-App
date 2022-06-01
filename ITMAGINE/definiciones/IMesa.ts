@@ -1,4 +1,4 @@
-declare type TipoMesa = "VIP" | "Para Discapacitados" | "Estándar";
+declare type TipoMesa = "vip" | "para discapacitados" | "estándar";
 
 export declare interface IMesas {
     numero : number,

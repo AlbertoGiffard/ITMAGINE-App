@@ -1,4 +1,4 @@
-declare type TipoEmpleado = "Metre" | "Cocinero" | "Bartender" | "Dueño";
+declare type TipoEmpleado = "metre" | "cocinero" | "bartender" | "dueño";
 
 export declare interface IEmpleado {
     nombre : string,
