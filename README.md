@@ -108,7 +108,7 @@ Hemos llevado a cabo la primera reunión de equipo donde definimos puntos, tarea
 * Se prioriza proyecto de la materia de Labo IV y luego continuar con este
 
 ## Semana 2
-Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la primera semana, Agustin y yo venimos avanzando con Laboratorio IV para luego adentrarnos de lleno con este proyecto
+Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la primera semana, Agustin y yo venimos avanzando con Laboratorio IV para luego adentrarnos de lleno con este proyecto. Queda para la próxima entrega la entrega de los distintos diagramas, esta semana fue complicado reunirnos para poder llevarlo a cabo, asi que será para la próxima fecha
 **Leandro Varela**
 * Se crearon las interfaces
 * Creación de clases principales
@@ -118,6 +118,7 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 * Diseño y maquetado del login principal
 * Desarrollo del login
 * logica de login
+* comienzo de maquetado de menu principal
 
 **Alberto Giffard**
 * Diseño y creacion de logo
