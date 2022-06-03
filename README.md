@@ -122,5 +122,5 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 **Alberto Giffard**
 * Diseño y creacion de logo
 * Diseño y desarrollo de Splashscreen
-![](./imagesReadme/icon.png = 75x)
-![](./imagesReadme/splash.gif = 250x)
+<img src="./imagesReadme/icon.png" width="75">
+<img src="./imagesReadme/splash.gif" width="250">
