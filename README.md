@@ -86,3 +86,42 @@ Hasta el momento las tareas de los integrantes se dividirán de la siguiente man
 * PN generar reservas agendadas / delivery
 * Delivery mapa de ruta hasta el domicilio de entrega
 * Juego 1
+
+## Semana 1
+Hemos llevado a cabo la primera reunión de equipo donde definimos puntos, tareas y tiempos de cada uno de los integrantes, quedando desglosado en los siguientes puntos:
+**Leandro Varela**
+* Creación del proyecto
+* Subida a Firebase del proyecto
+* Creación de clases primarias a utilizar a lo largo del proyecto
+
+**Agustin Clas** 
+* Maquetado y diseño del login
+* Desarrollo de login
+* Interacción con Firebase
+* Se prioriza proyecto de la materia de Labo IV y luego continuar con este
+
+**Alberto Giffard**
+* Creación del repositorio y actualización del Readme
+* Diseño de logos y tamaños
+* Creación de mail coorporativo
+* Creación de Splash Screen
+* Se prioriza proyecto de la materia de Labo IV y luego continuar con este
+
+## Semana 2
+Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la primera semana, Agustin y yo venimos avanzando con Laboratorio IV para luego adentrarnos de lleno con este proyecto. Queda para la próxima entrega la entrega de los distintos diagramas, esta semana fue complicado reunirnos para poder llevarlo a cabo, asi que será para la próxima fecha
+**Leandro Varela**
+* Se crearon las interfaces
+* Creación de clases principales
+* Creación de Servicio de Firebase
+
+**Agustin Clas** 
+* Diseño y maquetado del login principal
+* Desarrollo del login
+* logica de login
+* comienzo de maquetado de menu principal
+
+**Alberto Giffard**
+* Diseño y creacion de logo
+* Diseño y desarrollo de Splashscreen
+<img src="./imagesReadme/icon.png" width="75">
+<img src="./imagesReadme/splash.gif" width="250">
