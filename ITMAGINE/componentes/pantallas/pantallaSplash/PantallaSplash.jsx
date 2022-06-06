@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { View, StatusBar, Text } from "react-native";
 import * as Animatable from 'react-native-animatable';
-import SplashScreenReact from 'react-native-splash-screen';
 
 export default class PantallaSplash extends Component {
     componentDidMount() {
         /* Esto queda comentado hasta que ya se cuente con la redireccion a la siguiente pagina */
-        /* SplashScreenReact.hide();
         setTimeout(() => {
             this.props.navigation.navigate('Login');
-        }, 30000, this) */
+        }, 3000, this) 
     }
 
     render() {

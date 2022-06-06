@@ -2,9 +2,10 @@
 
 import React, { useState} from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator } from "react-native";
-import {auth} from '../../firebase'
+import {auth} from '../../../firebase'
 import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
-//import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 
 
@@ -18,22 +19,23 @@ const LoginScreen = () => {
     const [loading, setLoading] = useState(false);
     const [errorMsgInicio, setErrorMsgInicio] = useState(false);
     let errorMessage;
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
     
-    //const navigation = useNavigation()
 
     
 
     const handleSignUp = () => {
         setLoading(true);
+        createUserWithEmailAndPassword
         createUserWithEmailAndPassword(auth, email, password)
-        .then(userCrendetials => {
+        .then((userCrendetials: { user: any; }) => {
             const user = userCrendetials.user;
             alert("Usuario registrado!");
             setErrorMsgInicio(true);
             setLoading(false);
 
         })
-        .catch(error => {
+        .catch((error: any) => {
             setErrorMsgInicio(false);
             setLoading(false);
 
@@ -43,12 +45,12 @@ const LoginScreen = () => {
     const handleLogin = () => {
         setLoading(true);
         signInWithEmailAndPassword(auth, email, password)
-        .then(userCrendetials => {
+        .then((userCrendetials: { user: any; }) => {
             const user = userCrendetials.user;
             setLoading(false);
             setErrorMsgInicio(true);
         })
-        .catch(error => {
+        .catch((error: any) => {
             setErrorMsgInicio(true);
             setLoading(false);
         })
@@ -66,8 +68,12 @@ const LoginScreen = () => {
     }
 
   const userAnonimo = () => {
-    setEmail("anonimo@anonimo.com");
-    setPassword("444444");
+    //Comente esto Agus para que me lleve 
+    //a la pagina creada
+    /* setEmail("anonimo@anonimo.com");
+    setPassword("444444"); */
+    //la ruta real es: IngresoAnonimo
+    navigation.navigate('ListadoPedido');
 }
 
   return (
@@ -83,7 +89,7 @@ const LoginScreen = () => {
         <View style={styles.formMarco}>
           <SafeAreaView style={styles.form}>
             <View style={styles.vwImg}>
-              <Image source = {require("../../assets/bar.png")} style={styles.Img}></Image>
+              <Image source = {require("../../../assets/bar.png")} style={styles.Img}></Image>
             </View>
             <View style={styles.vwLogin}>
               {errorMsgInicio && <Text style = {styles.errorMessage}>Error al iniciar sesión</Text>}
@@ -128,7 +134,7 @@ const LoginScreen = () => {
                       onPress = {userAnonimo}
                       style = {styles.buttonUser}
                   >
-                      <Text style={styles.textUsers}>Anónimo</Text>
+                      <Text style={styles.textUsers}>Ingresar como Anónimo</Text>
                   </TouchableOpacity>
             </View>
           </SafeAreaView>
