@@ -15,5 +15,6 @@ export declare interface ICliente {
     DNI : string,
     fotoURL : string,
     validacion : EstadoValidacionCuentaCliente,
-    estado : EstadoCliente
+    estado : EstadoCliente,
+    pushToken : string
 }
