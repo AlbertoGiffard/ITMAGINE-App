@@ -1,6 +1,7 @@
 declare type TipoEmpleado = "metre" | "cocinero" | "bartender" | "dueño";
 
-export declare interface IEmpleado {
+export declare interface IStaff {
+    email : string,
     nombre : string,
     apellido : string,
     DNI : string,
