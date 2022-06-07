@@ -1,5 +1,9 @@
-export const COLECCION_DUENIO = "Duenio";
-export const COLECCION_EMPLEADOS = "Empleados";
-export const COLECCION_MESAS = "Mesas";
-export const COLECCION_PRODUCTOS = "Productos";
+export const COLECCION_CHAT_MOZO_CLIENTE = "ChatMozoCliente";
 export const COLECCION_CLIENTES = "Clientes";
+export const COLECCION_ENCUESTAS_CLIENTES = "EncuestasClientes";
+export const COLECCION_COLA_ESPERA = "ColaEspera";
+export const COLECCION_MESAS = "Mesas";
+export const COLECCION_PEDIDOS = "Pedidos";
+export const COLECCION_PRODUCTOS = "Productos";
+export const COLECCION_EMPLEADOS = "Empleados";
+export const COLECCION_DUENIO = "Duenio";
