@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -59,14 +60,14 @@ const IngresoAnonimo = () => {
                     <View style={styles.vwLogin}>
                         <Input
                             inputContainerStyle={styles.input}
-                            inputStyle={{ color: "#3dd7fb" }}
+                            inputStyle={{ color: SECONDARY_COLOR }}
                             //style={styles.input}
                             placeholder="Nombre"
                             placeholderTextColor={"#3dd7fc"}
                             leftIcon={
                                 <Icon
                                     size={20}
-                                    color={"#3dd7fb"}
+                                    color={SECONDARY_COLOR}
                                     type={'ionicon'}
                                     name={'person-outline'}
                                 />}
@@ -75,7 +76,7 @@ const IngresoAnonimo = () => {
                         />
                     </View>
                     <TouchableOpacity style={styles.button} onPress={handleIngreso}>
-                        <Text style={{ fontWeight: 'bold', color: '#3dd7fb', fontSize: 18 }}> Ingresar</Text>
+                        <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18 }}> Ingresar</Text>
                     </TouchableOpacity>
                 </SafeAreaView>
             </View>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.99,
         justifyContent: "center",
         alignItems: 'center',
-        shadowColor: "#fd99ef",
+        shadowColor: PRIMARY_COLOR,
         shadowOpacity: 1,
         elevation: 250,
         shadowOffset: { width: 0, height: 0 }
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.95,
         justifyContent: "center",
         alignItems: 'center',
-        borderColor: '#3dd7fb',
+        borderColor: SECONDARY_COLOR,
         borderWidth: 5,
         borderStyle: 'solid',
     },
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderBottomColor:
-            "#ffe045",
+            TERCIARY_COLOR,
         borderBottomWidth: 5,
         height: 58,
         marginBottom: 20,
@@ -148,10 +149,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 12,
         width: windowWidth * 0.8,
-        color: "#3dd7fb"
+        color: SECONDARY_COLOR
     },
     button: {
-        borderColor: '#fd99ef',
+        borderColor: PRIMARY_COLOR,
         borderWidth: 3,
         height: 58,
         borderRadius: 10,
@@ -164,13 +165,13 @@ const styles = StyleSheet.create({
     textTitle: {
         fontSize: windowHeight * 0.04,
         fontWeight: 'bold',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     },
     textSubtitle: {
         fontSize: windowHeight * 0.03,
         fontWeight: '500',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     }
 });

@@ -12,14 +12,14 @@ export default class PantallaSplash extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#040104'}}>
-                <Animatable.Text animation="fadeInDownBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: '#3dd7fb' }}>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: BG_COLOR}}>
+                <Animatable.Text animation="fadeInDownBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: SECONDARY_COLOR }}>
                     Alberto Giffard
                 </Animatable.Text>
-                <Animatable.Text animation="fadeInLeftBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: '#3dd7fb' }}>
+                <Animatable.Text animation="fadeInLeftBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: SECONDARY_COLOR }}>
                     Leandro Varela
                 </Animatable.Text>
-                <Animatable.Text animation="fadeInRightBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: '#3dd7fb' }}>
+                <Animatable.Text animation="fadeInRightBig" style={{ textAlign: 'center', marginTop: 10, fontSize: 30, color: SECONDARY_COLOR }}>
                     Agustin Clas
                 </Animatable.Text>
                 <StatusBar translucent backgroundColor='rgba(0,0,0,0.2)' />
@@ -34,7 +34,7 @@ export default class PantallaSplash extends Component {
                     }}
                     source={require('../../../assets/splash.png')}
                 />
-                <Animatable.Text animation="flipInY" iterationCount='infinite' style={{ textAlign: 'center', marginTop: 10, fontSize: 25, color: '#ffe045' }}>
+                <Animatable.Text animation="flipInY" iterationCount='infinite' style={{ textAlign: 'center', marginTop: 10, fontSize: 25, color: TERCIARY_COLOR }}>
                     4to B
                 </Animatable.Text>
             </View>

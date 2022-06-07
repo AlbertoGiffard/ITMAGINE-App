@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Animatable from 'react-native-animatable';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -63,7 +64,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
                     <Animatable.View iterationCount='infinite' animation="rotate" style={{ marginTop: 10 }}>
                         <Icon
                             size={38}
-                            color={"#3dd7fb"}
+                            color={SECONDARY_COLOR}
                             type={'font-awesome'}
                             name={'hourglass'}
                         />
@@ -82,10 +83,10 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
                                         style={styles.camara}
                                     />
                                 </View>
-                                <TouchableOpacity style={{ backgroundColor: '#fd99ef', borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQR}>
+                                <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQR}>
                                     <Icon
                                         size={38}
-                                        color={"#040104"}
+                                        color={BG_COLOR}
                                         type={'ionicon'}
                                         name={'close-outline'}
                                         style={{ textAlign: 'center' }}
@@ -96,11 +97,11 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
                             <TouchableOpacity style={styles.button} onPress={renderizarQR}>
                                 <Icon
                                     size={38}
-                                    color={"#3dd7fb"}
+                                    color={SECONDARY_COLOR}
                                     type={'font-awesome'}
                                     name={'qrcode'}
                                 />
-                                <Text style={{ fontWeight: 'bold', color: '#3dd7fb', fontSize: 18, textAlign: 'center' }}>Escanear mesa</Text>
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>Escanear mesa</Text>
                             </TouchableOpacity>
                         }
 
@@ -114,11 +115,11 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
                         <TouchableOpacity style={styles.button} onPress={cambiarAListaDeEspera}>
                             <Icon
                                 size={38}
-                                color={"#3dd7fb"}
+                                color={SECONDARY_COLOR}
                                 type={'font-awesome'}
                                 name={'hourglass-end'}
                             />
-                            <Text style={{ fontWeight: 'bold', color: '#3dd7fb', fontSize: 18, textAlign: 'center' }}>Colocarme en lista de espera</Text>
+                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>Colocarme en lista de espera</Text>
                         </TouchableOpacity>
                     </View>
                 );
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
         height: 400,
         marginBottom: 50,
         borderRadius: 5,
-        borderColor: '#ffe045',
+        borderColor: TERCIARY_COLOR,
         borderWidth: 2
     },
     camara: {
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.99,
         justifyContent: "center",
         alignItems: 'center',
-        shadowColor: "#fd99ef",
+        shadowColor: PRIMARY_COLOR,
         shadowOpacity: 1,
         elevation: 250,
         shadowOffset: { width: 0, height: 0 }
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.95,
         justifyContent: "center",
         alignItems: 'center',
-        borderColor: '#3dd7fb',
+        borderColor: SECONDARY_COLOR,
         borderWidth: 5,
         borderStyle: 'solid',
     },
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderBottomColor:
-            "#ffe045",
+            TERCIARY_COLOR,
         borderBottomWidth: 5,
         height: 58,
         marginBottom: 20,
@@ -214,10 +215,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 12,
         width: windowWidth * 0.8,
-        color: "#3dd7fb"
+        color: SECONDARY_COLOR
     },
     button: {
-        borderColor: '#fd99ef',
+        borderColor: PRIMARY_COLOR,
         borderWidth: 3,
         borderRadius: 10,
         justifyContent: 'center',
@@ -231,13 +232,13 @@ const styles = StyleSheet.create({
     textTitle: {
         fontSize: windowHeight * 0.04,
         fontWeight: 'bold',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     },
     textSubtitle: {
         fontSize: windowHeight * 0.03,
         fontWeight: '500',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     }
 });

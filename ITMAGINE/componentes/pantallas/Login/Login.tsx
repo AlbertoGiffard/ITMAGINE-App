@@ -6,6 +6,7 @@ import {auth} from '../../../firebase'
 import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
 
 
 
@@ -81,7 +82,7 @@ const LoginScreen = () => {
       style = {styles.container}
     >
         {loading && <View style = {styles.formMarco}>
-        <ActivityIndicator size={180} color="#3dd7fb"/>
+        <ActivityIndicator size={180} color={SECONDARY_COLOR}/>
       </View>}
       
 
@@ -97,14 +98,14 @@ const LoginScreen = () => {
               style={styles.input}
               placeholder="Correo"
               autoCapitalize="none"
-              placeholderTextColor={"#3dd7fb"}
+              placeholderTextColor={SECONDARY_COLOR}
               value={email}
               onChangeText={(text) =>  {setEmail(text)}}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Contraseña"
-                placeholderTextColor={"#3dd7fb"}
+                placeholderTextColor={SECONDARY_COLOR}
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -113,7 +114,7 @@ const LoginScreen = () => {
                 onChangeText={(text) => setPassword(text)}
               />
               <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={{fontWeight: 'bold', color: '#3dd7fb', fontSize: 18}}> Iniciar Sesión</Text>
+                <Text style={{fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18}}> Iniciar Sesión</Text>
               </TouchableOpacity>
             </View>
             <View  style = {styles.buttonUsers}>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.99,
     justifyContent: "center",
     alignItems: 'center',
-    shadowColor: "#fd99ef",
+    shadowColor: PRIMARY_COLOR,
     shadowOpacity: 1,
     elevation: 250,
     shadowOffset:{width: 0, height: 0}
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.95,
     justifyContent: "center",
     alignItems: 'center',
-    borderColor: '#3dd7fb',
+    borderColor: SECONDARY_COLOR,
     borderWidth: 5,
     borderStyle: 'solid',
   },
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomColor:
-    "#ffe045",
+    TERCIARY_COLOR,
     borderBottomWidth: 5,
     height: 58,
     marginBottom: 20,
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     width: windowWidth * 0.8,
-    color: "#fd99ef"
+    color: PRIMARY_COLOR
   },
   whiteSheet: {
     width: '100%',
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 60,
   },
   button: {
-    borderColor: '#fd99ef',
+    borderColor: PRIMARY_COLOR,
     borderWidth: 3,
     height: 58,
     borderRadius: 10,
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: 'center',
     height: windowHeight * 0.06,
-    borderBottomColor: "#fd99ef",
+    borderBottomColor: PRIMARY_COLOR,
     borderBottomWidth: 1,
     width: windowWidth * 0.7,
     borderRadius: 10,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
   textUsers:{
       fontSize: windowHeight * 0.02,
       fontWeight: 'bold',
-      color: "#ffe045",
+      color: TERCIARY_COLOR,
   },
   errorMessage:{
     color:"red",

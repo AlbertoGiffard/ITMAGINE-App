@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacit
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -57,9 +58,9 @@ const ListadoPedido = () => {
 export default ListadoPedido
 
 const styles = StyleSheet.create({
-    head: { height: 40, backgroundColor: '#ffe045' },
+    head: { height: 40, backgroundColor: TERCIARY_COLOR },
     text: { margin: 6 },
-    row: { flexDirection: 'row', backgroundColor: '#ffe045' },
+    row: { flexDirection: 'row', backgroundColor: TERCIARY_COLOR },
     btn: { width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2 },
     btnText: { textAlign: 'center', color: '#fff' },
     containerTable: {
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: "black",
         height: 200,
         width: 200,
-        backgroundColor: '#ffe045'
+        backgroundColor: TERCIARY_COLOR
     },
     formTitle: {
         padding: 5,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.99,
         justifyContent: "center",
         alignItems: 'center',
-        shadowColor: "#fd99ef",
+        shadowColor: PRIMARY_COLOR,
         shadowOpacity: 1,
         elevation: 250,
         shadowOffset: { width: 0, height: 0 }
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.95,
         justifyContent: "center",
         alignItems: 'center',
-        borderColor: '#3dd7fb',
+        borderColor: SECONDARY_COLOR,
         borderWidth: 5,
         borderStyle: 'solid',
     },
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderBottomColor:
-            "#ffe045",
+            TERCIARY_COLOR,
         borderBottomWidth: 5,
         height: 58,
         marginBottom: 20,
@@ -130,10 +131,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 12,
         width: windowWidth * 0.8,
-        color: "#3dd7fb"
+        color: SECONDARY_COLOR
     },
     button: {
-        borderColor: '#fd99ef',
+        borderColor: PRIMARY_COLOR,
         borderWidth: 3,
         height: 58,
         borderRadius: 10,
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
     textTitle: {
         fontSize: windowHeight * 0.04,
         fontWeight: 'bold',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     },
     textSubtitle: {
         fontSize: windowHeight * 0.03,
         fontWeight: '500',
-        color: "#3dd7fb",
+        color: SECONDARY_COLOR,
         textAlign: 'center'
     }
 });
