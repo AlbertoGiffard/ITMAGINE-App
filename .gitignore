@@ -1,6 +1,5 @@
 node_modules/
 .expo/
-./ITMAGINE/.expo/
 dist/
 npm-debug.*
 *.jks
