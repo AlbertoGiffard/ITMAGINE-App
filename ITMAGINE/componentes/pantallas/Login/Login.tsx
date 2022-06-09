@@ -6,12 +6,8 @@ import {auth} from '../../../firebase'
 import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
-
-
-
-export const windowWidth = Dimensions.get('window').width;
-export const windowHeight = Dimensions.get('window').height;
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
+import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 
 const LoginScreen = () => {
 
@@ -21,9 +17,6 @@ const LoginScreen = () => {
     const [errorMsgInicio, setErrorMsgInicio] = useState(false);
     let errorMessage;
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    
-
-    
 
     const handleSignUp = () => {
         setLoading(true);

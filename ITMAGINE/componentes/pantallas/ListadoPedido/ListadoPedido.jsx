@@ -3,10 +3,8 @@ import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacit
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/estilo';
-
-export const windowWidth = Dimensions.get('window').width;
-export const windowHeight = Dimensions.get('window').height;
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
+import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 
 const ListadoPedido = () => {
     const navigation = useNavigation();
