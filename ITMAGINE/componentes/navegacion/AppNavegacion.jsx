@@ -6,6 +6,7 @@ import LoginScreen from '@pantallas/Login/Login';
 import IngresoAnonimo from '@pantallas/IngresoAnonimo/IngresoAnonimo';
 import HomeCliente from '@pantallas/HomeCliente/HomeCliente';
 import ListadoPedido from '@pantallas/ListadoPedido/ListadoPedido';
+import { Carga } from '../pantallas/PantallaCarga/Carga';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,13 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name='Splash'
                     component={PantallaSplash}
+                    navigationOptions={{ headerShown: false }}
+                    screenOptions={{ headerShown: false }}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='Carga'
+                    component={Carga}
                     navigationOptions={{ headerShown: false }}
                     screenOptions={{ headerShown: false }}
                     options={{ headerShown: false }}
