@@ -7,7 +7,12 @@ import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "fir
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
-import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
+//import { useNavigation } from '@react-navigation/native';
+
+
+
+export const windowWidth = Dimensions.get('window').width;
+export const windowHeight = Dimensions.get('window').height;
 
 const LoginScreen = () => {
 
@@ -18,64 +23,42 @@ const LoginScreen = () => {
     let errorMessage;
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
-    const handleSignUp = () => {
-        setLoading(true);
-        createUserWithEmailAndPassword
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCrendetials: { user: any; }) => {
-            const user = userCrendetials.user;
-            alert("Usuario registrado!");
-            setErrorMsgInicio(true);
-            setLoading(false);
-
-        })
-        .catch((error: any) => {
-            setErrorMsgInicio(false);
-            setLoading(false);
-
-        })
-    }
+    
+    //const navigation = useNavigation()
 
     const handleLogin = () => {
         setLoading(true);
         signInWithEmailAndPassword(auth, email, password)
-        .then((userCrendetials: { user: any; }) => {
+        .then(userCrendetials => {
             const user = userCrendetials.user;
             setLoading(false);
             setErrorMsgInicio(true);
         })
-        .catch((error: any) => {
+        .catch(error => {
             setErrorMsgInicio(true);
             setLoading(false);
         })
             
     }
 
-    const userUsuario = () => {
-        setEmail("usuario@usuario.com");
-        setPassword("333333");
-    }
+    const NavegarRegistro = () => {}
+    const NavegarAnonimo = () => {}
 
-    const userAdmin = () => {
-      setEmail("admin@admin.com");
-      setPassword("111111");
-    }
-
-  const userAnonimo = () => {
-    //Comente esto Agus para que me lleve 
-    //a la pagina creada
-    /* setEmail("anonimo@anonimo.com");
-    setPassword("444444"); */
-    //la ruta real es: IngresoAnonimo
-    navigation.navigate('ListadoPedido');
-}
+    const userAnonimo = () => {
+      //Comente esto Agus para que me lleve 
+      //a la pagina creada
+      /* setEmail("anonimo@anonimo.com");
+      setPassword("444444"); */
+      //la ruta real es: IngresoAnonimo
+      navigation.navigate('ListadoPedido');
+  }
 
   return (
     <KeyboardAvoidingView
       style = {styles.container}
     >
         {loading && <View style = {styles.formMarco}>
-        <ActivityIndicator size={180} color={SECONDARY_COLOR}/>
+        <ActivityIndicator size={180} color="#3dd7fb"/>
       </View>}
       
 
@@ -91,14 +74,14 @@ const LoginScreen = () => {
               style={styles.input}
               placeholder="Correo"
               autoCapitalize="none"
-              placeholderTextColor={SECONDARY_COLOR}
+              placeholderTextColor={"#3dd7fb"}
               value={email}
               onChangeText={(text) =>  {setEmail(text)}}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Contraseña"
-                placeholderTextColor={SECONDARY_COLOR}
+                placeholderTextColor={"#3dd7fb"}
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -107,28 +90,21 @@ const LoginScreen = () => {
                 onChangeText={(text) => setPassword(text)}
               />
               <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={{fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18}}> Iniciar Sesión</Text>
+                <Text style={{fontWeight: 'bold', color: '#3dd7fb', fontSize: 18}}> Iniciar Sesión</Text>
               </TouchableOpacity>
             </View>
             <View  style = {styles.buttonUsers}>
                   <TouchableOpacity
-                      onPress = {userAdmin}
-                      style = {styles.buttonUser} 
+                      onPress = {NavegarRegistro}
+                      style = {[styles.buttonUser, styles.buttonRegistro]} 
                   >
-                      <Text style={styles.textUsers}>Admin</Text>
+                      <Text style={styles.textUsers}>Registrarse</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                      onPress = {userUsuario}
-                      style = {[styles.buttonUser]}
-                      
-                  >
-                      <Text style={styles.textUsers}>Usuario</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                      onPress = {userAnonimo}
+                      onPress = {NavegarAnonimo}
                       style = {styles.buttonUser}
                   >
-                      <Text style={styles.textUsers}>Ingresar como Anónimo</Text>
+                      <Text style={styles.textUsers}>Anónimo</Text>
                   </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -155,7 +131,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.99,
     justifyContent: "center",
     alignItems: 'center',
-    shadowColor: PRIMARY_COLOR,
+    shadowColor: "#fd99ef",
     shadowOpacity: 1,
     elevation: 250,
     shadowOffset:{width: 0, height: 0}
@@ -167,7 +143,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.95,
     justifyContent: "center",
     alignItems: 'center',
-    borderColor: SECONDARY_COLOR,
+    borderColor: '#3dd7fb',
     borderWidth: 5,
     borderStyle: 'solid',
   },
@@ -191,7 +167,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomColor:
-    TERCIARY_COLOR,
+    "#ffe045",
     borderBottomWidth: 5,
     height: 58,
     marginBottom: 20,
@@ -199,7 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     width: windowWidth * 0.8,
-    color: PRIMARY_COLOR
+    color: "#fd99ef"
   },
   whiteSheet: {
     width: '100%',
@@ -210,7 +186,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 60,
   },
   button: {
-    borderColor: PRIMARY_COLOR,
+    borderColor: '#fd99ef',
     borderWidth: 3,
     height: 58,
     borderRadius: 10,
@@ -233,15 +209,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: 'center',
     height: windowHeight * 0.06,
-    borderBottomColor: PRIMARY_COLOR,
+    borderBottomColor: "#fd99ef",
     borderBottomWidth: 1,
+    borderTopColor: "#fd99ef",
+    borderTopWidth: 1,
     width: windowWidth * 0.7,
     borderRadius: 10,
+  },
+  buttonRegistro:{
+    
+    marginBottom: windowHeight * 0.035,
   },
   textUsers:{
       fontSize: windowHeight * 0.02,
       fontWeight: 'bold',
-      color: TERCIARY_COLOR,
+      color: "#ffe045",
   },
   errorMessage:{
     color:"red",
