@@ -125,3 +125,17 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 * Diseño y desarrollo de Splashscreen
 <img src="./imagesReadme/icon.png" width="75">
 <img src="./imagesReadme/splash.gif" width="250">
+
+## Semana 3
+**Leandro Varela**
+* Definición de Clases
+* Definir Context de la Aplicación
+* Crear Pantalla Loading
+
+**Agustin Clas**
+* Crear Menú Principal Administrador: Listado de Clientes por Aceptar/Rechazar
+* Menú de Login
+
+**Alberto Giffard**
+* Crear correo electrónico de empresa
+* Crear pantalla ingresar como anónimo
