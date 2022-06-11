@@ -7,6 +7,8 @@ Integrantes:
 Se realizará una aplicación donde abarcaremos toda la comunicación de un restaurante que lleva por nombre "ITMAGINE"
 a partir de ahora se llamará como "comanda".
 Hasta el momento las tareas de los integrantes se dividirán de la siguiente manera:
+<br>
+
 **Alberto Giffard**
 * Imagenes / redimensiones / iconos
 * Splash Screen
@@ -89,6 +91,8 @@ Hasta el momento las tareas de los integrantes se dividirán de la siguiente man
 
 ## Semana 1
 Hemos llevado a cabo la primera reunión de equipo donde definimos puntos, tareas y tiempos de cada uno de los integrantes, quedando desglosado en los siguientes puntos:
+<br>
+
 **Leandro Varela**
 * Creación del proyecto
 * Subida a Firebase del proyecto
@@ -108,7 +112,9 @@ Hemos llevado a cabo la primera reunión de equipo donde definimos puntos, tarea
 * Se prioriza proyecto de la materia de Labo IV y luego continuar con este
 
 ## Semana 2
-Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la primera semana, Agustin y yo venimos avanzando con Laboratorio IV para luego adentrarnos de lleno con este proyecto. Queda para la próxima entrega la entrega de los distintos diagramas, esta semana fue complicado reunirnos para poder llevarlo a cabo, asi que será para la próxima fecha
+Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la primera semana, Agustin y yo venimos avanzando con Laboratorio IV para luego adentrarnos de lleno con este proyecto. Queda para la próxima entrega la entrega de los distintos diagramas, esta semana fue complicado reunirnos para poder llevarlo a cabo, asi que será para la próxima fecha.
+<br>
+
 **Leandro Varela**
 * Se crearon las interfaces
 * Creación de clases principales
@@ -127,7 +133,9 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 <img src="./imagesReadme/splash.gif" width="250">
 
 ## Semana 3
-Se avanzó bastante de forma global en la app, desde el circuito de pantallas que se explicará en las siguientes imagenes, asi como la distribución de los distintos contenidos. Aun no encontramos necesidad de realizar alguna demostración grupal por lo que no fue necesario para esta instancia, en la siguiente probablemente lo sea dependiendo de los avances que tengamos
+Se avanzó bastante de forma global en la app, desde el circuito de pantallas que se explicará en las siguientes imagenes, asi como la distribución de los distintos contenidos. Aun no encontramos necesidad de realizar alguna demostración grupal por lo que no fue necesario para esta instancia, en la siguiente probablemente lo sea dependiendo de los avances que tengamos.
+<br>
+
 **Leandro Varela**
 * Definición de Clases
 * Definir Context de la Aplicación
