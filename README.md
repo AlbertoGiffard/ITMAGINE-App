@@ -127,6 +127,7 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 <img src="./imagesReadme/splash.gif" width="250">
 
 ## Semana 3
+Se avanzó bastante de forma global en la app, desde el circuito de pantallas que se explicará en las siguientes imagenes, asi como la distribución de los distintos contenidos. Aun no encontramos necesidad de realizar alguna demostración grupal por lo que no fue necesario para esta instancia, en la siguiente probablemente lo sea dependiendo de los avances que tengamos
 **Leandro Varela**
 * Definición de Clases
 * Definir Context de la Aplicación
@@ -139,3 +140,6 @@ Nuestro compañero Leandro fue el que más avanzó ya que como se determinó la 
 **Alberto Giffard**
 * Crear correo electrónico de empresa
 * Crear pantalla ingresar como anónimo
+* Lectura de código QR
+<img src="./imagesReadme/pantallas.png" width="400">
+<img src="./imagesReadme/logica.png" width="600">
