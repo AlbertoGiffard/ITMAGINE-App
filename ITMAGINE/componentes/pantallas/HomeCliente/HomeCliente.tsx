@@ -17,6 +17,10 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
 
     useEffect(() => {
         setUsuario(props.route.params.usuario);
+        //estas lineas no van, son de prueba
+        usuario.estado = 'inactivo';
+        setUsuario(usuario);
+        //
         setCambio(!cambio);
     }, []);
 
@@ -30,7 +34,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
     }
 
     const cambiarAListaDeEspera = () => {
-        usuario.estado = 'en espera';
+        usuario.estado = 'en espera';        
         setUsuario(usuario);
         setCambio(!cambio);
     }
@@ -42,14 +46,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
 
     const renderizarQR = () => {
         //esta es la accion real
-        //setEscanear(!escanear);
+        setEscanear(!escanear);
 
         //esto es por ahora para probar
-        navigation.navigate('ListadoPedido');
+        //navigation.navigate('ListadoPedido');
     }
 
-    const paraRenderizar = () => {
-        usuario.estado = 'en mesa';
+    const paraRenderizar = () => {        
         switch (usuario.estado) {
             case 'en espera':
                 return (<View style={styles.formTitle}>
