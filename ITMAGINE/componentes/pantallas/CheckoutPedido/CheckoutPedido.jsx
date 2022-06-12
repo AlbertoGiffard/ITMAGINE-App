@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -7,13 +7,10 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { DataTable } from 'react-native-paper';
 
-const ListadoPedido = (props) => {
-    const [pedido, setPedido] = useState({});
-    const [total, setTotal] = useState(0);
+const CheckoutPedido = (props) => {
     const navigation = useNavigation();
-    const [carga, setCarga] = useState(false);
+    const [pedido, setPedido] = useState({});
     var totalVar = 0;
-
 
     useEffect(() => {
         //setPedido(props.route.params.pedido); //esta es la linea real        
@@ -66,7 +63,7 @@ const ListadoPedido = (props) => {
                 },
             ],
             estado: 'pendiente',
-            total: 0
+            total: 1500
         }
 
         setPedido(pedidoPrueba);
@@ -74,55 +71,32 @@ const ListadoPedido = (props) => {
 
     const regresar = () => {
         //regresa al home
-        //este navigate debe ir a Productos
-        //navigation.navigate('HomeCliente', { pedido: pedido });
+        navigation.navigate('ClienteEnMesa', { pedido: pedido });
     }
 
-    const confirmarPedido = () => {
-        //confirma el pedido realizado
+    const pagarPedido = async () => {
         var pedidoFinal = pedido;
-        pedidoFinal.total = total;
-        pedidoFinal.estado = 'por preparar';
+        pedidoFinal.total = totalVar;
+        pedidoFinal.estado = 'pagado';
         setPedido(pedidoFinal);
         //aca deberia actualizar en firebase
-        navigation.navigate('HomeCliente', { pedido: pedido });
-    }
-
-    const eliminarPedido = (index) => {
-        if (pedido.productos != undefined) {
-            //setPedido(pedido.productos.filter((i) => { return i != index }));
-            const aux = pedido;
-            aux.productos.splice(index, 1);
-            setPedido({...aux});
-        }
+        return new Promise((resolve, reject) => {
+            Alert.alert(
+                'Gracias',
+                'Nos alegra que haya venido a ITMAGINE, vuelva pronto.',
+                [
+                    {text: 'Claro que si', onPress: () => resolve(navigation.navigate('Login')) },
+                ],
+                { cancelable: false }
+            )
+        })
     }
 
     const sumarTotal = (precio, cantidad) => {
         totalVar += (precio * cantidad);
         //setTotal(aux);
     }
-
-    const listarProductos = (itemPedido, index) => {
-        //pasa el subtotal de cada producto para sumar al total
-        //{ sumarTotal(itemPedido.producto.precio, itemPedido.cantidad) }
-        //renderiza una fila de cada producto
-        console.log(index);
-        return (
-            <DataTable.Row key={index}>
-                <DataTable.Cell textStyle={styles.cellTable}>{itemPedido.producto.nombre}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>{itemPedido.cantidad}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio * itemPedido.cantidad}</DataTable.Cell>
-                <TouchableOpacity style={styles.containerEliminar} onPress={() => { eliminarPedido(index) }}>
-                    <DataTable.Cell textStyle={styles.cellTableEliminar} numeric>
-                        eliminar
-                    </DataTable.Cell>
-                </TouchableOpacity>
-            </DataTable.Row>
-        )
-
-    }
-
+    
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} />
@@ -132,10 +106,9 @@ const ListadoPedido = (props) => {
                         <DataTable style={styles.dataTable}>
                             <DataTable.Header>
                                 <DataTable.Title textStyle={styles.TitleTable}>Nombre</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Cantidad</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Precio u.</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Subtotal</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable} numeric></DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Cantidad</DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Precio u.</DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Subtotal</DataTable.Title>
                             </DataTable.Header>
 
                             {pedido.productos != undefined && 
@@ -147,11 +120,6 @@ const ListadoPedido = (props) => {
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>{itemPedido.cantidad}</DataTable.Cell>
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio}</DataTable.Cell>
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio * itemPedido.cantidad}</DataTable.Cell>
-                                            <TouchableOpacity style={styles.containerEliminar} onPress={() => { eliminarPedido(index) }}>
-                                                <DataTable.Cell textStyle={styles.cellTableEliminar} numeric>
-                                                    eliminar
-                                                </DataTable.Cell>
-                                            </TouchableOpacity>
                                         </DataTable.Row>
                                     )
                                 })
@@ -191,11 +159,11 @@ const ListadoPedido = (props) => {
                     </View>
                     <View style={styles.containerBotones}>
                         <View style={styles.viewBotonConfirmar}>
-                            <TouchableOpacity style={styles.button} onPress={confirmarPedido}>
-                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18 }}>Confirmar Pedido</Text>
+                            <TouchableOpacity style={styles.button} onPress={pagarPedido}>
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18 }}>Pagar Total</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }}>
+                        <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={regresar}>
                             <Icon
                                 size={38}
                                 color={BG_COLOR}
@@ -211,7 +179,7 @@ const ListadoPedido = (props) => {
     );
 }
 
-export default ListadoPedido
+export default CheckoutPedido
 
 const styles = StyleSheet.create({
     containerTable: {
