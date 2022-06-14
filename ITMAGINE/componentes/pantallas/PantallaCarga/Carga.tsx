@@ -5,12 +5,11 @@ import { StyleSheet } from "react-native";
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export declare interface ICargaProps {
     duracion_ms : number,
-    siguientePantalla : never,
-    parametrosParaSiguientePantalla : never
+    siguientePantalla : never
 }
 
 const ALTO_ICONO = windowWidth;
@@ -18,14 +17,14 @@ const ANCHO_ICONO = windowWidth;
 
 const EXTRA_TRESHOLD = 50;
 
-export const Carga = ( { route : { params } } : { route : { params : ICargaProps } } ) => {
+export const Carga = (params : ICargaProps) => {
 
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<NativeStackNavigationProp<any>>();
 
     useEffect( () => {
-        const { siguientePantalla, parametrosParaSiguientePantalla, duracion_ms } = params as ICargaProps;
+        const { siguientePantalla, duracion_ms } = params as ICargaProps;
         
-        setInterval( () => navigate( siguientePantalla, parametrosParaSiguientePantalla ), duracion_ms + EXTRA_TRESHOLD );
+        setInterval( () => navigate( siguientePantalla ), duracion_ms + EXTRA_TRESHOLD );
     }, [] );
 
     return (
