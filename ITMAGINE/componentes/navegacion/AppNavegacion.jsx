@@ -6,7 +6,9 @@ import LoginScreen from '@pantallas/Login/Login';
 import IngresoAnonimo from '@pantallas/IngresoAnonimo/IngresoAnonimo';
 import HomeCliente from '@pantallas/HomeCliente/HomeCliente';
 import ListadoPedido from '@pantallas/ListadoPedido/ListadoPedido';
-import { Carga } from '../pantallas/PantallaCarga/Carga';
+import { Carga } from '@pantallas/PantallaCarga/Carga';
+import ClienteEnMesa from '@pantallas/HomeCliente/ClienteEnMesa/ClienteEnMesa';
+import CheckoutPedido from '@pantallas/CheckoutPedido/CheckoutPedido';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +59,20 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name='ListadoPedido'
                     component={ListadoPedido}
+                    navigationOptions={{ headerShown: false }}
+                    screenOptions={{ headerShown: false }}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='ClienteEnMesa'
+                    component={ClienteEnMesa}
+                    navigationOptions={{ headerShown: false }}
+                    screenOptions={{ headerShown: false }}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='CheckoutPedido'
+                    component={CheckoutPedido}
                     navigationOptions={{ headerShown: false }}
                     screenOptions={{ headerShown: false }}
                     options={{ headerShown: false }}

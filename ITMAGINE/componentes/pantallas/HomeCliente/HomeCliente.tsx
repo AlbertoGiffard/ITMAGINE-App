@@ -8,21 +8,37 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 
-const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
+const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState({ estado: '' });
     const [anonimo, setAnonimo] = useState(true);
     const [cambio, setCambio] = useState(false);
+    const [pedido, setPedido] = useState({});
+    const [hayPedido, setHayPedido] = useState(false);
     const [escanear, setEscanear] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     useEffect(() => {
-        setUsuario(props.route.params.usuario);
+        if (props.route.params.usuario) {
+            setUsuario(props.route.params.usuario);
+            //estas lineas no van, son de prueba
+            usuario.estado = 'inactivo';
+            setUsuario(usuario);
+            //            
+        }
+
+        if (props.route.params.pedido) {
+            setHayPedido(true);
+            setPedido(props.route.params.pedido);
+            usuario.estado = 'en mesa';
+            setUsuario(usuario);
+        }
+
         setCambio(!cambio);
     }, []);
 
     useEffect(() => {
         paraRenderizar();
-        console.log(usuario);
+        //console.log(usuario);
     }, [cambio]);
 
     const handleIngreso = () => {
@@ -42,14 +58,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; }; }; }) => {
 
     const renderizarQR = () => {
         //esta es la accion real
-        //setEscanear(!escanear);
+        setEscanear(!escanear);
 
         //esto es por ahora para probar
-        navigation.navigate('ListadoPedido');
+        //navigation.navigate('ListadoPedido');
     }
 
     const paraRenderizar = () => {
-        usuario.estado = 'en mesa';
         switch (usuario.estado) {
             case 'en espera':
                 return (<View style={styles.formTitle}>

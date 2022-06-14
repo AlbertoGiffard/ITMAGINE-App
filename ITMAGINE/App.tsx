@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { LogBox } from 'react-native';
 import AppNavegacion from './componentes/navegacion/AppNavegacion';
+import MenuProducto from './componentes/pantallas/MenuProductos/MenuProductos';
 import { AppContext } from './context/AppContext';
 import { settearHandlerDeNotificacion } from './services/pushNotification';
 
@@ -13,9 +14,13 @@ export default function App() {
     settearHandlerDeNotificacion(true);
   }, [] )
 
-  return (
+  /*return (
   <AppContext.Provider value={null}>
     <AppNavegacion/>
   </AppContext.Provider>
-  );
+  );*/
+
+  return (
+    <MenuProducto></MenuProducto>
+  )
 }

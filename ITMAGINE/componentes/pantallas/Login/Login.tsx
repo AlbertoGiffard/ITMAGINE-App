@@ -42,7 +42,11 @@ const LoginScreen = () => {
     }
 
     const NavegarRegistro = () => {}
-    const NavegarAnonimo = () => {}
+    const NavegarAnonimo = () => {
+      //la ruta real es: IngresoAnonimo
+      //ruta prueba: ListadoPedido
+      navigation.navigate('IngresoAnonimo');
+    }
 
     const userAnonimo = () => {
       //Comente esto Agus para que me lleve 

@@ -5,9 +5,9 @@ import { BG_COLOR, TERCIARY_COLOR, SECONDARY_COLOR } from "../../../estilos/glob
 
 export default class PantallaSplash extends Component {
     componentDidMount() {
-        /* Esto queda comentado hasta que ya se cuente con la redireccion a la siguiente pagina */
         setTimeout(() => {
-            this.props.navigation.navigate('Login');
+            //this.props.navigation.navigate('Login'); //real
+            this.props.navigation.navigate('CheckoutPedido'); //test
         }, 3000, this) 
     }
 
