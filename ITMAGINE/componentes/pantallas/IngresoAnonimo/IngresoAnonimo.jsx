@@ -10,7 +10,6 @@ const IngresoAnonimo = () => {
     const navigation = useNavigation();
 
     const handleIngreso = () => {
-        //setLoading(true);
         if (nombre == '') {
             showAlert();
         } else {

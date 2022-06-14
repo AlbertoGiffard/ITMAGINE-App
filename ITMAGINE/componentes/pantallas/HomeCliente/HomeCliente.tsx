@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
@@ -7,22 +7,37 @@ import * as Animatable from 'react-native-animatable';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
+import { DBService } from '../../../services/DBService';
+import { ICliente } from '../../../definiciones/ICliente';
+import { ICargaProps } from '../PantallaCarga/Carga';
+import { COLECCION_CLIENTES } from '../../../services/colecciones';
+import { AppContext } from '../../../context/AppContext';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
-    const [usuario, setUsuario] = useState({ estado: '' });
+    const [usuario, setUsuario] = useState<ICliente | any>({estado: ''});
     const [anonimo, setAnonimo] = useState(true);
     const [cambio, setCambio] = useState(false);
     const [pedido, setPedido] = useState({});
     const [hayPedido, setHayPedido] = useState(false);
     const [escanear, setEscanear] = useState(false);
+    const context = useContext(AppContext);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     useEffect(() => {
+        /* if (context?.usuario) {
+            setUsuario(context?.usuario);
+        } */        
+
         if (props.route.params.usuario) {
-            setUsuario(props.route.params.usuario);
+            usuario.nombre = 'Lean';
+            usuario.email = 'leandrito@gmail.com';
+            //setUsuario(props.route.params.usuario);
+
             //estas lineas no van, son de prueba
             usuario.estado = 'inactivo';
             setUsuario(usuario);
+            console.log(usuario);
+            
             //            
         }
 
@@ -48,6 +63,17 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const cambiarAListaDeEspera = () => {
         usuario.estado = 'en espera';
         setUsuario(usuario);
+        const objCarga: ICargaProps = {duracion_ms: 1000, siguientePantalla: 'ListadoPedido', parametrosParaSiguientePantalla: {} as never};
+        navigation.navigate('Carga', objCarga);
+        //navigation.navigate('ListadoPedido', objCarga);
+        //actualizar en FB
+        /* const firestore = new DBService<ICliente>(COLECCION_CLIENTES);
+        firestore.insertOne(usuario, usuario.email).catch((error) => {
+                console.log('error: ', error);
+                
+            });     */       
+
+
         setCambio(!cambio);
     }
 

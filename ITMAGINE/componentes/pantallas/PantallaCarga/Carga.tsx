@@ -6,10 +6,11 @@ import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export declare interface ICargaProps {
     duracion_ms : number,
-    siguientePantalla : never,
+    siguientePantalla : string,
     parametrosParaSiguientePantalla : never
 }
 
@@ -20,12 +21,13 @@ const EXTRA_TRESHOLD = 50;
 
 export const Carga = ( { route : { params } } : { route : { params : ICargaProps } } ) => {
 
-    const { navigate } = useNavigation();
+    //const navigation = useNavigation();
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     useEffect( () => {
         const { siguientePantalla, parametrosParaSiguientePantalla, duracion_ms } = params as ICargaProps;
         
-        setInterval( () => navigate( siguientePantalla, parametrosParaSiguientePantalla ), duracion_ms + EXTRA_TRESHOLD );
+        setTimeout( () => navigation.navigate( siguientePantalla), duracion_ms + EXTRA_TRESHOLD);
     }, [] );
 
     return (

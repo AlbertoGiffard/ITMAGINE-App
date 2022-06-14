@@ -14,13 +14,13 @@ export default function App() {
     settearHandlerDeNotificacion(true);
   }, [] )
 
-  /*return (
+  return (
   <AppContext.Provider value={null}>
     <AppNavegacion/>
   </AppContext.Provider>
-  );*/
+  );
 
-  return (
+  /* return (
     <MenuProducto></MenuProducto>
-  )
+  ) */
 }

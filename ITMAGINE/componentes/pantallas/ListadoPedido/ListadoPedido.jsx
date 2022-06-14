@@ -7,7 +7,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { DataTable } from 'react-native-paper';
 
-const ListadoPedido = (props) => {
+const ListadoPedido = () => {
     const [pedido, setPedido] = useState({});
     const [total, setTotal] = useState(0);
     const navigation = useNavigation();
