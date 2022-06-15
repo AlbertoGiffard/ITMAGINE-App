@@ -1,31 +1,44 @@
-import { View } from "react-native-animatable";
-import { Loading } from "../../Loading/Loading";
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from "../../../estilos/globalStyle";
-import { StyleSheet } from "react-native";
-import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect } from "react";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
+import { View } from "react-native-animatable";
+import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
+import { Loading } from "../../Loading/Loading";
 
 export declare interface ICargaProps {
-    duracion_ms : number,
-    siguientePantalla : never
+    duracion_ms? : number,
+    siguientePantalla : string
 }
 
 const ALTO_ICONO = windowWidth;
 const ANCHO_ICONO = windowWidth;
 
 const EXTRA_TRESHOLD = 50;
+const TIEMPO_CARGA_POR_DEFECTO = 2500;
 
-export const Carga = (params : ICargaProps) => {
+export const Carga = ( {route} : any ) => {
 
-    const { navigate } = useNavigation<NativeStackNavigationProp<any>>();
+    //const navigation = useNavigation();
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
+    const isFocused = useIsFocused();
 
     useEffect( () => {
-        const { siguientePantalla, duracion_ms } = params as ICargaProps;
+        if (!isFocused) return
+
+        const { siguientePantalla, duracion_ms } = route.params as ICargaProps;
         
-        setInterval( () => navigate( siguientePantalla ), duracion_ms + EXTRA_TRESHOLD );
-    }, [] );
+        const timeout= setTimeout( () => {
+          console.log(`Navegando a ${siguientePantalla}`)
+          navigation.replace( siguientePantalla )
+          navigation.navigate( siguientePantalla );
+        }, duracion_ms ?? TIEMPO_CARGA_POR_DEFECTO + EXTRA_TRESHOLD);
+
+        return () => {
+          console.log("Borrando componente");
+          clearTimeout(timeout)
+        }
+    }, [isFocused] );
 
     return (
         <View style={ styles.container }>
