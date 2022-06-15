@@ -9,6 +9,7 @@ import ListadoPedido from '@pantallas/ListadoPedido/ListadoPedido';
 import { Carga } from '@pantallas/PantallaCarga/Carga';
 import ClienteEnMesa from '@pantallas/HomeCliente/ClienteEnMesa/ClienteEnMesa';
 import CheckoutPedido from '@pantallas/CheckoutPedido/CheckoutPedido';
+import PantallaRegistro from '@pantallas/Registro/Registro';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,65 +18,43 @@ const AppNavegacion = () => {
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName='Splash'
-                navigationOptions={{ headerShown: false }}
-                screenOptions={{ headerShown: false }}
-                options={{ headerShown: false }}
+                screenOptions={{ headerShown: false, unmountOnBlur: true }}
             >
                 <Stack.Screen
                     name='Splash'
                     component={PantallaSplash}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='Carga'
                     component={Carga}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name='Registro'
+                    component={PantallaRegistro}
                 />
                 <Stack.Screen
                     name='Login'
                     component={LoginScreen}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='IngresoAnonimo'
                     component={IngresoAnonimo}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='HomeCliente'
                     component={HomeCliente}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='ListadoPedido'
                     component={ListadoPedido}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='ClienteEnMesa'
                     component={ClienteEnMesa}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
                 <Stack.Screen
                     name='CheckoutPedido'
                     component={CheckoutPedido}
-                    navigationOptions={{ headerShown: false }}
-                    screenOptions={{ headerShown: false }}
-                    options={{ headerShown: false }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
