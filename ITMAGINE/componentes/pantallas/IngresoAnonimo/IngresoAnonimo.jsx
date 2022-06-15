@@ -18,7 +18,8 @@ const IngresoAnonimo = () => {
                 nombre: nombre,
                 estado: 'inactivo'
             };
-            navigation.navigate('HomeCliente', { usuario: usuarioAnonimo });
+            //navigation.navigate('HomeCliente', { usuario: usuarioAnonimo });
+            navigation.navigate('Carga', { siguientePantalla: 'ListadoPedido' });
         }
     }
 

@@ -41,7 +41,10 @@ const LoginScreen = () => {
             
     }
 
-    const NavegarRegistro = () => {}
+    const NavegarRegistro = () => {
+      navigation.navigate( 'Carga', { siguientePantalla: 'Registro' } )
+    }
+
     const NavegarAnonimo = () => {
       //la ruta real es: IngresoAnonimo
       //ruta prueba: ListadoPedido
