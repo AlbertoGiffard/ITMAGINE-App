@@ -15,21 +15,10 @@ export default function App() {
   }, [] )
 
   return (
-<<<<<<< HEAD
-  <AppContext.Provider value={null}>
-    <AppNavegacion/>
-  </AppContext.Provider>
-  );
-
-  /* return (
-    <MenuProducto></MenuProducto>
-  ) */
-=======
       <AppContext.Provider value={null}>
         <PaperProvider>
           <AppNavegacion/>
         </PaperProvider>
       </AppContext.Provider>
   );
->>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad
 }

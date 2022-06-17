@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
 import { ICliente } from '../../../definiciones/ICliente';
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
+import { AppContext } from '../../../context/AppContext';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({estado: ''});

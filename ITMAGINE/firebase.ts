@@ -19,24 +19,6 @@ const APP_NAME = 'ITMAGINE';
 
 // Initialize Firebase
 let app;
-<<<<<<< HEAD
-if(firebase.getApps().length === 0){
-    app = firebase.initializeApp(firebaseConfig);    
-}
-else{ 
-    app = firebase.getApp();
-}
-
-
-
-//app = firebase.initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-//export const database = getFirestore();
-
-export {auth} ; 
-export default app;
-=======
 
 try {
   app = firebase.getApp(APP_NAME);
@@ -46,4 +28,3 @@ try {
 
 export default app;
 export const auth = getAuth(app);
->>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad

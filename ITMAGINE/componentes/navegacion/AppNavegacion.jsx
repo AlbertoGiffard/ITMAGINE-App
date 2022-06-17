@@ -9,7 +9,7 @@ import ListadoPedido from '@pantallas/ListadoPedido/ListadoPedido';
 import { Carga } from '@pantallas/PantallaCarga/Carga';
 import ClienteEnMesa from '@pantallas/HomeCliente/ClienteEnMesa/ClienteEnMesa';
 import CheckoutPedido from '@pantallas/CheckoutPedido/CheckoutPedido';
-import PantallaRegistro from '@pantallas/Registro/Registro';
+//import PantallaRegistro from '@pantallas/Registro/Registro';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,10 +28,10 @@ const AppNavegacion = () => {
                     name='Carga'
                     component={Carga}
                 />
-                <Stack.Screen
+                {/* <Stack.Screen
                     name='Registro'
                     component={PantallaRegistro}
-                />
+                /> */}
                 <Stack.Screen
                     name='Login'
                     component={LoginScreen}

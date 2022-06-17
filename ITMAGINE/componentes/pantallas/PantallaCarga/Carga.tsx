@@ -1,15 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect } from "react";
-<<<<<<< HEAD
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-export declare interface ICargaProps {
-    duracion_ms : number,
-    siguientePantalla : string,
-    parametrosParaSiguientePantalla : never
-=======
 import { StyleSheet } from "react-native";
 import { View } from "react-native-animatable";
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
@@ -18,7 +9,6 @@ import { Loading } from "../../Loading/Loading";
 export declare interface ICargaProps {
     duracion_ms? : number,
     siguientePantalla : string
->>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad
 }
 
 const ALTO_ICONO = windowWidth;
@@ -31,20 +21,13 @@ export const Carga = ( {route} : any ) => {
 
     //const navigation = useNavigation();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-<<<<<<< HEAD
-=======
     const isFocused = useIsFocused();
->>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad
 
     useEffect( () => {
         if (!isFocused) return
 
         const { siguientePantalla, duracion_ms } = route.params as ICargaProps;
         
-<<<<<<< HEAD
-        setTimeout( () => navigation.navigate( siguientePantalla), duracion_ms + EXTRA_TRESHOLD);
-    }, [] );
-=======
         const timeout= setTimeout( () => {
           console.log(`Navegando a ${siguientePantalla}`)
           navigation.replace( siguientePantalla )
@@ -56,7 +39,6 @@ export const Carga = ( {route} : any ) => {
           clearTimeout(timeout)
         }
     }, [isFocused] );
->>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad
 
     return (
         <View style={ styles.container }>
