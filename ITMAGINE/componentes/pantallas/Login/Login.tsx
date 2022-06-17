@@ -1,12 +1,9 @@
-
-
-import React, { useState} from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator } from "react-native";
-import {auth} from '../../../firebase'
-import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { auth } from '../../../firebase';
 //import { useNavigation } from '@react-navigation/native';
 
 
