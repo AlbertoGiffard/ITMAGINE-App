@@ -70,7 +70,6 @@ const ListadoPedido = () => {
         }
 
         setPedido(pedidoPrueba);
-        return () => console.log('HEYY' + 'PUIT')
     }, []);
 
     const regresar = () => {

@@ -9,7 +9,8 @@ import ListadoPedido from '@pantallas/ListadoPedido/ListadoPedido';
 import { Carga } from '@pantallas/PantallaCarga/Carga';
 import ClienteEnMesa from '@pantallas/HomeCliente/ClienteEnMesa/ClienteEnMesa';
 import CheckoutPedido from '@pantallas/CheckoutPedido/CheckoutPedido';
-//import PantallaRegistro from '@pantallas/Registro/Registro';
+import PantallaRegistro from '@pantallas/Registro/Registro';
+import { Encuesta } from '@pantallas/Encuesta/Encuesta';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,10 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name='CheckoutPedido'
                     component={CheckoutPedido}
+                />
+                <Stack.Screen
+                    name="Encuesta"
+                    component={Encuesta}
                 />
             </Stack.Navigator>
         </NavigationContainer>
