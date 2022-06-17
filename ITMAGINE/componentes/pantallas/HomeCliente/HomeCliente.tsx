@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
-import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Animatable from 'react-native-animatable';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
-import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
-import { DBService } from '../../../services/DBService';
+import React, { useEffect, useState } from 'react';
+import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as Animatable from 'react-native-animatable';
+import { Icon } from 'react-native-elements';
 import { ICliente } from '../../../definiciones/ICliente';
-import { ICargaProps } from '../PantallaCarga/Carga';
-import { COLECCION_CLIENTES } from '../../../services/colecciones';
-import { AppContext } from '../../../context/AppContext';
+import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({estado: ''});
@@ -20,7 +15,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const [pedido, setPedido] = useState({});
     const [hayPedido, setHayPedido] = useState(false);
     const [escanear, setEscanear] = useState(false);
-    const context = useContext(AppContext);
+    //const context = useContext(AppContext);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     useEffect(() => {
@@ -63,7 +58,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const cambiarAListaDeEspera = () => {
         usuario.estado = 'en espera';
         setUsuario(usuario);
-        const objCarga: ICargaProps = {duracion_ms: 1000, siguientePantalla: 'ListadoPedido', parametrosParaSiguientePantalla: {} as never};
+        const objCarga = {siguientePantalla: 'ListadoPedido', parametrosParaSiguientePantalla: {} as never};
         navigation.navigate('Carga', objCarga);
         //navigation.navigate('ListadoPedido', objCarga);
         //actualizar en FB

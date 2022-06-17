@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { View } from "react-native";
 import { Image, LinearProgress } from "react-native-elements";
 import { PRIMARY_COLOR, SECONDARY_COLOR } from "../../estilos/globalStyle";
 
@@ -16,8 +15,9 @@ export const Loading = ( {altoIcon, anchoIcon} : ILoadingProps ) => {
 
     useEffect( () => {
 
-        setInterval( () => setColor( color === PRIMARY_COLOR ? SECONDARY_COLOR : PRIMARY_COLOR ), INTERVALO_CAMBIO_COLOR_MS );
+        const interval = setInterval( () => setColor( color === PRIMARY_COLOR ? SECONDARY_COLOR : PRIMARY_COLOR ), INTERVALO_CAMBIO_COLOR_MS );
 
+        return () => clearInterval(interval)
     }, [color] );
 
     return (

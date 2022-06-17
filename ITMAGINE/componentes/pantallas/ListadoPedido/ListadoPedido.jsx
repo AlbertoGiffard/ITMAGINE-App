@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar } from "react-native";
-import { Icon, Input } from 'react-native-elements'
+import { Button, Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
@@ -70,6 +70,7 @@ const ListadoPedido = () => {
         }
 
         setPedido(pedidoPrueba);
+        return () => console.log('HEYY' + 'PUIT')
     }, []);
 
     const regresar = () => {
@@ -100,27 +101,6 @@ const ListadoPedido = () => {
     const sumarTotal = (precio, cantidad) => {
         totalVar += (precio * cantidad);
         //setTotal(aux);
-    }
-
-    const listarProductos = (itemPedido, index) => {
-        //pasa el subtotal de cada producto para sumar al total
-        //{ sumarTotal(itemPedido.producto.precio, itemPedido.cantidad) }
-        //renderiza una fila de cada producto
-        console.log(index);
-        return (
-            <DataTable.Row key={index}>
-                <DataTable.Cell textStyle={styles.cellTable}>{itemPedido.producto.nombre}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>{itemPedido.cantidad}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio}</DataTable.Cell>
-                <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio * itemPedido.cantidad}</DataTable.Cell>
-                <TouchableOpacity style={styles.containerEliminar} onPress={() => { eliminarPedido(index) }}>
-                    <DataTable.Cell textStyle={styles.cellTableEliminar} numeric>
-                        eliminar
-                    </DataTable.Cell>
-                </TouchableOpacity>
-            </DataTable.Row>
-        )
-
     }
 
     return (

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { LogBox } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
 import AppNavegacion from './componentes/navegacion/AppNavegacion';
-import MenuProducto from './componentes/pantallas/MenuProductos/MenuProductos';
 import { AppContext } from './context/AppContext';
 import { settearHandlerDeNotificacion } from './services/pushNotification';
 
@@ -15,6 +15,7 @@ export default function App() {
   }, [] )
 
   return (
+<<<<<<< HEAD
   <AppContext.Provider value={null}>
     <AppNavegacion/>
   </AppContext.Provider>
@@ -23,4 +24,12 @@ export default function App() {
   /* return (
     <MenuProducto></MenuProducto>
   ) */
+=======
+      <AppContext.Provider value={null}>
+        <PaperProvider>
+          <AppNavegacion/>
+        </PaperProvider>
+      </AppContext.Provider>
+  );
+>>>>>>> 552920e76bf688fb9ce8811bb2fe3287c53519ad
 }
