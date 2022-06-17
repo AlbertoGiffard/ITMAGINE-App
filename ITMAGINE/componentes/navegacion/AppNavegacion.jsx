@@ -18,7 +18,7 @@ const AppNavegacion = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName='Encuesta'
+                initialRouteName='Splash'
                 screenOptions={{ headerShown: false, unmountOnBlur: true }}
             >
                 <Stack.Screen
