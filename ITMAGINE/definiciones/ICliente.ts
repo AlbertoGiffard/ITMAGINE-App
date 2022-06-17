@@ -10,11 +10,11 @@ declare type EstadoCliente = "inactivo" | "en espera" | "en mesa";
 
 export declare interface ICliente {
     email : string,
+    password : string,
     nombre : string,
     apellido : string,
     DNI : string,
     fotoURL : string,
     validacion : EstadoValidacionCuentaCliente,
-    estado : EstadoCliente,
-    pushToken : string
+    estado : EstadoCliente
 }
