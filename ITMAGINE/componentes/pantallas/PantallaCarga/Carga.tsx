@@ -35,7 +35,6 @@ export const Carga = ( {route} : any ) => {
         }, duracion_ms ?? TIEMPO_CARGA_POR_DEFECTO + EXTRA_TRESHOLD);
 
         return () => {
-          console.log("Borrando componente");
           clearTimeout(timeout)
         }
     }, [isFocused] );
