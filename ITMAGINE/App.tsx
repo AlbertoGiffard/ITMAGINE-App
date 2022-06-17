@@ -2,6 +2,11 @@ import { useEffect } from 'react';
 import { LogBox } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import AppNavegacion from './componentes/navegacion/AppNavegacion';
+import HomeBartender from './componentes/pantallas/HomeBartender/HomeBartender';
+import ListadoCliente from './componentes/pantallas/Listados/ListadoCliente';
+import ListaEspera from './componentes/pantallas/Listados/ListaEspera';
+import MenuMozo from './componentes/pantallas/MenuMozo/MenuMozo';
+import PedidosMozo from './componentes/pantallas/PedidosMozo/PedidosMozo';
 import { AppContext } from './context/AppContext';
 import { settearHandlerDeNotificacion } from './services/pushNotification';
 
@@ -14,11 +19,12 @@ export default function App() {
     settearHandlerDeNotificacion(true);
   }, [] )
 
+  /* <AppContext.Provider value={null}>
+    <PaperProvider>
+      <AppNavegacion/>
+    </PaperProvider>
+  /AppContext.Provider> */
   return (
-      <AppContext.Provider value={null}>
-        <PaperProvider>
-          <AppNavegacion/>
-        </PaperProvider>
-      </AppContext.Provider>
-  );
+    <HomeBartender></HomeBartender>
+    );
 }

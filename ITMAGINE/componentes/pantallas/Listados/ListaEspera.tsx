@@ -1,0 +1,76 @@
+
+   
+import React from 'react';
+import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+//import { DBService } from '../../../services/DBService';
+import CardEspera from '../../Cards/cardEspera';
+
+export const windowWidth = Dimensions.get('window').width;
+export const windowHeight = Dimensions.get('window').height;
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+const ListaEspera = () => {
+  
+    //let db:any = new DBService("listaEspera");
+    //let clientesAux = db.getAll();
+
+  return (
+    <View style={styles.container}>
+        <View style={styles.vwMarco}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <FlatList
+                    data={Clientes}
+                    ItemSeparatorComponent={() => <Text style={{height: windowHeight * 0.01}}>  </Text>}
+                    renderItem={({ item: cliente }) => <CardEspera {...cliente}></CardEspera>}
+                />
+            </ScrollView>
+        </View>
+    </View>
+  );
+};
+
+const Clientes:any = [{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
+];
+
+export default ListaEspera
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+        backgroundColor:"black"
+      },
+      vwMarco: {
+        marginHorizontal: 30,
+        height: windowHeight * 0.90,
+        borderRadius: 40,
+        width: windowWidth * 0.99,
+        shadowColor: "#fd99ef",
+        shadowOpacity: 1,
+        elevation: 250,
+        shadowOffset:{width: 0, height: 0},
+        justifyContent: "center",
+        alignItems: 'center',
+        marginTop: windowHeight * 0.10,
+    },
+    scrollView:{
+        justifyContent: "center",
+         alignItems: 'center',
+        height: windowHeight * 0.85,
+    }
+    });
+

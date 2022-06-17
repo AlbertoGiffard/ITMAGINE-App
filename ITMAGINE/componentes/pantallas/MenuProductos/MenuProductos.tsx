@@ -20,11 +20,6 @@ const MenuProducto = () => {
     const sumar = (producto:any) => {
         setTotal(total + producto.precio);
         arrayProd.push(producto)
-        console.clear();
-        console.log("-----------------------------------------");
-        console.log("-----------------------------------------");
-        console.log("-----------------------------------------");
-        console.log(arrayProd)
     }
 
     const restar = (producto:any) => {
@@ -33,13 +28,8 @@ const MenuProducto = () => {
         for(i; i < arrayProd.length; i++ ){
             if(arrayProd[i].nombre == producto.nombre)
             break;
-
         }
-        console.log("-----------------------------------------");
-        console.log("-----------------------------------------");
-        console.log("-----------------------------------------");
         arrayProd.splice(i, 1);
-        console.log(arrayProd)
     }
 
 
