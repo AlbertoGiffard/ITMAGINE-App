@@ -84,4 +84,16 @@ export class DBService<T> {
     async GetItems( estado:string,tipo:string, onResult:any, onError:any){
         return await firestore.collection(this.coleccion).where("estado", "==", estado).where("tipo", "==", tipo).onSnapshot(onResult, onError);
     }
+    public async getUsuario (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
+    public async getListaEspera (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
+    public async getPedido (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
 }

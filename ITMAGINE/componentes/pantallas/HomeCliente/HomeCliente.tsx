@@ -19,6 +19,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const [pedido, setPedido] = useState({});
     const [hayPedido, setHayPedido] = useState(false);
     const [escanear, setEscanear] = useState(false);
+    const [cambioEstado, setCambioEstado] = useState(false);
     const context = useContext(AppContext);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const servicioEspera = new DBService<IEspera>(COLECCION_COLA_ESPERA);
@@ -27,7 +28,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     useEffect(() => {
         if (context?.usuario) {
-            context.usuario.estado = 'en mesa';
+            //context.usuario.estado = 'en mesa';
             setUsuario(context?.usuario);
         }
 
@@ -37,6 +38,22 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     useEffect(() => {
         paraRenderizar();
     }, [cambio]);
+
+    useEffect(() => {
+        if (cambioEstado) {            
+            servicioEspera.getListaEspera(usuario.nombre, (data:any) => {
+              console.log(data.data());
+              if (data.data().cliente.estado == 'en mesa') {
+                usuario.estado = 'en mesa';
+                setUsuario(usuario);
+                setCambio(!cambio);
+              }
+              
+              
+            },(error:Error) => console.log('error', error))
+        }
+    }, [cambioEstado])
+    
 
     const handleIngreso = (valor: any) => {
         const numero = valor.numero;
@@ -71,7 +88,9 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
             }
             //si tiene email actualiza en fb
             if (usuario.email) {
-                servicioCliente.updateOne(usuario, usuario.email)
+                servicioCliente.updateOne(usuario, usuario.email);
+            } else {
+                servicioCliente.insertOne(usuario, usuario.nombre);
             }
             //redirige a la pagina de productos
             servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
@@ -102,12 +121,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const fecha = new Date();
 
         const usuarioLista: IEspera = {
-            cliente: usuario.nombre,
+            cliente: usuario,
             horarioLlegada: fecha.getHours() + ':' + fecha.getMinutes()
         }
 
         //guardar usuario
         servicioEspera.insertOne(usuarioLista, usuario.nombre);
+        setCambioEstado(true);
     }
 
     const escanearQR = (data: any) => {

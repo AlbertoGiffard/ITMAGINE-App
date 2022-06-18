@@ -92,7 +92,7 @@ const ListadoPedido = () => {
         const pedidoFinal:IPedido = {
             id: pedido.id,
             cliente: pedido.cliente,
-            estado: 'por preparar',
+            estado: 'pendiente',
             numeroMesa: pedido.numeroMesa,
             productos: pedido.productos,
             total: totalVar
