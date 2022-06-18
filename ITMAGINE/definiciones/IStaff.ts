@@ -1,4 +1,4 @@
-declare type TipoEmpleado = "metre" | "cocinero" | "bartender" | "dueño";
+declare type TipoEmpleado = "metre" | "cocinero" | "bartender" | "mozo" | "dueño";
 
 export declare interface IStaff {
     email : string,
@@ -7,5 +7,6 @@ export declare interface IStaff {
     DNI : string,
     CUIL : string,
     fotoURL : string,
-    tipo : TipoEmpleado
+    tipo : TipoEmpleado,
+    password: string
 }
