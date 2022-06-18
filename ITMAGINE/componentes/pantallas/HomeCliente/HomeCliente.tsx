@@ -12,7 +12,7 @@ import { DBService } from '../../../services/DBService';
 import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
-    const [usuario, setUsuario] = useState<ICliente | any>({estado: ''});
+    const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
     const [anonimo, setAnonimo] = useState(true);
     const [cambio, setCambio] = useState(false);
     const [pedido, setPedido] = useState({});
@@ -25,7 +25,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     useEffect(() => {
         if (context?.usuario) {
             setUsuario(context?.usuario);
-        }    
+        }
 
         /* if (props.route.params.usuario) {
             usuario.nombre = 'Lean';
@@ -52,7 +52,6 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     useEffect(() => {
         paraRenderizar();
-        //console.log(usuario);
     }, [cambio]);
 
     const handleIngreso = () => {
@@ -60,27 +59,19 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     }
 
     const cambiarAListaDeEspera = () => {
-        usuario.estado = 'en espera';
+        /* usuario.estado = 'en espera';
         setUsuario(usuario);
-        const objCarga = {siguientePantalla: 'ListadoPedido', parametrosParaSiguientePantalla: {} as never};
+        const fecha = new Date();
 
         const usuarioLista: IEspera = {
             cliente: usuario.nombre,
-            horarioLlegada: new Date().toString()
-        }
+            horarioLlegada: fecha.getHours + ':' + fecha.getMinutes()
+        } */
 
         //guardar usuario
         //servicio.insertOne(usuarioLista, usuario.nombre);
 
-        //renderizarQR();
-        //navigation.navigate('ListadoPedido', objCarga);
-        //actualizar en FB
-        /* const firestore = new DBService<ICliente>(COLECCION_CLIENTES);
-        firestore.insertOne(usuario, usuario.email).catch((error) => {
-                console.log('error: ', error);
-                
-            });     */       
-
+        renderizarQR();
 
         setCambio(!cambio);
     }
@@ -88,14 +79,12 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
         console.log(data);
+        setEscanear(!escanear);
     }
 
     const renderizarQR = () => {
         //esta es la accion real
         setEscanear(!escanear);
-
-        //esto es por ahora para probar
-        //navigation.navigate('ListadoPedido');
     }
 
     const paraRenderizar = () => {
@@ -159,15 +148,37 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
             default:
                 return (
                     <View>
-                        <TouchableOpacity style={styles.button} onPress={cambiarAListaDeEspera}>
-                            <Icon
-                                size={38}
-                                color={SECONDARY_COLOR}
-                                type={'font-awesome'}
-                                name={'hourglass-end'}
-                            />
-                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>Colocarme en lista de espera</Text>
-                        </TouchableOpacity>
+                        {escanear ?
+                            <View style={styles.containerQR}>
+                                <View style={styles.containerCamara}>
+                                    <BarCodeScanner
+                                        onBarCodeScanned={escanearQR}
+                                        style={styles.camara}
+                                    />
+                                </View>
+                                <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQR}>
+                                    <Icon
+                                        size={38}
+                                        color={BG_COLOR}
+                                        type={'ionicon'}
+                                        name={'close-outline'}
+                                        style={{ textAlign: 'center' }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View>
+                                <TouchableOpacity style={styles.button} onPress={cambiarAListaDeEspera}>
+                                    <Icon
+                                        size={38}
+                                        color={SECONDARY_COLOR}
+                                        type={'font-awesome'}
+                                        name={'hourglass-end'}
+                                    />
+                                    <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>Colocarme en lista de espera</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
                     </View>
                 );
                 break;
