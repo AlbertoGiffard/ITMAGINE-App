@@ -1,17 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useContext, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AppContext } from '../../../context/AppContext';
 import { ICliente } from '../../../definiciones/ICliente';
 import { IStaff } from '../../../definiciones/IStaff';
-import { auth } from '../../../firebase';
 import { COLECCION_CLIENTES, COLECCION_DUENIO, COLECCION_EMPLEADOS } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
-//import { useNavigation } from '@react-navigation/native';
-
-
+import { FAB } from 'react-native-paper';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -28,7 +24,7 @@ const LoginScreen = () => {
   const servicioStaff = new DBService<IStaff>(COLECCION_EMPLEADOS);
   const servicioDuenio = new DBService<IStaff>(COLECCION_DUENIO);
   const context = useContext(AppContext);
-
+  const [open, setOpen] = useState<boolean>(false);
 
   //const navigation = useNavigation()
 
@@ -118,12 +114,14 @@ const LoginScreen = () => {
     <KeyboardAvoidingView
       style={styles.container}
     >
+
       {loading && <View style={styles.formMarco}>
         <ActivityIndicator size={180} color="#3dd7fb" />
       </View>}
 
 
       {!loading &&
+        <>
         <View style={styles.formMarco}>
           <SafeAreaView style={styles.form}>
             <View style={styles.vwImg}>
@@ -169,9 +167,23 @@ const LoginScreen = () => {
               </TouchableOpacity>
             </View>
           </SafeAreaView>
-        </View>
+        </View></>
       }
       <StatusBar barStyle="light-content" />
+      <FAB.Group
+        style={ {position:'absolute', right: 0, bottom: 0} }
+        visible={true}
+        onStateChange={() => setOpen(!open)}
+        open={open}
+        icon='plus'
+        actions={[
+          {icon: 'email', label: "Dueño", onPress: () => {setEmail('duenio@duenio.com'); setPassword('123')}},
+          {icon: 'email', label: "Mozo", onPress: () => {setEmail('mozoUno@mozo.com'); setPassword('123')}},
+          {icon: 'email', label: "Bartender", onPress: () => {setEmail('bartenderUno@bartender.com'); setPassword('123')}},
+          {icon: 'email', label: "Cocinero", onPress: () => {setEmail('cocineroUno@cocinero.com'); setPassword('123')}},
+          {icon: 'email', label: "Metre", onPress: () => {setEmail('metreUno@metre.com'); setPassword('123')}},
+        ]}
+      />
     </KeyboardAvoidingView>
   );
 }
