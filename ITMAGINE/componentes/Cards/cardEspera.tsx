@@ -1,7 +1,9 @@
 import {Dimensions, StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpacity, Image, ActivityIndicator, ImageBackground} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
-//import { DBService } from '../../services/DBService';
+import { DBService } from '../../services/DBService';
+import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA } from '../../services/colecciones';
+import { ICliente } from '../../definiciones/ICliente';
 
 
 export const windowHeight = Dimensions.get('window').height;
@@ -9,20 +11,34 @@ export const windowWidth = Dimensions.get('window').width;
 
 const CardProducto = (cli : any) => {
 
-    //const dataBase:any = new DBService("clientes");
+    const dbClientes = new DBService<ICliente>(COLECCION_CLIENTES);
+    const dbEspera = new DBService(COLECCION_COLA_ESPERA);
 
     const AceptarCliente = () => {
-        //dataBase.UpdteOne({estado:"aprobado"}, cli.email);
+
+        cli.cliente.estado = "en mesa"
+
+        if(cli.email == undefined){ 
+        dbEspera.updateOne({cliente: {...cli.cliente}}, cli.cliente.nombre);
+        console.log(cli.cliente);    
+        console.log(cli.nombre);    
+        }
+        else{
+            dbEspera.updateOne({cliente: {...cli.cliente}}, cli.email);
+            dbClientes.updateOne({estado: "en mesa"}, cli.email)
+        }
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.vwcli}>
-                <Image source={require('../../assets/bar.png')} style={styles.cli}></Image>
+                { cli.cliente.email == undefined ?
+                <Image source={require('../../assets/anonimo.png')} style={styles.cli}></Image> :
+                <Image source={{uri: cli.cliente.fotoURL}} style={styles.cli}></Image>
+                }
             </View>
             <View style={styles.vwUsr}>
-                <Text style={styles.textoMail}>{cli.email}</Text>
-                <Text style={styles.textoNombre}>{cli.fecha}</Text>
+                <Text style={styles.textoNombre}>{cli.cliente.nombre}{cli.cliente.apellido}</Text>
             </View>
             <TouchableOpacity style={styles.vwcliTilde} onPress={AceptarCliente}>
                 <Image source={require('../../assets/comprobado.png')} style={styles.cliTilde}></Image>
@@ -48,17 +64,17 @@ const styles = StyleSheet.create({
     },
     vwcli:{
         width: windowWidth * 0.17,
-        borderRadius: 30,
-        borderWidth: 3,
-        borderColor: PRIMARY_COLOR,
         marginRight: windowWidth * 0.03,
         maxHeight: windowWidth * 0.17,
     },
     cli:{
+        borderRadius: 30,
+        borderWidth: 3,
+        borderColor: PRIMARY_COLOR,
         resizeMode: "contain",
         justifyContent: "center",
         alignItems: 'center',
-        maxHeight: windowWidth * 0.17,
+        height: windowWidth * 0.15,
         maxWidth: windowWidth * 0.17
     },
     vwUsr:{
@@ -76,7 +92,10 @@ const styles = StyleSheet.create({
         maxWidth: windowWidth * 0.12,
     },
     textoNombre:{
-       color: SECONDARY_COLOR
+       color: TERCIARY_COLOR,
+       fontSize: 24,
+       textAlign: "center",
+       textAlignVertical: "center"
     },
     textoMail:{
         color: TERCIARY_COLOR

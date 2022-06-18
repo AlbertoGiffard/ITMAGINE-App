@@ -1,6 +1,10 @@
 import { IProducto } from "./IProducto";
 
 export declare interface IItemPedido {
-    cantidad : number,
-    producto : IProducto
+    nombre: string
+    estado: string,
+    idItem: string,
+    idPedido: number,
+    cantidad: number,
+    tipo: string
 }

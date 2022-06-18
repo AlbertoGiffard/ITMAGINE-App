@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react'
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
 import { DBService } from '../../services/DBService';
 import { pedirPermisoDeNotifacion } from '../../services/pushNotification';
+import { COLECCION_PEDIDOS } from '../../services/colecciones';
+import { productName } from 'expo-device';
+import { IItemPedido } from '../../definiciones/IItemPedido';
 
 
 export const windowHeight = Dimensions.get('window').height;
@@ -12,37 +15,45 @@ let contador = 0;
 
 const CardPedidoPendiente = (pend : any) => {
 
-    const dataBase:any = new DBService("clientes");
-    const [viewState, setViewState] = useState(true)
+    const dataBase = new DBService(COLECCION_PEDIDOS);
+    const dbItemsPedidos = new DBService<IItemPedido>("ItemsPedidos");
 
 
     const AceptarPedido = () => {
-        //dataBase.UpdteOne({estado:"aprobado"}, pend.email);
-        setViewState(false);
+        dataBase.updateOne({estado: "por preparar"}, pend.id.toString());
+
+        pend.productos.forEach((obj:any) => {
+            const auxItemPedido:IItemPedido = {
+                nombre: obj.producto.nombre,
+                estado: "por preparar",
+                idItem: pend.id + obj.producto.nombre,
+                idPedido: pend.id,
+                cantidad: obj.cantidad,
+                tipo: obj.producto.tipo
+            }
+            dbItemsPedidos.insertOne(auxItemPedido,pend.id + obj.producto.nombre)
+        })
     }
 
-    const EntregrarPedido = () => {
-        //dataBase.UpdteOne({estado:"aprobado"}, pend.email);
-        setViewState(false);
+    const EntregarPedido = () => {
+        dataBase.updateOne({estado: "entregado"}, pend.id.toString())
     }
 
     return (
-        <View>
-        { viewState && 
         <View style={styles.container}>
             <View style={styles.vwTop}>
                 <View style={styles.vwpend}>
                     <Image source={require('../../assets/bar.png')} style={styles.pend}></Image>
                 </View>
                 <View style={styles.vwUsr}>
-                    <Text style={styles.textoNombre}>{pend.cliente}</Text>
-                    <Text style={styles.textoMail}>Mesa: {pend.numeroMesa}</Text>
+                    <Text style={styles.textoNombre}> {pend.cliente.nombre} </Text>
+                    <Text style={styles.textoMesa}>Mesa: {pend.numeroMesa}</Text>
                 </View>
                 {pend.estado == "pendiente" ?
                 <TouchableOpacity style={styles.vwpendTilde} onPress={AceptarPedido}>
                     <Text style={styles.txtAceptar}>ACEPTAR</Text>
                 </TouchableOpacity> :
-                <TouchableOpacity style={styles.vwpendTilde} onPress={AceptarPedido}>
+                <TouchableOpacity style={styles.vwpendTilde} onPress={EntregarPedido}>
                     <Text style={styles.txtAceptar}>ENTREGAR</Text>
                 </TouchableOpacity>
                 }
@@ -52,13 +63,10 @@ const CardPedidoPendiente = (pend : any) => {
                     contador++;
                     return( 
                     <View key={index}>
-                        <Text style={styles.textoProducto}>{contador}</Text>
+                        <Text style={styles.textoProducto}>{obj.cantidad} {obj.producto.nombre}</Text>
                     </View>
                     )
-                })
-            }
-            <Text style={{height: windowHeight * 0.02}}></Text>
-        </View> }
+                })}
         </View>
     )
 }
@@ -121,10 +129,14 @@ const styles = StyleSheet.create({
         maxWidth: windowWidth * 0.12,
     },
     textoNombre:{
-       color: SECONDARY_COLOR
+       color: SECONDARY_COLOR,
+       textAlign: "center",
+        fontSize: 20
     },
-    textoMail:{
-        color: TERCIARY_COLOR
+    textoMesa:{
+        color: TERCIARY_COLOR,
+        textAlign: "center",
+        fontSize: 20
     },
     txtAceptar: {
         height: windowHeight * 0.05,
@@ -138,6 +150,8 @@ const styles = StyleSheet.create({
         color: "white"
     },
     textoProducto:{
-        color: PRIMARY_COLOR
+        color: PRIMARY_COLOR,
+        textAlign: "center",
+        fontSize: 15
      },
 })

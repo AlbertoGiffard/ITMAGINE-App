@@ -1,7 +1,8 @@
 
    
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import { IItemPedido } from '../../../definiciones/IItemPedido';
 import { IPedido } from '../../../definiciones/IPedido';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
 import { DBService } from '../../../services/DBService';
@@ -14,9 +15,21 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const ListadoProductos = ( {estado, tipo}:{estado:string, tipo:string} ) => {
 
-    let dbPedidos = new DBService<IPedido>("pedidos");
+    let dbItemPedidos = new DBService<IItemPedido>("ItemsPedidos");
+    const [productos, setProductos] = useState([])
 
-    //pedidos = dbPedidos.getAll.then(obj => pedidos );
+    useEffect(() => {
+        dbItemPedidos.GetItems(estado, tipo, 
+            (data:any) => {
+                
+                if(data != undefined){
+                    const auxproductos = data.docs.map((doc:any) => doc.data());
+                    setProductos(auxproductos);
+                }
+            },
+            (error:any) => console.log(error)
+            );
+    }, []);
 
   return (
     <View style={styles.container}>
@@ -36,10 +49,7 @@ const ListadoProductos = ( {estado, tipo}:{estado:string, tipo:string} ) => {
 
 export default ListadoProductos
 
-const productos:any = [{ producto: "Milanesa con Pure", estado: "por preparar", idItem: "14", idPedido: "16" },
-{ producto: "Milanesa con Pure", estado: "preparando", idItem: "14", idPedido: "16" },
-{ producto: "Milanesa con Pure", estado: "por preparar", idItem: "14", idPedido: "16" },
-{ producto: "Milanesa con Pure", estado: "por preparar", idItem: "14", idPedido: "16" }]//pendiente, por preparar, en preparacion, preparado, entregado, confirmado, pagado}
+//pendiente, por preparar, en preparacion, preparado, entregado, confirmado, pagado}
 
 
 const styles = StyleSheet.create({

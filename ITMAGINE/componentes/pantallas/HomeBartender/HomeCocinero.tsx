@@ -11,7 +11,7 @@ export const windowHeight = Dimensions.get('window').height;
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const HomeBartender = () => {
+const HomeCocinero = () => {
   
     //let db:any = new DBService("HomeBartender");
     //let clientesAux = db.getAll();
@@ -44,9 +44,9 @@ const HomeBartender = () => {
 };
 
 //Aca se llama segun tipo
-const componentes:any = [<ListadoProductos estado='por preparar' tipo="bar"></ListadoProductos>, <ListadoProductos estado='en preparacion' tipo="bar"></ListadoProductos>];
+const componentes:any = [<ListadoProductos estado='por preparar' tipo="cocina"></ListadoProductos>, <ListadoProductos estado='en preparacion' tipo="cocina"></ListadoProductos>];
 
-export default HomeBartender
+export default HomeCocinero
 
 const styles = StyleSheet.create({
     container: {

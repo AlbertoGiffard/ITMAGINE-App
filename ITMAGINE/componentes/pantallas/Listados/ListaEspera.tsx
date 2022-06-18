@@ -1,7 +1,9 @@
 
    
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
+import { DBService } from '../../../services/DBService';
 //import { DBService } from '../../../services/DBService';
 import CardEspera from '../../Cards/cardEspera';
 
@@ -12,6 +14,21 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const ListaEspera = () => {
   
+    const [clientes, setClientes] = useState([])
+    const dbService = new DBService<IEspera>(COLECCION_COLA_ESPERA);
+
+    useEffect(() => {
+        dbService.GetClientesEnEspera(
+            (data:any) => {
+                
+                if(data != undefined){
+                    const auxClientes = data.docs.map((doc:any) => doc.data());
+                    setClientes(auxClientes);
+                }
+            },
+            (error:any) => console.log(error)
+            );
+    }, []);
     //let db:any = new DBService("listaEspera");
     //let clientesAux = db.getAll();
 
@@ -20,7 +37,7 @@ const ListaEspera = () => {
         <View style={styles.vwMarco}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <FlatList
-                    data={Clientes}
+                    data={clientes}
                     ItemSeparatorComponent={() => <Text style={{height: windowHeight * 0.01}}>  </Text>}
                     renderItem={({ item: cliente }) => <CardEspera {...cliente}></CardEspera>}
                 />
@@ -30,20 +47,6 @@ const ListaEspera = () => {
   );
 };
 
-const Clientes:any = [{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-{email:"agus@gmail.com", fecha: "12-12-12", enEspera: true },
-];
 
 export default ListaEspera
 

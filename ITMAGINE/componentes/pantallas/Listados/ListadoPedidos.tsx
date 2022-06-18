@@ -1,9 +1,10 @@
 
    
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
 import { IPedido } from '../../../definiciones/IPedido';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
+import { COLECCION_PEDIDOS } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
 import CardPedido from '../../Cards/cardPedido';
 
@@ -14,9 +15,22 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const ListadoPedidos = ( {estado}:{estado:string} ) => {
 
-    let dbPedidos = new DBService<IPedido>("pedidos");
+    let dbPedidos = new DBService<IPedido>(COLECCION_PEDIDOS);
 
+    const [pedidos, setPedidos] = useState([])
 
+    useEffect(() => {
+        dbPedidos.GetPedidosPorEstado(estado, 
+            (data:any) => {
+                
+                if(data != undefined){
+                    const auxpedidos = data.docs.map((doc:any) => doc.data());
+                    setPedidos(auxpedidos);
+                }
+            },
+            (error:any) => console.log(error)
+            );
+    }, []);
     //pedidos = dbPedidos.getAll.then(obj => pedidos );
 
   return (
@@ -37,49 +51,6 @@ const ListadoPedidos = ( {estado}:{estado:string} ) => {
 
 
 export default ListadoPedidos
-
-const pedidos = [{key: 1,
-id: 1,
-cliente: "agustinclas@gmail.com",
-numeroMesa: 25,
-total: 2500,
-productos:[1,2,3],
-estado: "pendiente"},
-{key: 2,
-    id: 2,
-    cliente: "a123nclas@gmail.com",
-    numeroMesa: 27,
-    total: 2500,
-    productos:[1,2,3],
-    estado: "pendiente"},
-    {key: 3,
-        id: 11,
-        cliente: "ag131clas@gmail.com",
-        numeroMesa: 28,
-        total: 2500,
-        productos:[1,2,3],
-        estado: "pendiente"},
-        {key: 4,
-            id: 123,
-            cliente: "agustinclas@gmail.com",
-            numeroMesa: 21,
-            total: 2500,
-            productos:[1,2,3],
-            estado: "pendiente"},
-            {key: 5,
-                id: 123,
-                cliente: "agustinclas@gmail.com",
-                numeroMesa: 22,
-                total: 2500,
-                productos:[1,2,3],
-                estado: "pendiente"},
-                {key: 5,
-                    id: 123,
-                    cliente: "agustinclas@gmail.com",
-                    numeroMesa: 22,
-                    total: 2500,
-                    productos:[1,2,3],
-                    estado: "pendiente"}]//pendiente, por preparar, en preparacion, preparado, entregado, confirmado, pagado}
 
 
 const styles = StyleSheet.create({

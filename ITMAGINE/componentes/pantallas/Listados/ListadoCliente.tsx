@@ -1,8 +1,11 @@
 
    
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import { DBService } from '../../../services/DBService';
 import CardCliente from '../../Cards/cardCliente';
+import { ICliente } from '../../../definiciones/ICliente';
+import { COLECCION_CLIENTES } from '../../../services/colecciones';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -11,13 +14,31 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const ListadoCliente = () => {
   
+    const [clientes, setClientes] = useState([])
+    const dbService = new DBService<ICliente>(COLECCION_CLIENTES);
+
+    useEffect(() => {
+        dbService.GetClientesPorValidacion(
+            "en proceso",
+            (data:any) => {
+                
+                if(data != undefined){
+                    const auxClientes = data.docs.map((doc:any) => doc.data());
+                    setClientes(auxClientes);
+                }
+              },
+              (error:any) => console.log(error)
+        
+            );
+    }, []);
+
 
   return (
     <View style={styles.container}>
         <View style={styles.vwMarco}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <FlatList
-                    data={Clientes}
+                    data={clientes}
                     ItemSeparatorComponent={() => <Text style={{height: windowHeight * 0.01}}>  </Text>}
                     renderItem={({ item: cliente }) => <CardCliente {...cliente}></CardCliente>}
                 />
@@ -29,38 +50,6 @@ const ListadoCliente = () => {
 
 
 export default ListadoCliente
-
-const Clientes = [
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-    {email: "agustinclas@gmail.com", nombre:"Agustin", apellido:"Clas", dni: 15589745, fotoURL: "https://firebasestorage.googleapis.com/v0/b/clinica-labiv.appspot.com/o/usuarios%2Fagustinclasst123%40gmail.comimg1?alt=media&token=742de768-70b3-464b-973b-912d09ea47ae"},
-]
 
 const styles = StyleSheet.create({
     container: {

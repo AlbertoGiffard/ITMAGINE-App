@@ -70,7 +70,6 @@ const ListadoPedido = (props) => {
         }
 
         setPedido(pedidoPrueba);
-        return () => console.log('HEYY' + 'PUIT')
     }, []);
 
     const regresar = () => {

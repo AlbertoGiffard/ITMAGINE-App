@@ -1,51 +1,29 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { View } from "react-native-animatable";
-import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
-import { Loading } from "../../Loading/Loading";
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, SafeAreaView, Image } from "react-native"
+import { AirbnbRating } from "react-native-ratings";
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
 
-export declare interface ICargaProps {
-    duracion_ms? : number,
-    siguientePantalla : string
-}
-
-const ALTO_ICONO = windowWidth;
-const ANCHO_ICONO = windowWidth;
-
-const EXTRA_TRESHOLD = 50;
-const TIEMPO_CARGA_POR_DEFECTO = 2500;
-
-export const Carga = ( {route} : any ) => {
-
-    //const navigation = useNavigation();
-    const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const isFocused = useIsFocused();
-
-    useEffect( () => {
-        if (!isFocused) return
-
-        const { siguientePantalla, duracion_ms } = route.params as ICargaProps;
-        
-        const timeout= setTimeout( () => {
-          console.log(`Navegando a ${siguientePantalla}`)
-          navigation.replace( siguientePantalla )
-          navigation.navigate( siguientePantalla );
-        }, duracion_ms ?? TIEMPO_CARGA_POR_DEFECTO + EXTRA_TRESHOLD);
-
-        return () => {
-          clearTimeout(timeout)
-        }
-    }, [isFocused] );
+export const Encuesta = () => {
 
     return (
-        <View style={ styles.container }>
-            <Loading
-                altoIcon={ALTO_ICONO}
-                anchoIcon={ANCHO_ICONO} />
-        </View>
-    );
+        <KeyboardAvoidingView style={styles.container}>
+            <View style={styles.formMarco}>
+              <SafeAreaView style={styles.form}>
+                <View style={styles.vwImg}>
+                    <Image source = {require("../../../assets/bar.png")} style={styles.Img}></Image>
+                </View>
+                <View style={styles.button}>
+                    <Text style={styles.textUsers}>¿Qué tal estuvo la atención?</Text>
+                    <AirbnbRating
+                        count={7}
+                        reviews={["Terrible", "Malo", "Regular", "Medianamente Bueno", "Bueno", "Muy Bueno", "Excelente"]}
+                        defaultRating={7}
+                        size={30}
+                    />
+                </View>
+              </SafeAreaView>
+            </View>
+        </KeyboardAvoidingView>
+    )
 
 }
 
@@ -54,7 +32,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: 'center',
-      backgroundColor: BG_COLOR
+      backgroundColor:"black"
     },
     formMarco: {
       marginHorizontal: 30,
@@ -83,8 +61,6 @@ const styles = StyleSheet.create({
       height: windowHeight * 0.2,
       borderRadius: 40,
       width: windowWidth * 0.8,
-      //backgroundColor: 'blue'
-  
     },
     Img:{
       maxHeight: "100%",
@@ -93,9 +69,7 @@ const styles = StyleSheet.create({
     vwLogin:{
       height: windowHeight * 0.3,
       width: windowWidth * 0.8,
-      marginTop: windowHeight * 0.05,
-      //backgroundColor: 'green'
-  
+      marginTop: windowHeight * 0.05
     },
     input: {
       borderBottomColor:
@@ -120,22 +94,18 @@ const styles = StyleSheet.create({
     button: {
       borderColor: PRIMARY_COLOR,
       borderWidth: 3,
-      height: 58,
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 40,
       width: windowWidth * 0.8,
-  
     },
     buttonUsers:{
       width: windowWidth * 0.8,
       height: windowHeight * 0.20,
-      top: 50,
-      justifyContent: "center",
+      justifyContent: "space-evenly",
       alignItems: 'center',
       marginBottom: windowHeight * 0.05,
-      //backgroundColor: 'red'
     },
     buttonUser:{
       justifyContent: "center",
@@ -149,10 +119,9 @@ const styles = StyleSheet.create({
     textUsers:{
         fontSize: windowHeight * 0.02,
         fontWeight: 'bold',
-        color: TERCIARY_COLOR,
+        color: PRIMARY_COLOR,
     },
     errorMessage:{
-      color:"red",
-      fontSize: 20,
+      color:"red"
   },
-});
+  });

@@ -32,6 +32,9 @@ export class DBService<T> {
         return (await firestore.collection( this.coleccion ).get()).docs.map( doc => doc.data() ).map( obj => obj as T );
     }
 
+    public async getAllPreparados (idPedido : any) : Promise<T[]> {
+        return (await firestore.collection( this.coleccion ).where("idPedido", "==",  idPedido).get()).docs.map( doc => doc.data() ).map( obj => obj as T );
+    }
     /**
      * Inserta un objeto en un documento con el Identificador especificado.
      * @param {T} obj objeto a insertar.
@@ -66,4 +69,19 @@ export class DBService<T> {
         return firestore.collection( this.coleccion ).doc( id ).update( obj as any );
     }
 
+    async GetClientesPorValidacion( validacion:string, onResult:any, onError:any){
+        return await firestore.collection(this.coleccion).where("validacion", "==", validacion).onSnapshot(onResult, onError);
+    }
+
+    async GetClientesEnEspera( onResult:any, onError:any){
+        return await firestore.collection(this.coleccion).where("cliente.estado", "==", "en espera").onSnapshot(onResult, onError);
+    }
+
+    async GetPedidosPorEstado( estado:string, onResult:any, onError:any){
+        return await firestore.collection(this.coleccion).where("estado", "==", estado).onSnapshot(onResult, onError);
+    }
+
+    async GetItems( estado:string,tipo:string, onResult:any, onError:any){
+        return await firestore.collection(this.coleccion).where("estado", "==", estado).where("tipo", "==", tipo).onSnapshot(onResult, onError);
+    }
 }

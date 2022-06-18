@@ -3,7 +3,9 @@ import { LogBox } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import AppNavegacion from './componentes/navegacion/AppNavegacion';
 import HomeBartender from './componentes/pantallas/HomeBartender/HomeBartender';
+import HomeCocinero from './componentes/pantallas/HomeBartender/HomeCocinero';
 import ListadoCliente from './componentes/pantallas/Listados/ListadoCliente';
+import ListadoPedidos from './componentes/pantallas/Listados/ListadoPedidos';
 import ListaEspera from './componentes/pantallas/Listados/ListaEspera';
 import MenuMozo from './componentes/pantallas/MenuMozo/MenuMozo';
 import PedidosMozo from './componentes/pantallas/PedidosMozo/PedidosMozo';
@@ -19,12 +21,13 @@ export default function App() {
     settearHandlerDeNotificacion(true);
   }, [] )
 
-  /* <AppContext.Provider value={null}>
-    <PaperProvider>
-      <AppNavegacion/>
-    </PaperProvider>
-  /AppContext.Provider> */
   return (
-    <HomeBartender></HomeBartender>
+    <HomeCocinero></HomeCocinero>
     );
-}
+    //</AppContext.Provider><HomeBartender></HomeBartender>
+    {/* <AppContext.Provider value={null}>
+     <PaperProvider>
+       <AppNavegacion/>
+     </PaperProvider>
+   </AppContext.Provider> */}
+  }

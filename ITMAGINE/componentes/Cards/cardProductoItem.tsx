@@ -2,6 +2,9 @@ import {Dimensions, StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpaci
 import React, {useEffect, useState} from 'react'
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
 import { DBService } from '../../services/DBService';
+import { IItemPedido } from '../../definiciones/IItemPedido';
+import { IPedido } from '../../definiciones/IPedido';
+import { COLECCION_PEDIDOS } from '../../services/colecciones';
 
 
 export const windowHeight = Dimensions.get('window').height;
@@ -9,20 +12,35 @@ export const windowWidth = Dimensions.get('window').width;
 
 const CardProductoItem = (prod : any) => {
 
-    //const dataBase:any = new DBService("clientes");
+    const dataBase = new DBService<IItemPedido>("ItemsPedidos");
+    const dbPedidos = new DBService<IPedido>(COLECCION_PEDIDOS);
 
     const Preparar = () => {
-        //dataBase.UpdteOne({estado:"aprobado"}, prod.email);
+        dataBase.updateOne({estado: "en preparacion"}, prod.idItem)
     }
 
     const Terminar = () => {
+        dataBase.updateOne({estado: "preparado"}, prod.idItem).then(() => { 
+
+            dataBase.getAllPreparados(prod.idPedido).then(obj => {
+                
+                let flag = true;
+                obj.forEach(element =>{
+                    if(element.estado != "preparado") flag = false
+                })
+    
+                if(flag) { dbPedidos.updateOne({estado: "preparado"}, prod.idPedido.toString()).then(data => console.log(data)); console.log("abbbbbbba"); console.log(prod.idPedido);}
+                else console.log("aaaaa");
+    
+            })}
+        );
 
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.vwUsr}>
-                <Text style={styles.textoNombre}>{prod.producto}</Text>
+                <Text style={styles.textoNombre}>{prod.cantidad} {prod.nombre}</Text>
             </View>
             {prod.estado == "por preparar" ?
                 <TouchableOpacity style={styles.vwprodTilde} onPress={Preparar}>
@@ -59,8 +77,9 @@ const styles = StyleSheet.create({
         //backgroundColor: "black",
     },
     textoNombre:{
-       color: PRIMARY_COLOR,
-       fontSize: 20
+       color: TERCIARY_COLOR,
+       fontSize: 25,
+       textAlign: "center"
     },
     txtAceptar: {
         height: windowHeight * 0.05,

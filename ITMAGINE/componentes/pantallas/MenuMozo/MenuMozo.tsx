@@ -4,9 +4,9 @@ import React, { useState} from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator } from "react-native";
 import {auth} from '../../../firebase'
 import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
-//import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
-//import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -20,45 +20,18 @@ const MenuMozo = () => {
     const [loading, setLoading] = useState(false);
     const [errorMsgInicio, setErrorMsgInicio] = useState(false);
     let errorMessage;
-    //const navigation = useNavigation<NativeStackNavigationProp<any>>();
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     
-    //const navigation = useNavigation()
 
-    const handleLogin = () => {
-        setLoading(true);
-        signInWithEmailAndPassword(auth, email, password)
-        .then(userCrendetials => {
-            const user = userCrendetials.user;
-            setLoading(false);
-            setErrorMsgInicio(true);
-        })
-        .catch(error => {
-            setErrorMsgInicio(true);
-            setLoading(false);
-        })
-            
+    const NavegarPedidos = () => {
+      navigation.navigate( 'Carga', { siguientePantalla: 'PedidosMozo' } )
     }
 
-    const NavegarRegistro = () => {
-      //navigation.navigate( 'Carga', { siguientePantalla: 'Registro' } )
+    const NavegarChat = () => {
+      //navigate
     }
-
-    const NavegarAnonimo = () => {
-      //la ruta real es: IngresoAnonimo
-      //ruta prueba: ListadoPedido
-      //navigation.navigate('IngresoAnonimo');
-    }
-
-    const userAnonimo = () => {
-      //Comente esto Agus para que me lleve 
-      //a la pagina creada
-      /* setEmail("anonimo@anonimo.com");
-      setPassword("444444"); */
-      //la ruta real es: IngresoAnonimo
-      //navigation.navigate('ListadoPedido');
-  }
-
+    
   return (
     <KeyboardAvoidingView
       style = {styles.container}
@@ -69,14 +42,14 @@ const MenuMozo = () => {
               <Image source = {require("../../../assets/bar.png")} style={styles.Img}></Image>
             </View>
             <View style={styles.vwLogin}>
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                <TouchableOpacity style={styles.button} onPress={NavegarPedidos}>
                     <Text style={styles.buttonText}>PEDIDOS</Text>
                 </TouchableOpacity>
                 
             </View>
             <View  style = {styles.vwLogin}>
                 <TouchableOpacity
-                    onPress = {NavegarAnonimo}
+                    onPress = {NavegarChat}
                     style = {styles.button}
                 >
                     <Text style={styles.buttonText}>CHAT</Text>
@@ -145,7 +118,7 @@ const styles = StyleSheet.create({
       height: windowHeight * 0.22,
 
     },
-    buttonText:{fontWeight: 'bold', color: '#3dd7fb', fontSize: 33}
+    buttonText:{fontWeight: 'bold', color: '#3dd7fb', fontSize: 28}
     
 });
 

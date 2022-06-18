@@ -2,6 +2,8 @@ import {Dimensions, StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpaci
 import React, {useEffect, useState} from 'react'
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
 import { DBService } from '../../services/DBService';
+import { COLECCION_CLIENTES } from '../../services/colecciones';
+import { ICliente } from '../../definiciones/ICliente';
 
 
 export const windowHeight = Dimensions.get('window').height;
@@ -9,20 +11,22 @@ export const windowWidth = Dimensions.get('window').width;
 
 const CardCliente = (img : any) => {
 
-    const dataBase:any = new DBService("clientes");
+    const dbService = new DBService<ICliente>(COLECCION_CLIENTES);
 
     const AceptarCliente = () => {
-        dataBase.UpdteOne({estado:"aprobado"}, img.email);
+        dbService.updateOne({validacion:"aprobado"}, img.email);
     }
 
     const RechazarCliente = () => {
-        dataBase.UpdteOne({estado:"rechazado"}, img.email);
+        dbService.updateOne({validacion:"rechazado"}, img.email);
     }
+
+    console.log(img);
 
     return (
         <View style={styles.container}>
             <View style={styles.vwImg}>
-                <Image source={require('../../assets/bar.png')} style={styles.img}></Image>
+                <Image source= {{ uri: img.fotoURL}} style={styles.img}></Image>
             </View>
             <View style={styles.vwUsr}>
                 <Text style={styles.textoNombre}>{img.nombre} {img.apellido}</Text>
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: 'center',
-      height: windowHeight * 0.1,
+      height: windowHeight * 0.13,
       width: windowWidth * 0.9,
       flexDirection: "row",
       borderRadius: 30,
@@ -54,19 +58,20 @@ const styles = StyleSheet.create({
       borderColor: SECONDARY_COLOR
     },
     vwImg:{
-        width: windowWidth * 0.17,
+        width: windowWidth * 0.14,
         borderRadius: 30,
-        borderWidth: 3,
-        borderColor: PRIMARY_COLOR,
-        marginRight: windowWidth * 0.03,
-        maxHeight: windowWidth * 0.17,
+        marginRight: windowWidth * 0.02,
     },
     img:{
-        resizeMode: "contain",
+        borderWidth: 3,
+        maxHeight: windowWidth * 0.17,
+        borderColor: PRIMARY_COLOR,
         justifyContent: "center",
         alignItems: 'center',
-        maxHeight: windowWidth * 0.17,
-        maxWidth: windowWidth * 0.17
+        height: windowWidth * 0.14,
+        width: "100%",
+        resizeMode: "center",
+        
     },
     vwUsr:{
         width: windowWidth * 0.4,

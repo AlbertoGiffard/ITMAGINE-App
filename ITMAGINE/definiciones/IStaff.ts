@@ -7,6 +7,5 @@ export declare interface IStaff {
     DNI : string,
     CUIL : string,
     fotoURL : string,
-    tipo : TipoEmpleado,
-    pushToken : string
+    tipo : TipoEmpleado
 }
