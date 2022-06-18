@@ -1,5 +1,5 @@
 
 declare interface IEspera {
-    clienteEmail : string,
+    cliente : string,
     horarioLlegada : string
 }

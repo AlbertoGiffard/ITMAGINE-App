@@ -151,3 +151,7 @@ Se avanzó bastante de forma global en la app, desde el circuito de pantallas qu
 * Lectura de código QR
 <img src="./imagesReadme/pantallas.png" width="400">
 <img src="./imagesReadme/logica.png" width="600">
+
+## Semana 4
+Se hace la subida del video mostrando los distintos componentes del sistema integrado en el desarrollo realizado entre todas las partes desarrolladas por el equipo.
+<br>

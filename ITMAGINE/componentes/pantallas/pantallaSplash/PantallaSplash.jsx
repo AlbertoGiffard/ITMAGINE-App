@@ -7,7 +7,7 @@ export default class PantallaSplash extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.props.navigation.navigate('Login'); //real
-            //this.props.navigation.navigate('l'); //test
+            //this.props.navigation.navigate('CheckoutPedido'); //test
         }, 3000, this) 
     }
 

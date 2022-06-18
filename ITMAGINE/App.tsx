@@ -22,12 +22,10 @@ export default function App() {
   }, [] )
 
   return (
-    <HomeCocinero></HomeCocinero>
-    );
-    //</AppContext.Provider><HomeBartender></HomeBartender>
-    {/* <AppContext.Provider value={null}>
-     <PaperProvider>
-       <AppNavegacion/>
-     </PaperProvider>
-   </AppContext.Provider> */}
-  }
+      <AppContext.Provider value={{mesa: undefined, pedido: undefined, usuario: null}}>
+        <PaperProvider>
+          <AppNavegacion/>
+        </PaperProvider>
+      </AppContext.Provider>
+  );
+}
