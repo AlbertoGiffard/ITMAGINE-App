@@ -12,6 +12,11 @@ import CheckoutPedido from '../pantallas/CheckoutPedido/CheckoutPedido';
 import PantallaRegistro from '../pantallas/Registro/Registro';
 import { Encuesta } from '../pantallas/Encuesta/Encuesta';
 import MenuProducto from '../pantallas/MenuProductos/MenuProductos';
+import MenuMozo from '../pantallas/MenuMozo/MenuMozo';
+import ListaEspera from '../pantallas/Listados/ListaEspera';
+import HomeCocinero from '../pantallas/HomeBartender/HomeCocinero';
+import HomeBartender from '../pantallas/HomeBartender/HomeBartender';
+import ListadoCliente from '../pantallas/Listados/ListadoCliente';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +71,26 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name="MenuProducto"
                     component={MenuProducto}
+                />
+                <Stack.Screen
+                    name="MenuMozo"
+                    component={MenuMozo}
+                />
+                <Stack.Screen
+                    name="listaEspera"
+                    component={ListaEspera}
+                />
+                <Stack.Screen
+                    name="homeCocinero"
+                    component={HomeCocinero}
+                />
+                <Stack.Screen
+                    name="homeBartender"
+                    component={HomeBartender}
+                />
+                <Stack.Screen
+                    name="homeDuenio"
+                    component={ListadoCliente}
                 />
             </Stack.Navigator>
         </NavigationContainer>

@@ -53,8 +53,10 @@ const LoginScreen = () => {
   const EncontrarUsuario = (servicio: DBService<any>) => {
     //version nueva
     return servicio.getById(email).then((valor: any) => {
-      console.log('valor ', valor);
+      setErrorMsgInicio(false);
+      console.log(email, password);
       
+      console.log('valor ', valor);
       if (valor.password == password) {
         setLoading(false);
         setErrorMsgInicio(true);
@@ -63,7 +65,7 @@ const LoginScreen = () => {
           context.usuario = valor;
           switch (valor.tipo) {
             case 'metre':
-              navigation.navigate('Carga', { siguientePantalla: 'homeMetre' });
+              navigation.navigate('Carga', { siguientePantalla: 'listaEspera' });
               break;
 
             case 'cocinero':
@@ -76,6 +78,10 @@ const LoginScreen = () => {
 
             case 'dueño':
               navigation.navigate('Carga', { siguientePantalla: 'homeDuenio' });
+              break;
+
+            case 'mozo':
+              navigation.navigate( 'Carga', { siguientePantalla: 'MenuMozo' } );
               break;
 
             default:
@@ -181,7 +187,7 @@ const LoginScreen = () => {
           {icon: 'email', label: "Mozo", onPress: () => {setEmail('mozoUno@mozo.com'); setPassword('123')}},
           {icon: 'email', label: "Bartender", onPress: () => {setEmail('bartenderUno@bartender.com'); setPassword('123')}},
           {icon: 'email', label: "Cocinero", onPress: () => {setEmail('cocineroUno@cocinero.com'); setPassword('123')}},
-          {icon: 'email', label: "Metre", onPress: () => {setEmail('metreUno@metre.com'); setPassword('123')}},
+          {icon: 'email', label: "Metre", onPress: () => {setEmail('metreUno@empleado.com'); setPassword('123')}},
         ]}
       />
     </KeyboardAvoidingView>

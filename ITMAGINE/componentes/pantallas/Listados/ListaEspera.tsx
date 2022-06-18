@@ -35,13 +35,11 @@ const ListaEspera = () => {
   return (
     <View style={styles.container}>
         <View style={styles.vwMarco}>
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <FlatList
-                    data={clientes}
-                    ItemSeparatorComponent={() => <Text style={{height: windowHeight * 0.01}}>  </Text>}
-                    renderItem={({ item: cliente }) => <CardEspera {...cliente}></CardEspera>}
-                />
-            </ScrollView>
+            <FlatList
+                data={clientes}
+                ItemSeparatorComponent={() => <Text style={{height: windowHeight * 0.01}}>  </Text>}
+                renderItem={({ item: cliente }) => <CardEspera {...cliente}></CardEspera>}
+            />
         </View>
     </View>
   );
