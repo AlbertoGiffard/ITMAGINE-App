@@ -171,7 +171,7 @@ const LoginScreen = () => {
       }
       <StatusBar barStyle="light-content" />
       <FAB.Group
-        style={ {position:'absolute', right: 0, bottom: 0} }
+        style={ {position:'absolute', right: 0, bottom: 0, zIndex: 100} }
         visible={true}
         onStateChange={() => setOpen(!open)}
         open={open}
