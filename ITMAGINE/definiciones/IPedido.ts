@@ -8,5 +8,6 @@ export declare interface IPedido {
     cliente : ICliente,
     numeroMesa : number,
     productos : IItemPedido[],
-    estado : EstadoPedido
+    estado : EstadoPedido,
+    total : number
 }

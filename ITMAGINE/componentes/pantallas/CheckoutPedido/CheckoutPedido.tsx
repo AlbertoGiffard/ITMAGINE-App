@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar } from "react-native";
-import { Button, Icon, Input } from 'react-native-elements'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
+import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { DataTable } from 'react-native-paper';
+import { IPedido } from '../../../definiciones/IPedido';
+import { DBService } from '../../../services/DBService';
+import { COLECCION_PEDIDOS } from '../../../services/colecciones';
 
-const ListadoPedido = () => {
-    const [pedido, setPedido] = useState({});
-    const [total, setTotal] = useState(0);
-    const navigation = useNavigation();
-    const [carga, setCarga] = useState(false);
+const CheckoutPedido = () => {
+    const navigation =  useNavigation<NativeStackNavigationProp<any>>();
+    const [pedido, setPedido] = useState<IPedido | any>({});
     var totalVar = 0;
-
+    const servicio = new DBService<IPedido>(COLECCION_PEDIDOS);
 
     useEffect(() => {
-        //setPedido(props.route.params.pedido); //esta es la linea real        
+        //este es el codigo en prod
+        /* if (context?.pedido) {
+            setPedido(context.pedido);
+        }   */ 
+
         const pedidoPrueba = {
             id: 21,
             cliente: {
@@ -66,7 +71,7 @@ const ListadoPedido = () => {
                 },
             ],
             estado: 'pendiente',
-            total: 0
+            total: 1500
         }
 
         setPedido(pedidoPrueba);
@@ -74,34 +79,39 @@ const ListadoPedido = () => {
 
     const regresar = () => {
         //regresa al home
-        //este navigate debe ir a Productos
-        //navigation.navigate('HomeCliente', { pedido: pedido });
+        navigation.navigate( 'Carga', { siguientePantalla: 'ClienteEnMesa' } )
     }
 
-    const confirmarPedido = () => {
-        //confirma el pedido realizado
-        var pedidoFinal = pedido;
-        pedidoFinal.total = total;
-        pedidoFinal.estado = 'por preparar';
+    const pagarPedido = async () => {
+        const pedidoFinal:IPedido = {
+            id: pedido.id,
+            cliente: pedido.cliente,
+            estado: 'pagado',
+            numeroMesa: pedido.numeroMesa,
+            productos: pedido.productos,
+            total: totalVar
+        }
         setPedido(pedidoFinal);
         //aca deberia actualizar en firebase
-        navigation.navigate('HomeCliente', { pedido: pedido });
+        servicio.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
+            return new Promise((resolve, reject) => {
+                Alert.alert(
+                    'Gracias',
+                    'Nos alegra que haya venido a ITMAGINE, vuelva pronto.',
+                    [
+                        {text: 'Claro que si', onPress: () => resolve(navigation.navigate( 'Carga', { siguientePantalla: 'Login' } )) },
+                    ],
+                    { cancelable: false }
+                )
+            })
+        });
     }
 
-    const eliminarPedido = (index) => {
-        if (pedido.productos != undefined) {
-            //setPedido(pedido.productos.filter((i) => { return i != index }));
-            const aux = pedido;
-            aux.productos.splice(index, 1);
-            setPedido({...aux});
-        }
-    }
-
-    const sumarTotal = (precio, cantidad) => {
+    const sumarTotal = (precio:any, cantidad:any) => {
         totalVar += (precio * cantidad);
         //setTotal(aux);
     }
-
+    
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} />
@@ -111,14 +121,13 @@ const ListadoPedido = () => {
                         <DataTable style={styles.dataTable}>
                             <DataTable.Header>
                                 <DataTable.Title textStyle={styles.TitleTable}>Nombre</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Cantidad</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Precio u.</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable}>Subtotal</DataTable.Title>
-                                <DataTable.Title textStyle={styles.TitleTable} numeric></DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Cantidad</DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Precio u.</DataTable.Title>
+                                <DataTable.Title textStyle={styles.TitleTable} numeric>Subtotal</DataTable.Title>
                             </DataTable.Header>
 
                             {pedido.productos != undefined && 
-                                pedido.productos.map((itemPedido, index) => {
+                                pedido.productos.map((itemPedido:any, index:any) => {
                                     { sumarTotal(itemPedido.producto.precio, itemPedido.cantidad) }
                                     return (
                                         <DataTable.Row key={index}>
@@ -126,11 +135,6 @@ const ListadoPedido = () => {
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>{itemPedido.cantidad}</DataTable.Cell>
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio}</DataTable.Cell>
                                             <DataTable.Cell textStyle={styles.cellTable} numeric>${itemPedido.producto.precio * itemPedido.cantidad}</DataTable.Cell>
-                                            <TouchableOpacity style={styles.containerEliminar} onPress={() => { eliminarPedido(index) }}>
-                                                <DataTable.Cell textStyle={styles.cellTableEliminar} numeric>
-                                                    eliminar
-                                                </DataTable.Cell>
-                                            </TouchableOpacity>
                                         </DataTable.Row>
                                     )
                                 })
@@ -151,7 +155,6 @@ const ListadoPedido = () => {
                             borderBottomWidth: 3,
                             alignSelf: 'stretch',
                             width: '95%',
-                            textAlign: 'center',
                             justifyContent: 'center',
                             marginLeft: 10
                         }}
@@ -170,11 +173,11 @@ const ListadoPedido = () => {
                     </View>
                     <View style={styles.containerBotones}>
                         <View style={styles.viewBotonConfirmar}>
-                            <TouchableOpacity style={styles.button} onPress={confirmarPedido}>
-                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18 }}>Confirmar Pedido</Text>
+                            <TouchableOpacity style={styles.button} onPress={pagarPedido}>
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18 }}>Pagar Total</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }}>
+                        <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={regresar}>
                             <Icon
                                 size={38}
                                 color={BG_COLOR}
@@ -190,7 +193,7 @@ const ListadoPedido = () => {
     );
 }
 
-export default ListadoPedido
+export default CheckoutPedido
 
 const styles = StyleSheet.create({
     containerTable: {
@@ -237,17 +240,6 @@ const styles = StyleSheet.create({
     Img: {
         maxHeight: "100%",
         maxWidth: "100%"
-    },
-    button: {
-        borderColor: PRIMARY_COLOR,
-        borderWidth: 3,
-        height: 58,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 40,
-        width: windowWidth * 0.8,
-
     },
     cellTable: {
         color: TERCIARY_COLOR,

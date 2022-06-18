@@ -11,6 +11,7 @@ import ClienteEnMesa from '@pantallas/HomeCliente/ClienteEnMesa/ClienteEnMesa';
 import CheckoutPedido from '@pantallas/CheckoutPedido/CheckoutPedido';
 import PantallaRegistro from '@pantallas/Registro/Registro';
 import { Encuesta } from '@pantallas/Encuesta/Encuesta';
+import MenuProducto from '@pantallas/MenuProductos/MenuProductos';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,10 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name="Encuesta"
                     component={Encuesta}
+                />
+                <Stack.Screen
+                    name="MenuProducto"
+                    component={MenuProducto}
                 />
             </Stack.Navigator>
         </NavigationContainer>

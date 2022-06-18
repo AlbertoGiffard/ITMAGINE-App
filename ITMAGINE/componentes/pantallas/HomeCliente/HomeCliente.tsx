@@ -2,14 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
 import { ICliente } from '../../../definiciones/ICliente';
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
 import { AppContext } from '../../../context/AppContext';
 import { DBService } from '../../../services/DBService';
-import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
+import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA, COLECCION_MESAS } from '../../../services/colecciones';
+import { IMesa } from '../../../definiciones/IMesa';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
@@ -20,32 +21,15 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const [escanear, setEscanear] = useState(false);
     const context = useContext(AppContext);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const servicio = new DBService<IEspera>(COLECCION_COLA_ESPERA);
+    const servicioEspera = new DBService<IEspera>(COLECCION_COLA_ESPERA);
+    const servicioMesa = new DBService<IMesa>(COLECCION_MESAS);
+    const servicioCliente = new DBService<ICliente>(COLECCION_CLIENTES);
 
     useEffect(() => {
         if (context?.usuario) {
+            context.usuario.estado = 'en mesa';
             setUsuario(context?.usuario);
         }
-
-        /* if (props.route.params.usuario) {
-            usuario.nombre = 'Lean';
-            usuario.email = 'leandrito@gmail.com';
-            //setUsuario(props.route.params.usuario);
-
-            //estas lineas no van, son de prueba
-            usuario.estado = 'inactivo';
-            setUsuario(usuario);
-            console.log(usuario);
-            
-            //            
-        }
-
-        if (props.route.params.pedido) {
-            setHayPedido(true);
-            setPedido(props.route.params.pedido);
-            usuario.estado = 'en mesa';
-            setUsuario(usuario);
-        } */
 
         setCambio(!cambio);
     }, []);
@@ -54,37 +38,103 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         paraRenderizar();
     }, [cambio]);
 
-    const handleIngreso = () => {
-        //setLoading(true);
+    const handleIngreso = (valor: any) => {
+        const numero = valor.numero;
+        const estado = valor.estado;
+        const tipo = valor.tipo;
+        const nombreCliente = valor.nombreCliente;
+
+        if (estado != 'libre' && nombreCliente == usuario.nombre) {
+            if (context != null) {
+                if (context.pedido == null) {
+                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                } else {
+                    navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+                }
+            }
+        }
+        else if (estado == 'libre') {
+            const mesa: IMesa = {
+                estadoAtencion: 'ocupado',
+                nombreCliente: usuario.nombre,
+                numero: numero,
+                tipo: tipo,
+                cantidadComensales: 1
+            }
+
+            usuario.estado = 'en mesa';
+            setUsuario(usuario);
+            //actualiza mesa y usuario en context
+            if (context != null) {
+                context.mesa = mesa;
+                context.usuario = usuario;
+            }
+            //si tiene email actualiza en fb
+            if (usuario.email) {
+                servicioCliente.updateOne(usuario, usuario.email)
+            }
+            //redirige a la pagina de productos
+            servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
+                navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+            });
+
+        } else {
+            Alert.alert(
+                'Error',
+                'La mesa se encuentra ocupada',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
+
     }
 
     const cambiarAListaDeEspera = () => {
-        /* usuario.estado = 'en espera';
+        usuario.estado = 'en espera';
         setUsuario(usuario);
         const fecha = new Date();
 
         const usuarioLista: IEspera = {
             cliente: usuario.nombre,
-            horarioLlegada: fecha.getHours + ':' + fecha.getMinutes()
-        } */
+            horarioLlegada: fecha.getHours() + ':' + fecha.getMinutes()
+        }
 
         //guardar usuario
-        //servicio.insertOne(usuarioLista, usuario.nombre);
-
-        renderizarQR();
-
-        setCambio(!cambio);
+        servicioEspera.insertOne(usuarioLista, usuario.nombre);
     }
 
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
-        console.log(data);
+        const tipo = JSON.parse(data.data).qr;
+        const valor = JSON.parse(data.data);
+
         setEscanear(!escanear);
+
+        switch (tipo) {
+            case 'listaEspera':
+                cambiarAListaDeEspera();
+                break;
+
+            default:
+                handleIngreso(valor);
+                break;
+        }
+
+
+
     }
 
     const renderizarQR = () => {
         //esta es la accion real
         setEscanear(!escanear);
+        setCambio(!cambio);
     }
 
     const paraRenderizar = () => {
@@ -168,7 +218,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                             </View>
                             :
                             <View>
-                                <TouchableOpacity style={styles.button} onPress={cambiarAListaDeEspera}>
+                                <TouchableOpacity style={styles.button} onPress={renderizarQR}>
                                     <Icon
                                         size={38}
                                         color={SECONDARY_COLOR}
