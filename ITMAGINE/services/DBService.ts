@@ -66,4 +66,16 @@ export class DBService<T> {
         return firestore.collection( this.coleccion ).doc( id ).update( obj as any );
     }
 
+    public async getUsuario (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
+    public async getListaEspera (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
+    public async getPedido (doc: string, onResult:any, onError:any) {
+        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
 }

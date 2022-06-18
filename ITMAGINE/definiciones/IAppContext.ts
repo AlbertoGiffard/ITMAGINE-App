@@ -6,5 +6,6 @@ import { IStaff } from "./IStaff";
 export declare interface IAppContext {
     usuario? : ICliente | IStaff | any,
     mesa? : IMesa,
-    pedido? : IPedido
+    pedido? : IPedido,
+    cambio? : boolean;
 }
