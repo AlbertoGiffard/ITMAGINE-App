@@ -15,7 +15,7 @@ export default function App() {
   }, [] )
 
   return (
-      <AppContext.Provider value={null}>
+      <AppContext.Provider value={{mesa: undefined, pedido: undefined, usuario: null}}>
         <PaperProvider>
           <AppNavegacion/>
         </PaperProvider>

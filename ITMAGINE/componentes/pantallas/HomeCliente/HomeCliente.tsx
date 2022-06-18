@@ -1,13 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
 import { ICliente } from '../../../definiciones/ICliente';
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
 import { AppContext } from '../../../context/AppContext';
+import { DBService } from '../../../services/DBService';
+import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({estado: ''});
@@ -16,15 +18,16 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const [pedido, setPedido] = useState({});
     const [hayPedido, setHayPedido] = useState(false);
     const [escanear, setEscanear] = useState(false);
-    //const context = useContext(AppContext);
+    const context = useContext(AppContext);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
+    const servicio = new DBService<IEspera>(COLECCION_COLA_ESPERA);
 
     useEffect(() => {
-        /* if (context?.usuario) {
+        if (context?.usuario) {
             setUsuario(context?.usuario);
-        } */        
+        }    
 
-        if (props.route.params.usuario) {
+        /* if (props.route.params.usuario) {
             usuario.nombre = 'Lean';
             usuario.email = 'leandrito@gmail.com';
             //setUsuario(props.route.params.usuario);
@@ -42,7 +45,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
             setPedido(props.route.params.pedido);
             usuario.estado = 'en mesa';
             setUsuario(usuario);
-        }
+        } */
 
         setCambio(!cambio);
     }, []);
@@ -60,7 +63,16 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         usuario.estado = 'en espera';
         setUsuario(usuario);
         const objCarga = {siguientePantalla: 'ListadoPedido', parametrosParaSiguientePantalla: {} as never};
-        navigation.navigate('Carga', objCarga);
+
+        const usuarioLista: IEspera = {
+            cliente: usuario.nombre,
+            horarioLlegada: new Date().toString()
+        }
+
+        //guardar usuario
+        //servicio.insertOne(usuarioLista, usuario.nombre);
+
+        //renderizarQR();
         //navigation.navigate('ListadoPedido', objCarga);
         //actualizar en FB
         /* const firestore = new DBService<ICliente>(COLECCION_CLIENTES);

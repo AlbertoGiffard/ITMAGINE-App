@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
+import { AppContext } from '../../../context/AppContext';
 
 const IngresoAnonimo = () => {
     const [nombre, setNombre] = useState('');
     const navigation = useNavigation();
+    const context = useContext(AppContext);
 
     const handleIngreso = () => {
         if (nombre == '') {
@@ -17,8 +19,10 @@ const IngresoAnonimo = () => {
                 nombre: nombre,
                 estado: 'inactivo'
             };
+            context.usuario = usuarioAnonimo;
+            navigation.navigate( 'Carga', { siguientePantalla: 'HomeCliente' } )
             //navigation.navigate('HomeCliente', { usuario: usuarioAnonimo });
-            navigation.navigate('Carga', { siguientePantalla: 'ListadoPedido' });
+            //navigation.navigate('Carga', { siguientePantalla: 'ListadoPedido' });
         }
     }
 

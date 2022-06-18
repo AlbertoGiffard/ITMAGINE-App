@@ -29,10 +29,10 @@ const AppNavegacion = () => {
                     name='Carga'
                     component={Carga}
                 />
-                {/* <Stack.Screen
+                <Stack.Screen
                     name='Registro'
                     component={PantallaRegistro}
-                /> */}
+                />
                 <Stack.Screen
                     name='Login'
                     component={LoginScreen}
