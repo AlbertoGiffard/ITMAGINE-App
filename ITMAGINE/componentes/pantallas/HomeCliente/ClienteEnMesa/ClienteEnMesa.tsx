@@ -1,23 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable, ScrollView } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../../estilos/globalStyle';
 import { windowWidth, windowHeight } from "../../../../estilos/globalStyle";
+import { DBService } from '../../../../services/DBService';
+import { IPedido } from '../../../../definiciones/IPedido';
+import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
+import { AppContext } from '../../../../context/AppContext';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const [estadoPedido, setEstadoPedido] = useState('En preparación');
+    const [pedido, setPedido] = useState<IPedido | any>({});
+    const [estadoPedido, setEstadoPedido] = useState('');
+    const [cambio, setCambio] = useState(false);
+    const [cambioEstado, setCambioEstado] = useState(false);
+    const [escanear, setEscanear] = useState(false);
+    const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
+    const context = useContext(AppContext);
 
     useEffect(() => {
-        if (props.route.params?.pedido != undefined) {
-            if (props.route.params?.pedido) {
-                setEstadoPedido(props.route.params?.pedido.estado);                
-            }
+        const pedidoPrueba = {
+            id: 21,
+            cliente: {
+                email: 'junior.prueba@gmail.com',
+                nombre: 'Junior',
+            },
+            numeroMesa: 8,
+            productos: [
+                {
+                    producto: {
+                        nombre: 'Hamburguesa',
+                        descripcion: 'Pan con carne',
+                        tiempoPromedio: 15,
+                        precio: 150,
+                        fotoUrlUno: null,
+                        fotoUrlDos: null,
+                        fotoUrlTres: null,
+                        tipo: 'cocina'
+                    },
+                    cantidad: 2
+                },
+                {
+                    producto: {
+                        nombre: 'Cerveza',
+                        descripcion: 'Corona',
+                        tiempoPromedio: 5,
+                        precio: 200,
+                        fotoUrlUno: null,
+                        fotoUrlDos: null,
+                        fotoUrlTres: null,
+                        tipo: 'bar'
+                    },
+                    cantidad: 3
+                },
+                {
+                    producto: {
+                        nombre: 'Entrada',
+                        descripcion: 'Papas fritas',
+                        tiempoPromedio: 15,
+                        precio: 150,
+                        fotoUrlUno: null,
+                        fotoUrlDos: null,
+                        fotoUrlTres: null,
+                        tipo: 'cocina'
+                    },
+                    cantidad: 4
+                },
+            ],
+            estado: 'pendiente',
+            total: 0
         }
+
+        if (context?.pedido) {
+            //context.usuario.estado = 'en mesa';
+            setPedido(context?.pedido);
+        } else {
+            setPedido(pedidoPrueba);
+        }
+
+        //setCambio(!cambio);
     }, [])
-    
+
+    useEffect(() => {
+        if (pedido.id != undefined) {
+            servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
+                var estado = data.data().estado;
+
+                setEstadoPedido(estado);
+
+            }, (error: Error) => console.log('error', error))
+        }
+    }, [pedido])
 
     const enDesarrollo = () => {
         Alert.alert(
@@ -41,7 +117,37 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     }
 
     const checkoutPedido = () => {
-        navigation.navigate('CheckoutPedido', {pedido: props.route.params?.pedido});
+        if (estadoPedido == 'confirmado') {
+            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });            
+        } else {
+            Alert.alert(
+                'Lo Sentimos!',
+                'Aún no puede realizar el pago de su pedido',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
+    }
+
+    const escanearQR = (data: any) => {
+        //aca debe ir la logica de escanear la mesa
+        const tipo = JSON.parse(data.data).qr;
+        const valor = JSON.parse(data.data);
+
+        setEscanear(!escanear);
+    }
+
+    const renderizarQR = () => {
+        //esta es la accion real
+        setEscanear(!escanear);
+        setCambio(!cambio);
     }
 
     return (
@@ -49,53 +155,91 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
             <StatusBar translucent={true} />
             <View style={styles.formMarco}>
                 <SafeAreaView style={styles.form}>
-                    <View style={styles.vwImg}>
-                        <Image source={require("../../../../assets/bar.png")} style={styles.Img}></Image>
-                    </View>
-                    <View style={styles.formTitle}>
-                        <Text style={styles.textTitle}>
-                            Estado de su pedido: <Text style={{fontWeight:'400'}}>{estadoPedido}</Text> 
-                        </Text>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.button} onPress={checkoutPedido}>
-                            <Icon
-                                size={30}
-                                color={SECONDARY_COLOR}
-                                type={'ionicon'}
-                                name={'wallet'}
-                            />
-                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
-                                Pedir Cuenta
+                    <ScrollView contentContainerStyle={styles.scroll}>
+                        <View style={styles.vwImg}>
+                            <Image source={require("../../../../assets/bar.png")} style={styles.Img}></Image>
+                        </View>
+                        <View style={styles.formTitle}>
+                            <Text style={styles.textTitle}>
+                                Estado de su pedido: <Text style={{ fontWeight: '400' }}>{estadoPedido}</Text>
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.button} onPress={enDesarrollo}>
-                            <Icon
-                                size={30}
-                                color={SECONDARY_COLOR}
-                                type={'font-awesome'}
-                                name={'gamepad'}
-                            />
-                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
-                                Juegos
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.button} onPress={pantallaEncuesta}>
-                            <Icon
-                                size={30}
-                                color={SECONDARY_COLOR}
-                                type={'ionicon'}
-                                name={'trophy'}
-                            />
-                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
-                                Realizar Encuesta
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                        {estadoPedido == 'confirmado' ?
+                            <View>
+                                {escanear ?
+                                    <View style={styles.containerQR}>
+                                        <View style={styles.containerCamara}>
+                                            <BarCodeScanner
+                                                onBarCodeScanned={escanearQR}
+                                                style={styles.camara}
+                                            />
+                                        </View>
+                                        <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQR}>
+                                            <Icon
+                                                size={38}
+                                                color={BG_COLOR}
+                                                type={'ionicon'}
+                                                name={'close-outline'}
+                                                style={{ textAlign: 'center' }}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <View>
+                                        <TouchableOpacity style={styles.button} onPress={renderizarQR}>
+                                            <Icon
+                                                size={38}
+                                                color={SECONDARY_COLOR}
+                                                type={'font-awesome'}
+                                                name={'qrcode'}
+                                            />
+                                            <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>Confirmar Pedido</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+                            </View>
+                            : <View></View>
+                        }
+                        <View>
+                            <TouchableOpacity style={styles.button} onPress={checkoutPedido}>
+                                <Icon
+                                    size={30}
+                                    color={SECONDARY_COLOR}
+                                    type={'ionicon'}
+                                    name={'wallet'}
+                                />
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
+                                    Pedir Cuenta
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity style={styles.button} onPress={enDesarrollo}>
+                                <Icon
+                                    size={30}
+                                    color={SECONDARY_COLOR}
+                                    type={'font-awesome'}
+                                    name={'gamepad'}
+                                />
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
+                                    Juegos
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity style={styles.button} onPress={pantallaEncuesta}>
+                                <Icon
+                                    size={30}
+                                    color={SECONDARY_COLOR}
+                                    type={'ionicon'}
+                                    name={'trophy'}
+                                />
+                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
+                                    Realizar Encuesta
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </SafeAreaView>
             </View>
         </View>
@@ -105,6 +249,10 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
 export default ClienteEnMesa
 
 const styles = StyleSheet.create({
+    scroll: {
+        justifyContent: "center",
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         justifyContent: "center",
