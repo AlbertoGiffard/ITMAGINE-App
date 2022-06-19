@@ -28,7 +28,7 @@ const ListadoPedido = () => {
         }   */ 
 
         const pedidoPrueba = {
-            id: 21,
+            id: 25,
             cliente: {
                 email: 'junior.prueba@gmail.com',
                 nombre: 'Junior',
@@ -37,42 +37,16 @@ const ListadoPedido = () => {
             productos: [
                 {
                     producto: {
-                        nombre: 'Hamburguesa',
+                        nombre: 'Milanesa con Pure',
                         descripcion: 'Pan con carne',
                         tiempoPromedio: 15,
-                        precio: 150,
+                        precio: 400,
                         fotoUrlUno: null,
                         fotoUrlDos: null,
                         fotoUrlTres: null,
                         tipo: 'cocina'
                     },
                     cantidad: 2
-                },
-                {
-                    producto: {
-                        nombre: 'Cerveza',
-                        descripcion: 'Corona',
-                        tiempoPromedio: 5,
-                        precio: 200,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'bar'
-                    },
-                    cantidad: 3
-                },
-                {
-                    producto: {
-                        nombre: 'Entrada',
-                        descripcion: 'Papas fritas',
-                        tiempoPromedio: 15,
-                        precio: 150,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'cocina'
-                    },
-                    cantidad: 4
                 },
             ],
             estado: 'pendiente',

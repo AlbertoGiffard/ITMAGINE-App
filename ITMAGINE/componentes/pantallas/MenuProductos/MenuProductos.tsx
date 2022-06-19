@@ -1,5 +1,7 @@
 
    
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
@@ -16,6 +18,7 @@ const MenuProducto = () => {
     const [total, setTotal] = useState(0);
     const arr:any = []
     const [arrayProd, setArrayProd] = useState(arr)
+    const navigation = useNavigation<NativeStackNavigationProp<any>>()
     
     const sumar = (producto:any) => {
         setTotal(total + producto.precio);
@@ -44,7 +47,7 @@ const MenuProducto = () => {
                 />
             </SafeAreaView>
             <View style={styles.vwBtnEnviar}>
-            <TouchableOpacity style={styles.btnEnviar}>
+            <TouchableOpacity onPress={()=> navigation.navigate( 'Carga', {siguientePantalla: 'ListadoPedido' } )} style={styles.btnEnviar}>
                 <Text style={{fontSize: 22, fontStyle: "italic", fontWeight: "bold"}}>Realizar Pedido $ {total}</Text>
             </TouchableOpacity>
             </View>

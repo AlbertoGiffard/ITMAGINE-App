@@ -113,7 +113,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
 
     const pantallaEncuesta = () => {
         //se debe desarrollar
-        //navigation.navigate('pantalla de encuesta', {pedido: props.route.params?.pedido});
+        navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
     }
 
     const checkoutPedido = () => {

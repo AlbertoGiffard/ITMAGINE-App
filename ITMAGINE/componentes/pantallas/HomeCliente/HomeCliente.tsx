@@ -25,10 +25,10 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const servicioEspera = new DBService<IEspera>(COLECCION_COLA_ESPERA);
     const servicioMesa = new DBService<IMesa>(COLECCION_MESAS);
     const servicioCliente = new DBService<ICliente>(COLECCION_CLIENTES);
-
+    
     useEffect(() => {
         if (context?.usuario) {
-            //context.usuario.estado = 'en mesa';
+            context.usuario.estado = 'en mesa';
             setUsuario(context?.usuario);
         }
 
@@ -38,7 +38,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     useEffect(() => {
         paraRenderizar();
     }, [cambio]);
-
+    
     useEffect(() => {
         if (cambioEstado) {            
             servicioEspera.getListaEspera(usuario.nombre, (data:any) => {
@@ -60,14 +60,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const estado = valor.estado;
         const tipo = valor.tipo;
         const nombreCliente = valor.nombreCliente;
-
-        if (estado != 'libre' && nombreCliente == usuario.nombre) {
+        if (estado != 'libre') {
             if (context != null) {
-                if (context.pedido == null) {
+                /* if (context.pedido == null) {
                     navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
                 } else {
-                    navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
-                }
+                } */
+                navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
             }
         }
         else if (estado == 'libre') {

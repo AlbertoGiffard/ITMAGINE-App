@@ -17,6 +17,8 @@ import ListaEspera from '../pantallas/Listados/ListaEspera';
 import HomeCocinero from '../pantallas/HomeBartender/HomeCocinero';
 import HomeBartender from '../pantallas/HomeBartender/HomeBartender';
 import ListadoCliente from '../pantallas/Listados/ListadoCliente';
+import ListadoPedidos from '../pantallas/Listados/ListadoPedidos';
+import PedidosMozo from '../pantallas/PedidosMozo/PedidosMozo';
 
 const Stack = createNativeStackNavigator();
 
@@ -91,6 +93,10 @@ const AppNavegacion = () => {
                 <Stack.Screen
                     name="homeDuenio"
                     component={ListadoCliente}
+                />
+                <Stack.Screen
+                    name='PedidosMozo'
+                    component={PedidosMozo}
                 />
             </Stack.Navigator>
         </NavigationContainer>
