@@ -9,5 +9,6 @@ export declare interface IPedido {
     numeroMesa : number,
     productos : IItemPedido[],
     estado : EstadoPedido,
-    total : number
+    total : number,
+    tiempoProm: number
 }
