@@ -25,11 +25,14 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const servicioEspera = new DBService<IEspera>(COLECCION_COLA_ESPERA);
     const servicioMesa = new DBService<IMesa>(COLECCION_MESAS);
     const servicioCliente = new DBService<ICliente>(COLECCION_CLIENTES);
-    
+
     useEffect(() => {
         if (context?.usuario) {
-            context.usuario.estado = 'en mesa';
             setUsuario(context?.usuario);
+        }
+
+        if (context?.pedido) {
+            setPedido(context?.pedido);
         }
 
         setCambio(!cambio);
@@ -37,65 +40,93 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     useEffect(() => {
         paraRenderizar();
+
     }, [cambio]);
-    
+
     useEffect(() => {
-        if (cambioEstado) {            
-            servicioEspera.getListaEspera(usuario.nombre, (data:any) => {
-              console.log(data.data());
-              if (data.data().cliente.estado == 'en mesa') {
-                usuario.estado = 'en mesa';
-                setUsuario(usuario);
-                setCambio(!cambio);
-              }
-              
-              
-            },(error:Error) => console.log('error', error))
+        if (cambioEstado) {
+            servicioEspera.getListaEspera(usuario.nombre, (data: any) => {
+                console.log('lista de espera: ', data.data());
+                if (data.data().cliente.estado == 'en mesa') {
+                    usuario.estado = 'en mesa';
+                    setUsuario(usuario);
+                    setCambio(!cambio);
+                }
+                if (data.data().cliente.estado == 'activo') {
+                    usuario.estado = 'activo';
+                    setUsuario(usuario);
+                    setCambio(!cambio);
+                }
+                if (context?.usuario != null) {
+                    context.usuario = usuario;
+                    console.log('usuario: ', context.usuario);
+                }
+                
+
+
+            }, (error: Error) => console.log('error', error))
         }
     }, [cambioEstado])
-    
+
 
     const handleIngreso = (valor: any) => {
         const numero = valor.numero;
         const estado = valor.estado;
         const tipo = valor.tipo;
         const nombreCliente = valor.nombreCliente;
-        if (estado != 'libre') {
+
+
+        if (estado == 'ocupado' && nombreCliente == usuario.nombre) {
             if (context != null) {
-                /* if (context.pedido == null) {
+                if (context.pedido == null || context.pedido == undefined) {
                     navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
                 } else {
-                } */
-                navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+                    navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+                }
             }
         }
         else if (estado == 'libre') {
-            const mesa: IMesa = {
-                estadoAtencion: 'ocupado',
-                nombreCliente: usuario.nombre,
-                numero: numero,
-                tipo: tipo,
-                cantidadComensales: 1
-            }
+            if (usuario.estado != 'en mesa') {
+                const mesa: IMesa = {
+                    estadoAtencion: 'ocupado',
+                    nombreCliente: usuario.nombre,
+                    numero: numero,
+                    tipo: tipo,
+                    cantidadComensales: 1
+                }
 
-            usuario.estado = 'en mesa';
-            setUsuario(usuario);
-            //actualiza mesa y usuario en context
-            if (context != null) {
-                context.mesa = mesa;
-                context.usuario = usuario;
-            }
-            //si tiene email actualiza en fb
-            if (usuario.email) {
-                servicioCliente.updateOne(usuario, usuario.email);
+                usuario.estado = 'en mesa';
+                setUsuario(usuario);
+                //actualiza mesa y usuario en context
+                if (context != null) {
+                    context.mesa = mesa;
+                    context.usuario = usuario;
+                }
+                //si tiene email actualiza en fb
+                if (usuario.email) {
+                    servicioCliente.updateOne(usuario, usuario.email);
+                } else {
+                    servicioCliente.insertOne(usuario, usuario.nombre);
+                }
+                //redirige a la pagina de productos
+                servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
+                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                });
             } else {
-                servicioCliente.insertOne(usuario, usuario.nombre);
+                Alert.alert(
+                    'Error',
+                    'Usted ya se encuentra asignado a una mesa',
+                    [
+                        {
+                            text: 'Entendido',
+                            style: 'cancel',
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                    }
+                );
             }
-            //redirige a la pagina de productos
-            servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
-                navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
-            });
-
         } else {
             Alert.alert(
                 'Error',
@@ -142,7 +173,23 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                 break;
 
             default:
-                handleIngreso(valor);
+                if (usuario.estado == 'inactivo') {
+                    Alert.alert(
+                        'Error',
+                        'Debe primero colocarse en lista de espera',
+                        [
+                            {
+                                text: 'Entendido',
+                                style: 'cancel',
+                            },
+                        ],
+                        {
+                            cancelable: true,
+                        }
+                    );
+                } else {
+                    handleIngreso(valor);
+                }
                 break;
         }
 
@@ -178,6 +225,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                 break;
 
             case 'en mesa':
+            case 'activo':
                 return (
                     <View>
                         {escanear ?

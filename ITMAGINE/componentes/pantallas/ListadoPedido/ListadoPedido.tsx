@@ -23,15 +23,16 @@ const ListadoPedido = () => {
 
     useEffect(() => {  
         //este es el codigo en prod
-        /* if (context?.pedido) {
+        if (context?.pedido) {
             setPedido(context.pedido);
-        }   */ 
-
-        const pedidoPrueba = {
+        }   
+        //todo esto es test
+        /* const pedidoPrueba = {
             id: 25,
             cliente: {
-                email: 'junior.prueba@gmail.com',
-                nombre: 'Junior',
+                //email: 'junior.prueba@gmail.com',
+                nombre: 'Henry',
+                estado: 'en mesa'
             },
             numeroMesa: 8,
             productos: [
@@ -53,7 +54,7 @@ const ListadoPedido = () => {
             total: 0
         }
 
-        setPedido(pedidoPrueba);
+        setPedido(pedidoPrueba); */
     }, []);
 
     const regresar = () => {
@@ -72,7 +73,12 @@ const ListadoPedido = () => {
             total: totalVar
         }
         setPedido(pedidoFinal);
-        //aca deberia actualizar en firebase
+        if (context != null) {
+            context.mesa = pedido.numeroMesa;
+            context.usuario = pedido.cliente;
+            context.pedido = pedidoFinal;
+        }
+        //aca deberia actualizar en firebase        
         servicio.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
             navigation.navigate('Carga', { siguientePantalla: 'HomeCliente' });
         });
@@ -80,7 +86,6 @@ const ListadoPedido = () => {
 
     const eliminarPedido = (index:any) => {
         if (pedido.productos != undefined) {
-            //setPedido(pedido.productos.filter((i) => { return i != index }));
             const aux = pedido;
             aux.productos.splice(index, 1);
             setPedido({...aux});

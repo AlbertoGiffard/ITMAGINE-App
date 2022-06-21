@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable } from "react-native";
 import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
@@ -9,20 +9,22 @@ import { DataTable } from 'react-native-paper';
 import { IPedido } from '../../../definiciones/IPedido';
 import { DBService } from '../../../services/DBService';
 import { COLECCION_PEDIDOS } from '../../../services/colecciones';
+import { AppContext } from '../../../context/AppContext';
 
 const CheckoutPedido = () => {
     const navigation =  useNavigation<NativeStackNavigationProp<any>>();
     const [pedido, setPedido] = useState<IPedido | any>({});
     var totalVar = 0;
-    const servicio = new DBService<IPedido>(COLECCION_PEDIDOS);
+    const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
+    const context = useContext(AppContext);
 
     useEffect(() => {
         //este es el codigo en prod
-        /* if (context?.pedido) {
+        if (context?.pedido) {
             setPedido(context.pedido);
-        }   */ 
+        } 
 
-        const pedidoPrueba = {
+        /* const pedidoPrueba = {
             id: 21,
             cliente: {
                 email: 'junior.prueba@gmail.com',
@@ -74,7 +76,7 @@ const CheckoutPedido = () => {
             total: 1500
         }
 
-        setPedido(pedidoPrueba);
+        setPedido(pedidoPrueba); */
     }, []);
 
     const regresar = () => {
@@ -92,8 +94,13 @@ const CheckoutPedido = () => {
             total: totalVar
         }
         setPedido(pedidoFinal);
+        if (context != null) {
+            context.pedido = pedidoFinal;
+        }
+        
+        
         //aca deberia actualizar en firebase
-        servicio.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
+        servicioPedido.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
             return new Promise((resolve, reject) => {
                 Alert.alert(
                     'Gracias',

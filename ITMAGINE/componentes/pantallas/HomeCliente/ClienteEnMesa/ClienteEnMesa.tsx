@@ -22,20 +22,22 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const context = useContext(AppContext);
 
     useEffect(() => {
+        //version test
         const pedidoPrueba = {
-            id: 21,
+            id: 25,
             cliente: {
-                email: 'junior.prueba@gmail.com',
-                nombre: 'Junior',
+                //email: 'junior.prueba@gmail.com',
+                nombre: 'Henry',
+                estado: 'en mesa'
             },
             numeroMesa: 8,
             productos: [
                 {
                     producto: {
-                        nombre: 'Hamburguesa',
+                        nombre: 'Milanesa con Pure',
                         descripcion: 'Pan con carne',
                         tiempoPromedio: 15,
-                        precio: 150,
+                        precio: 400,
                         fotoUrlUno: null,
                         fotoUrlDos: null,
                         fotoUrlTres: null,
@@ -43,51 +45,30 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                     },
                     cantidad: 2
                 },
-                {
-                    producto: {
-                        nombre: 'Cerveza',
-                        descripcion: 'Corona',
-                        tiempoPromedio: 5,
-                        precio: 200,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'bar'
-                    },
-                    cantidad: 3
-                },
-                {
-                    producto: {
-                        nombre: 'Entrada',
-                        descripcion: 'Papas fritas',
-                        tiempoPromedio: 15,
-                        precio: 150,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'cocina'
-                    },
-                    cantidad: 4
-                },
             ],
-            estado: 'pendiente',
+            estado: 'entregado', 
             total: 0
         }
 
+        setPedido(pedidoPrueba);
+        setEstadoPedido(pedidoPrueba.estado);//test
+        
+        //version prod
         if (context?.pedido) {
             //context.usuario.estado = 'en mesa';
             setPedido(context?.pedido);
         } else {
             setPedido(pedidoPrueba);
         }
-
-        //setCambio(!cambio);
+        
+        setCambio(!cambio);
     }, [])
 
     useEffect(() => {
         if (pedido.id != undefined) {
             servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
-                var estado = data.data().estado;
+                var estado = data.data().estado; //real
+                //var estado = 'entregado'; //test
 
                 setEstadoPedido(estado);
 
@@ -112,7 +93,6 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     }
 
     const pantallaEncuesta = () => {
-        //se debe desarrollar
         navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
     }
 
@@ -139,7 +119,49 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
         const tipo = JSON.parse(data.data).qr;
-        const valor = JSON.parse(data.data);
+        const pedido = JSON.parse(data.data);
+
+        if (pedido.qr == 'pedido') {
+            if (pedido.estado == 'entregado') {
+                pedido.estado = 'confirmado';
+                setPedido(pedido);
+                setEstadoPedido(pedido.estado);
+                
+                if (context != null) {
+                    context.pedido = pedido;                    
+                }
+                servicioPedido.updateOne(pedido, pedido.id);
+            } else {
+                Alert.alert(
+                    'Error',
+                    'El pedido aun no está listo para confirmar',
+                    [
+                        {
+                            text: 'Entendido',
+                            style: 'cancel',
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                    }
+                );
+            }
+        } else {
+            Alert.alert(
+                'Error',
+                'Debe escanear un pedido',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
+        
 
         setEscanear(!escanear);
     }
@@ -164,7 +186,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                                 Estado de su pedido: <Text style={{ fontWeight: '400' }}>{estadoPedido}</Text>
                             </Text>
                         </View>
-                        {estadoPedido == 'confirmado' ?
+                        {estadoPedido == 'entregado' ?
                             <View>
                                 {escanear ?
                                     <View style={styles.containerQR}>
