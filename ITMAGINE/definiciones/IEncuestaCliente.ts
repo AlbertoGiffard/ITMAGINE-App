@@ -7,5 +7,6 @@ declare interface IEncuestaCliente {
     regresaria : boolean,
     comida : number,
     fotoEncuestaURL : string,
-    mejorar : string[]
+    mejorar : string[],
+    fecha : string
 }
