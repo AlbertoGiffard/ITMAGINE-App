@@ -169,7 +169,12 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
         switch (tipo) {
             case 'listaEspera':
-                cambiarAListaDeEspera();
+                if (context?.pedido != null) {
+                    //aca va la navegacion hasta el listado de encuestas
+                    //navigation.navigate('Carga', { siguientePantalla: 'ENcuestas' });
+                } else {
+                    cambiarAListaDeEspera();
+                }
                 break;
 
             default:
