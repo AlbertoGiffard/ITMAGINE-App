@@ -16,7 +16,7 @@ const CardProducto = (cli : any) => {
 
     const AceptarCliente = () => {
 
-        cli.cliente.estado = "en mesa"
+        cli.cliente.estado = "activo"
 
         if(cli.email == undefined){ 
         dbEspera.updateOne({cliente: {...cli.cliente}}, cli.cliente.nombre);
@@ -25,7 +25,7 @@ const CardProducto = (cli : any) => {
         }
         else{
             dbEspera.updateOne({cliente: {...cli.cliente}}, cli.email);
-            dbClientes.updateOne({estado: "en mesa"}, cli.email)
+            dbClientes.updateOne({estado: "activo"}, cli.email)
         }
     }
 
