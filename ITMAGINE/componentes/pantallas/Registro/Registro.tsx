@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BarCodeScanningResult } from 'expo-camera';
 import React, { useState } from 'react';
 import { ActivityIndicator, Image, KeyboardAvoidingView, LogBox, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Icon } from 'react-native-elements';
@@ -126,6 +127,14 @@ const PantallaRegistro = () => {
       navigation.navigate( 'Carga', { siguientePantalla: 'Login' } );
     }
 
+    const leerQR = ( qr : BarCodeScanningResult ) => {
+      const datos = qr.data.split("@");
+      setSacarFoto(false);
+      setApellido(datos[1]);
+      setNombre(datos[2]);
+      setDni(datos[4]);
+    }
+
   return (
     <KeyboardAvoidingView
       style = {styles.container}
@@ -137,7 +146,7 @@ const PantallaRegistro = () => {
 
         {sacarFoto &&
         <View style = {styles.formMarco}>
-          <Camara settearFoto={settearFotoUrl} setSacandoFoto={setSacandoFoto} sacandoFoto={sacandoFoto} />
+          <Camara setLeerQR={leerQR} settearFoto={settearFotoUrl} setSacandoFoto={setSacandoFoto} sacandoFoto={sacandoFoto} />
         </View>}
 
         {!sacarFoto && !loading &&

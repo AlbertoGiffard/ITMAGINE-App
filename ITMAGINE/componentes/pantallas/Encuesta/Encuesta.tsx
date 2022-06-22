@@ -12,6 +12,7 @@ import { Camara } from "../../Camara/camara";
 import uuid from 'react-native-uuid';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BarCodeScanningResult } from "expo-camera";
 
 export const Encuesta = () => {
     const [satisfaccion, setSatisfaccion] = useState<number>(7);
@@ -72,11 +73,13 @@ export const Encuesta = () => {
           .then( url => { setFotoEncuestaURL( url ); return url } );
       }
 
+    const leerQR = ( qr : BarCodeScanningResult ) => {}
+
     return (
         <KeyboardAvoidingView style={styles.container}>
             {sacarFoto &&
             <View style = {styles.formMarco}>
-                <Camara settearFoto={settearFotoUrl} setSacandoFoto={setSacandoFoto} sacandoFoto={sacandoFoto} />
+                <Camara settearFoto={settearFotoUrl} setSacandoFoto={setSacandoFoto} sacandoFoto={sacandoFoto} setLeerQR={leerQR} />
             </View>}
             {!sacarFoto && 
             <View style={styles.formMarco}>

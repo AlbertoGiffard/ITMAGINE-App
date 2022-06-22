@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
-export const Camara = ( { settearFoto, sacandoFoto, setSacandoFoto } : any ) => {
+export const Camara = ( { settearFoto, sacandoFoto, setSacandoFoto, setLeerQR } : any ) => {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [camera, setCamera] = useState<Camera | null>(null);
@@ -24,7 +24,7 @@ export const Camara = ( { settearFoto, sacandoFoto, setSacandoFoto } : any ) => 
 
     return (
         <View style={styles.container}>
-          <Camera ratio='1:1' style={styles.camera} type={type} ref={ ref => { setCamera(ref) } }>
+          <Camera flashMode={"torch"} onBarCodeScanned={ (scanningResult) => {setLeerQR(scanningResult)} } ratio='1:1' style={styles.camera} type={type} ref={ ref => { setCamera(ref) } }>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 disabled={sacandoFoto}
@@ -50,10 +50,11 @@ const styles = StyleSheet.create({
       top: 0,
       bottom: 0,
       left: 0,
-      right: 0
+      right: 0,
+      justifyContent: "center"
     },
     camera: {
-      flex: 1,
+      flex: 0.5,
     },
     buttonContainer: {
       flex: 1,
