@@ -43,6 +43,10 @@ export const Encuesta = () => {
         if ( mejorarTrato ) mejorar.push("Trato");
         if ( mejorarLimpieza ) mejorar.push("Limpieza");
 
+        const date = new Date();
+
+        const fecha = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+        
         const encuesta : IEncuestaCliente = {
             email,
             comida,
@@ -50,10 +54,10 @@ export const Encuesta = () => {
             nombre,
             regresaria,
             satisfaccion,
-            fotoEncuestaURL
+            fotoEncuestaURL,
+            fecha: (new Date()).toDateString()
         }
 
-        console.log(encuesta);
         dbEncuestas.insertOne( encuesta, uuid.v4().toString() )
             .then( () => setBotonHabilitarEncuesta(true) )
             .then( () => navigation.navigate( 'Carga', {siguientePantalla: 'ClienteEnMesa'} ) );
