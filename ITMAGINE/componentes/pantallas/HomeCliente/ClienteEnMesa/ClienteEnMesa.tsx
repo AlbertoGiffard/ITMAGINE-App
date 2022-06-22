@@ -10,16 +10,27 @@ import { IPedido } from '../../../../definiciones/IPedido';
 import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
 import { AppContext } from '../../../../context/AppContext';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { ICliente } from '../../../../definiciones/ICliente';
 
 const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [pedido, setPedido] = useState<IPedido | any>({});
+    const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
     const [estadoPedido, setEstadoPedido] = useState('');
     const [cambio, setCambio] = useState(false);
     const [cambioEstado, setCambioEstado] = useState(false);
     const [escanear, setEscanear] = useState(false);
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
     const context = useContext(AppContext);
+
+    //alert personalizado
+    {/* <Dialog isVisible={visible} onDismiss={() => setVisible(false)} overlayStyle={{ backgroundColor: PRIMARY_COLOR, borderRadius: 25 }}>
+        <Text style={styles.alertTitulo}>{producto.nombre}</Text>
+        <Text style={styles.alertDescripcion}>{producto.descripcion}</Text>
+        <Dialog.Actions>
+            <TouchableOpacity onPress={() => setVisible(false)}><Text style={{ fontSize: 15, fontWeight: "bold", backgroundColor: SECONDARY_COLOR, padding: 10, borderRadius: 25 }}>Entendido!</Text></TouchableOpacity>
+        </Dialog.Actions>
+    </Dialog> */}
 
     useEffect(() => {
         //version test
@@ -46,13 +57,13 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                     cantidad: 2
                 },
             ],
-            estado: 'entregado', 
+            estado: 'entregado',
             total: 0
         }
 
         setPedido(pedidoPrueba);
         setEstadoPedido(pedidoPrueba.estado);//test
-        
+
         //version prod
         if (context?.pedido) {
             //context.usuario.estado = 'en mesa';
@@ -60,7 +71,12 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
         } else {
             setPedido(pedidoPrueba);
         }
-        
+
+        if (context?.usuario) {
+            //context.usuario.estado = 'en mesa';
+            setUsuario(context.usuario);
+        }
+
         setCambio(!cambio);
     }, [])
 
@@ -93,12 +109,30 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     }
 
     const pantallaEncuesta = () => {
-        navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
+        if (usuario != null) {
+            if (usuario.email != null || usuario.email != undefined) {
+                navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });                
+            } else {
+                Alert.alert(
+                    'Lo Sentimos!',
+                    'Debe ser un cliente registrado para poder ingresar',
+                    [
+                        {
+                            text: 'Entendido',
+                            style: 'cancel',
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                    }
+                );
+            }
+        }
     }
 
     const checkoutPedido = () => {
         if (estadoPedido == 'confirmado') {
-            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });            
+            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
         } else {
             Alert.alert(
                 'Lo Sentimos!',
@@ -126,11 +160,13 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 pedido.estado = 'confirmado';
                 setPedido(pedido);
                 setEstadoPedido(pedido.estado);
-                
+
                 if (context != null) {
-                    context.pedido = pedido;                    
+                    if (context.pedido != null) {
+                        context.pedido.estado = pedido.estado;
+                    }
                 }
-                servicioPedido.updateOne(pedido, pedido.id);
+                servicioPedido.updateOne({ estado: pedido.estado }, pedido.id);
             } else {
                 Alert.alert(
                     'Error',
@@ -161,7 +197,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 }
             );
         }
-        
+
 
         setEscanear(!escanear);
     }

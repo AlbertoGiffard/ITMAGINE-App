@@ -71,10 +71,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     const handleIngreso = (valor: any) => {
         const numero = valor.numero;
-        const estado = valor.estado;
+        const estado = valor.estadoAtencion;
         const tipo = valor.tipo;
-        const nombreCliente = valor.nombreCliente;
-
+        const nombreCliente = valor.nombreCliente;  
+        
+        console.log(estado);
+        console.log(nombreCliente);
+        
 
         if (estado == 'ocupado' && nombreCliente == usuario.nombre) {
             if (context != null) {
