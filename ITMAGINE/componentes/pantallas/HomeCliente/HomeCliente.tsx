@@ -166,11 +166,8 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const valor = JSON.parse(data.data);
 
         setEscanear(!escanear);
-
-        console.log(data);
         
-
-        /* switch (tipo) {
+        switch (tipo) {
             case 'listaEspera':
                 if (context?.pedido != null) {
                     //aca va la navegacion hasta el listado de encuestas
@@ -199,7 +196,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                     handleIngreso(valor);
                 }
                 break;
-        } */
+        }
 
 
 
