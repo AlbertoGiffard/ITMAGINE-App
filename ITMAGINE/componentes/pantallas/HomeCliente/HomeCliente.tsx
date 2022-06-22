@@ -166,12 +166,12 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const valor = JSON.parse(data.data);
 
         setEscanear(!escanear);
-
+        
         switch (tipo) {
             case 'listaEspera':
                 if (context?.pedido != null) {
                     //aca va la navegacion hasta el listado de encuestas
-                    //navigation.navigate('Carga', { siguientePantalla: 'ENcuestas' });
+                    navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
                 } else {
                     cambiarAListaDeEspera();
                 }
