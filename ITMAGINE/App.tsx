@@ -8,6 +8,7 @@ import ListadoCliente from './componentes/pantallas/Listados/ListadoCliente';
 import ListadoPedidos from './componentes/pantallas/Listados/ListadoPedidos';
 import ListaEspera from './componentes/pantallas/Listados/ListaEspera';
 import MenuMozo from './componentes/pantallas/MenuMozo/MenuMozo';
+import MenuProducto from './componentes/pantallas/MenuProductos/MenuProductos';
 import PedidosMozo from './componentes/pantallas/PedidosMozo/PedidosMozo';
 import { AppContext } from './context/AppContext';
 import { settearHandlerDeNotificacion } from './services/pushNotification';
@@ -22,10 +23,11 @@ export default function App() {
   }, [] )
 
   return (
-      <AppContext.Provider value={{mesa: undefined, pedido: undefined, usuario: null}}>
-        <PaperProvider>
-          <AppNavegacion/>
-        </PaperProvider>
-      </AppContext.Provider>
-  );
-}
+    <AppContext.Provider value={{mesa: undefined, pedido: undefined, usuario: null}}>
+      <PaperProvider>
+        <AppNavegacion/>
+      </PaperProvider>
+    </AppContext.Provider> 
+    );
+  }
+  

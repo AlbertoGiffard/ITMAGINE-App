@@ -12,18 +12,26 @@ const CardProducto = (props:any) => {
     const [cantidad, setCantidad] = useState(0)
     const [visible, setVisible] = useState(false)
 
+    useEffect(() => {
+        setCantidad(0);
+        setVisible(false);
+      }, [])
+
     const SumarCard = () => {
-        sumar(producto);
+        restar(producto, false);
+        sumar({"producto": producto, "cantidad": cantidad + 1});
         setCantidad(cantidad + 1);
     }
 
     const RestarCard = () => {
         if(cantidad > 0){
-            setCantidad(cantidad - 1);
-            restar(producto);
-        }
 
+            restar(producto, cantidad, cantidad == 1);
+            if(cantidad > 1) sumar({"producto": producto, "cantidad": cantidad - 1});
+            setCantidad(cantidad - 1);
+        }
     }
+
 
     
     return (
@@ -51,11 +59,11 @@ const CardProducto = (props:any) => {
                     snapToInterval={windowWidth * 0.9}
                     decelerationRate={0}
                     scrollEventThrottle={16}
-                    data={imagenes}
+                    data={producto.imagenes}
                     renderItem={({ item: imagen }) => {
                         return (
-                          <View style={{ width: windowWidth * 0.9, backgroundColor: "green", justifyContent: "center", alignItems:"center" }}>
-                              <Image source={require("../../assets/Productos/milanesa1.jpeg")} style={styles.img}></Image>
+                          <View style={{ width: windowWidth * 0.9,  justifyContent: "center", alignItems:"center"}}>
+                              <Image source={{ uri: imagen}} style={styles.img}></Image>
                           </View>
                         );
                     }}
@@ -159,8 +167,9 @@ const styles = StyleSheet.create({
         width: windowWidth * 0.87,
     },
         img:{
-            maxHeight: "100%",
-            maxWidth: "100%",
+            height: "100%",
+            width: "100%",
+            resizeMode : "contain"
         },
     vwBotones:{
         width: windowWidth * 0.90,
