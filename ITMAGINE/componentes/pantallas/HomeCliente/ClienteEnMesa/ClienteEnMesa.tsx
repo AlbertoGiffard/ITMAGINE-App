@@ -10,49 +10,67 @@ import { IPedido } from '../../../../definiciones/IPedido';
 import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
 import { AppContext } from '../../../../context/AppContext';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { ICliente } from '../../../../definiciones/ICliente';
 
 const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [pedido, setPedido] = useState<IPedido | any>({});
+    const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
     const [estadoPedido, setEstadoPedido] = useState('');
     const [cambio, setCambio] = useState(false);
     const [cambioEstado, setCambioEstado] = useState(false);
     const [escanear, setEscanear] = useState(false);
+    const [escanearPropina, setEscanearPropina] = useState(false);
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
     const context = useContext(AppContext);
+
+    //alert personalizado
+    {/* <Dialog isVisible={visible} onDismiss={() => setVisible(false)} overlayStyle={{ backgroundColor: PRIMARY_COLOR, borderRadius: 25 }}>
+        <Text style={styles.alertTitulo}>{producto.nombre}</Text>
+        <Text style={styles.alertDescripcion}>{producto.descripcion}</Text>
+        <Dialog.Actions>
+            <TouchableOpacity onPress={() => setVisible(false)}><Text style={{ fontSize: 15, fontWeight: "bold", backgroundColor: SECONDARY_COLOR, padding: 10, borderRadius: 25 }}>Entendido!</Text></TouchableOpacity>
+        </Dialog.Actions>
+    </Dialog> */}
 
     useEffect(() => {
         //version test
         const pedidoPrueba = {
             id: 25,
             cliente: {
-                //email: 'junior.prueba@gmail.com',
+                email: 'junior.prueba@gmail.com',
                 nombre: 'Henry',
-                estado: 'en mesa'
+                estado: 'en mesa',
+                apellido: 'ford',
+                DNI: '12345678',
+                fotoURL: '',
+                password: '123456',
+                validacion: 'aceptado'
             },
             numeroMesa: 8,
+            tiempoProm: 15,
             productos: [
                 {
+                    cantidad: 2,
                     producto: {
                         nombre: 'Milanesa con Pure',
                         descripcion: 'Pan con carne',
                         tiempoPromedio: 15,
                         precio: 400,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'cocina'
-                    },
-                    cantidad: 2
+                        fotoUrlUno: 'null',
+                        fotoUrlDos: 'null',
+                        fotoUrlTres: 'null',
+                        tipo: 'cocina',
+                    }
                 },
             ],
-            estado: 'entregado', 
+            estado: 'entregado',
             total: 0
         }
 
         setPedido(pedidoPrueba);
         setEstadoPedido(pedidoPrueba.estado);//test
-        
+
         //version prod
         if (context?.pedido) {
             //context.usuario.estado = 'en mesa';
@@ -60,17 +78,22 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
         } else {
             setPedido(pedidoPrueba);
         }
-        
+
+        if (context?.usuario) {
+            //context.usuario.estado = 'en mesa';
+            setUsuario(context.usuario);
+        }
+
         setCambio(!cambio);
     }, [])
 
     useEffect(() => {
         if (pedido.id != undefined) {
             servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
-                var estado = data.data().estado; //real
-                //var estado = 'entregado'; //test
+                //var estado = data.data().estado; //real
+                var estado = 'confirmado'; //test
 
-                setEstadoPedido(estado);
+                setEstadoPedido(estado); //prod
 
             }, (error: Error) => console.log('error', error))
         }
@@ -93,12 +116,30 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     }
 
     const pantallaEncuesta = () => {
-        navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
+        if (usuario != null) {
+            if (usuario.email != null || usuario.email != undefined) {
+                navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
+            } else {
+                Alert.alert(
+                    'Lo Sentimos!',
+                    'Debe ser un cliente registrado para poder ingresar',
+                    [
+                        {
+                            text: 'Entendido',
+                            style: 'cancel',
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                    }
+                );
+            }
+        }
     }
 
     const checkoutPedido = () => {
         if (estadoPedido == 'confirmado') {
-            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });            
+            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
         } else {
             Alert.alert(
                 'Lo Sentimos!',
@@ -118,19 +159,20 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
 
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
-        const tipo = JSON.parse(data.data).qr;
-        const pedido = JSON.parse(data.data);
+        const valores = JSON.parse(data.data);
 
-        if (pedido.qr == 'pedido') {
-            if (pedido.estado == 'entregado') {
+        if (valores.qr == 'pedido') {
+            if (valores.estado == 'entregado') {
                 pedido.estado = 'confirmado';
                 setPedido(pedido);
                 setEstadoPedido(pedido.estado);
-                
+
                 if (context != null) {
-                    context.pedido = pedido;                    
+                    if (context.pedido != null) {
+                        context.pedido.estado = pedido.estado;
+                    }
                 }
-                servicioPedido.updateOne(pedido, pedido.id);
+                servicioPedido.updateOne({ estado: pedido.estado }, pedido.id);
             } else {
                 Alert.alert(
                     'Error',
@@ -161,14 +203,58 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 }
             );
         }
-        
+
 
         setEscanear(!escanear);
+    }
+
+    const escanearQRPropina = (data: any) => {
+        //aca debe ir la logica de escanear la mesa
+        const valores = JSON.parse(data.data);
+
+        if (valores.qr == 'propina') {
+            //const descuento = parseInt(valores.descuento);
+            pedido.total = pedido.total - (10 * pedido.total / 100); //descuento del 10%
+            setPedido(pedido);
+            if (context != null) {
+                if (context.pedido != null) {
+                    context.pedido.total = pedido.total;                    
+                }
+            }
+            //version en prod
+            /* servicioPedido.updateOne({ total: pedido.total }, pedido.id).then(() => {
+                navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
+            }); */
+            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
+        } else {
+            Alert.alert(
+                'Error',
+                'Debe escanear una propina',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
+
+
+        setEscanearPropina(!escanearPropina);
     }
 
     const renderizarQR = () => {
         //esta es la accion real
         setEscanear(!escanear);
+        setCambio(!cambio);
+    }
+
+    const renderizarQRPropina = () => {
+        //esta es la accion real
+        setEscanearPropina(!escanearPropina);
         setCambio(!cambio);
     }
 
@@ -222,19 +308,39 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                             </View>
                             : <View></View>
                         }
-                        <View>
-                            <TouchableOpacity style={styles.button} onPress={checkoutPedido}>
-                                <Icon
-                                    size={30}
-                                    color={SECONDARY_COLOR}
-                                    type={'ionicon'}
-                                    name={'wallet'}
-                                />
-                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
-                                    Pedir Cuenta
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        {escanearPropina ?
+                            <View style={styles.containerQR}>
+                                <View style={styles.containerCamara}>
+                                    <BarCodeScanner
+                                        onBarCodeScanned={escanearQRPropina}
+                                        style={styles.camara}
+                                    />
+                                </View>
+                                <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQRPropina}>
+                                    <Icon
+                                        size={38}
+                                        color={BG_COLOR}
+                                        type={'ionicon'}
+                                        name={'close-outline'}
+                                        style={{ textAlign: 'center' }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View>
+                                <TouchableOpacity style={styles.button} onPress={renderizarQRPropina}>
+                                    <Icon
+                                        size={30}
+                                        color={SECONDARY_COLOR}
+                                        type={'ionicon'}
+                                        name={'wallet'}
+                                    />
+                                    <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
+                                        Pedir Cuenta
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
                         <View>
                             <TouchableOpacity style={styles.button} onPress={enDesarrollo}>
                                 <Icon

@@ -68,6 +68,7 @@ const ListadoPedido = () => {
             id: pedido.id,
             cliente: pedido.cliente,
             estado: 'pendiente',
+            tiempoProm: pedido.tiempoProm,
             numeroMesa: pedido.numeroMesa,
             productos: pedido.productos,
             total: totalVar

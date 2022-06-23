@@ -14,7 +14,9 @@ import { AppContext } from '../../../context/AppContext';
 const CheckoutPedido = () => {
     const navigation =  useNavigation<NativeStackNavigationProp<any>>();
     const [pedido, setPedido] = useState<IPedido | any>({});
-    var totalVar = 0;
+    var totalConDescuento = 0;
+    var totalSinDescuento = 0;
+    var totalDescuento = 0;
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
     const context = useContext(AppContext);
 
@@ -24,7 +26,7 @@ const CheckoutPedido = () => {
             setPedido(context.pedido);
         } 
 
-        /* const pedidoPrueba = {
+        const pedidoPrueba = {
             id: 21,
             cliente: {
                 email: 'junior.prueba@gmail.com',
@@ -76,7 +78,7 @@ const CheckoutPedido = () => {
             total: 1500
         }
 
-        setPedido(pedidoPrueba); */
+        setPedido(pedidoPrueba);
     }, []);
 
     const regresar = () => {
@@ -91,7 +93,8 @@ const CheckoutPedido = () => {
             estado: 'pagado',
             numeroMesa: pedido.numeroMesa,
             productos: pedido.productos,
-            total: totalVar
+            tiempoProm: pedido.tiempoProm,
+            total: totalConDescuento
         }
         setPedido(pedidoFinal);
         if (context != null) {
@@ -115,7 +118,9 @@ const CheckoutPedido = () => {
     }
 
     const sumarTotal = (precio:any, cantidad:any) => {
-        totalVar += (precio * cantidad);
+        totalConDescuento += (precio * cantidad);
+        totalDescuento = 10 * totalConDescuento / 100;
+        totalSinDescuento = totalConDescuento + totalDescuento;
         //setTotal(aux);
     }
     
@@ -169,12 +174,36 @@ const CheckoutPedido = () => {
                     <View style={styles.containerTotal}>
                         <View style={styles.viewTotal}>
                             <Text style={styles.textTotal}>
-                                TOTAL:
+                                Subtotal:
                             </Text>
                         </View>
                         <View style={styles.viewPrecioTotal}>
                             <Text style={styles.textTotal}>
-                                ${totalVar}
+                                ${totalSinDescuento}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.containerTotal}>
+                        <View style={styles.viewTotal}>
+                            <Text style={styles.textTotal}>
+                                Descuento(10%):
+                            </Text>
+                        </View>
+                        <View style={styles.viewPrecioTotal}>
+                            <Text style={styles.textTotal}>
+                                -${totalDescuento}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.containerTotal}>
+                        <View style={styles.viewTotal}>
+                            <Text style={styles.textTotal}>
+                                Total:
+                            </Text>
+                        </View>
+                        <View style={styles.viewPrecioTotal}>
+                            <Text style={styles.textTotal}>
+                                ${totalConDescuento}
                             </Text>
                         </View>
                     </View>

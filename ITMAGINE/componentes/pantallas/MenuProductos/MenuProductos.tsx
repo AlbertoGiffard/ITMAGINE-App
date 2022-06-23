@@ -21,6 +21,7 @@ const MenuProducto = () => {
     const arr:any = []
     const [arrayProd, setArrayProd] = useState(arr)
     const navigation = useNavigation<NativeStackNavigationProp<any>>()
+    const context = useContext(AppContext);
     
     useEffect(() => {
       setTotal(0);
@@ -74,9 +75,7 @@ const MenuProducto = () => {
         }
     }
 
-    const EnviarPedido = () => {
-
-        const context = useContext(AppContext);
+    const EnviarPedido = () => {        
         
         if(context != null){ 
             

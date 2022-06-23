@@ -71,10 +71,13 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     const handleIngreso = (valor: any) => {
         const numero = valor.numero;
-        const estado = valor.estado;
+        const estado = valor.estadoAtencion;
         const tipo = valor.tipo;
-        const nombreCliente = valor.nombreCliente;
-
+        const nombreCliente = valor.nombreCliente;  
+        
+        console.log(estado);
+        console.log(nombreCliente);
+        
 
         if (estado == 'ocupado' && nombreCliente == usuario.nombre) {
             if (context != null) {
@@ -166,12 +169,12 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const valor = JSON.parse(data.data);
 
         setEscanear(!escanear);
-
+        
         switch (tipo) {
             case 'listaEspera':
                 if (context?.pedido != null) {
                     //aca va la navegacion hasta el listado de encuestas
-                    //navigation.navigate('Carga', { siguientePantalla: 'ENcuestas' });
+                    navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
                 } else {
                     cambiarAListaDeEspera();
                 }
