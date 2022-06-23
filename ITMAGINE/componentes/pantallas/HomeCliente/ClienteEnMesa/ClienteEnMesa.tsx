@@ -20,6 +20,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const [cambio, setCambio] = useState(false);
     const [cambioEstado, setCambioEstado] = useState(false);
     const [escanear, setEscanear] = useState(false);
+    const [escanearPropina, setEscanearPropina] = useState(false);
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
     const context = useContext(AppContext);
 
@@ -37,24 +38,30 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
         const pedidoPrueba = {
             id: 25,
             cliente: {
-                //email: 'junior.prueba@gmail.com',
+                email: 'junior.prueba@gmail.com',
                 nombre: 'Henry',
-                estado: 'en mesa'
+                estado: 'en mesa',
+                apellido: 'ford',
+                DNI: '12345678',
+                fotoURL: '',
+                password: '123456',
+                validacion: 'aceptado'
             },
             numeroMesa: 8,
+            tiempoProm: 15,
             productos: [
                 {
+                    cantidad: 2,
                     producto: {
                         nombre: 'Milanesa con Pure',
                         descripcion: 'Pan con carne',
                         tiempoPromedio: 15,
                         precio: 400,
-                        fotoUrlUno: null,
-                        fotoUrlDos: null,
-                        fotoUrlTres: null,
-                        tipo: 'cocina'
-                    },
-                    cantidad: 2
+                        fotoUrlUno: 'null',
+                        fotoUrlDos: 'null',
+                        fotoUrlTres: 'null',
+                        tipo: 'cocina',
+                    }
                 },
             ],
             estado: 'entregado',
@@ -83,10 +90,10 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     useEffect(() => {
         if (pedido.id != undefined) {
             servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
-                var estado = data.data().estado; //real
-                //var estado = 'entregado'; //test
+                //var estado = data.data().estado; //real
+                var estado = 'confirmado'; //test
 
-                setEstadoPedido(estado);
+                setEstadoPedido(estado); //prod
 
             }, (error: Error) => console.log('error', error))
         }
@@ -111,7 +118,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const pantallaEncuesta = () => {
         if (usuario != null) {
             if (usuario.email != null || usuario.email != undefined) {
-                navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });                
+                navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
             } else {
                 Alert.alert(
                     'Lo Sentimos!',
@@ -152,11 +159,10 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
 
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
-        const tipo = JSON.parse(data.data).qr;
-        const pedido = JSON.parse(data.data);
+        const valores = JSON.parse(data.data);
 
-        if (pedido.qr == 'pedido') {
-            if (pedido.estado == 'entregado') {
+        if (valores.qr == 'pedido') {
+            if (valores.estado == 'entregado') {
                 pedido.estado = 'confirmado';
                 setPedido(pedido);
                 setEstadoPedido(pedido.estado);
@@ -202,9 +208,53 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
         setEscanear(!escanear);
     }
 
+    const escanearQRPropina = (data: any) => {
+        //aca debe ir la logica de escanear la mesa
+        const valores = JSON.parse(data.data);
+
+        if (valores.qr == 'propina') {
+            //const descuento = parseInt(valores.descuento);
+            pedido.total = pedido.total - (10 * pedido.total / 100); //descuento del 10%
+            setPedido(pedido);
+            if (context != null) {
+                if (context.pedido != null) {
+                    context.pedido.total = pedido.total;                    
+                }
+            }
+            //version en prod
+            /* servicioPedido.updateOne({ total: pedido.total }, pedido.id).then(() => {
+                navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
+            }); */
+            navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
+        } else {
+            Alert.alert(
+                'Error',
+                'Debe escanear una propina',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
+
+
+        setEscanearPropina(!escanearPropina);
+    }
+
     const renderizarQR = () => {
         //esta es la accion real
         setEscanear(!escanear);
+        setCambio(!cambio);
+    }
+
+    const renderizarQRPropina = () => {
+        //esta es la accion real
+        setEscanearPropina(!escanearPropina);
         setCambio(!cambio);
     }
 
@@ -258,19 +308,39 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                             </View>
                             : <View></View>
                         }
-                        <View>
-                            <TouchableOpacity style={styles.button} onPress={checkoutPedido}>
-                                <Icon
-                                    size={30}
-                                    color={SECONDARY_COLOR}
-                                    type={'ionicon'}
-                                    name={'wallet'}
-                                />
-                                <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
-                                    Pedir Cuenta
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        {escanearPropina ?
+                            <View style={styles.containerQR}>
+                                <View style={styles.containerCamara}>
+                                    <BarCodeScanner
+                                        onBarCodeScanned={escanearQRPropina}
+                                        style={styles.camara}
+                                    />
+                                </View>
+                                <TouchableOpacity style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 50, padding: 5, width: 50, paddingBottom: 5, paddingTop: 5 }} onPress={renderizarQRPropina}>
+                                    <Icon
+                                        size={38}
+                                        color={BG_COLOR}
+                                        type={'ionicon'}
+                                        name={'close-outline'}
+                                        style={{ textAlign: 'center' }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View>
+                                <TouchableOpacity style={styles.button} onPress={renderizarQRPropina}>
+                                    <Icon
+                                        size={30}
+                                        color={SECONDARY_COLOR}
+                                        type={'ionicon'}
+                                        name={'wallet'}
+                                    />
+                                    <Text style={{ fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18, textAlign: 'center' }}>
+                                        Pedir Cuenta
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
                         <View>
                             <TouchableOpacity style={styles.button} onPress={enDesarrollo}>
                                 <Icon
