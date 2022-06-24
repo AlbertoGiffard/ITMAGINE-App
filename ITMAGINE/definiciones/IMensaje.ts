@@ -1,6 +1,6 @@
 
 export declare interface IMensaje {
-    fecha : string,
+    fecha : any,
     mensaje : string,
     emisor: string // Nro Mesa o email mozo
 }

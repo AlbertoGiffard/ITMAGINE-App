@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { View } from "react-native-animatable";
 import { Title } from "react-native-paper";
 import { AppContext } from "../../../context/AppContext";
@@ -19,7 +19,7 @@ export const Chat = () => {
     const [habilitarEnviar, setHabilitarEnviar] = useState<boolean>(false);
     const {usuario, mesa} = useContext(AppContext);
 
-    if (!mesa) return <Text>Para utilizar esta funcionalidad se debe encontrar en una mesa...</Text>    
+    if (!mesa && !usuario.CUIL) return <Text>Para utilizar esta funcionalidad se debe encontrar en una mesa...</Text>    
     
     useEffect( () => {
         if ( usuario instanceof String ) setIdUsuario(usuario as string);
@@ -49,7 +49,7 @@ export const Chat = () => {
                     return
                 }
 
-                const chatPropio = chats.find( chat => chat.mesa.numero === mesa.numero )
+                const chatPropio = chats.find( chat => chat.mesa.numero === mesa?.numero )
                 setChat(chatPropio);
             },
             (err) => {
@@ -66,7 +66,7 @@ export const Chat = () => {
                 mensajes: [],
                 mesa: mesa
             }
-            DBChat.doc().set(nuevoChat);
+            DBChat.doc(nuevoChat.id).set(nuevoChat);
             return
         }
 
@@ -78,13 +78,13 @@ export const Chat = () => {
         if (!chat.mensajes) return <Text style={styles.textUsers}>{"Animate, hacé la consulta que quieras! ;)"}</Text>
 
         return chat.mensajes
-            .sort( (m1, m2) => m1.fecha.localeCompare(m2.fecha) )
+            .sort( (m1, m2) => m1.fecha.seconds - m2.fecha.seconds )
             .map( (mensaje) => {
                 
                 return <View style={ mensaje.emisor === idUsuario ? styles.chatMessagePropio : styles.chatMessage }>
                     <Title>{mensaje.emisor}</Title>
                     <Text>{mensaje.mensaje}</Text>
-                    <Text>{mensaje.fecha}</Text>
+                    <Text>{ (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString() }</Text>
                 </View>
 
             } )
@@ -92,8 +92,7 @@ export const Chat = () => {
 
     const enviarMensaje = () => {
         if(!chat) return
-        const fechaActual = new Date();
-        const fecha = `${fechaActual.getFullYear()}/${fechaActual.getMonth()}/${fechaActual.getDate()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}:${fechaActual.getSeconds()}`
+        const fecha = new Date();
 
         chat.mensajes.push({ mensaje, emisor: idUsuario, fecha });
 
@@ -104,9 +103,9 @@ export const Chat = () => {
         <View
             style={styles.container}>
             <View style={styles.formMarco}>
-                <View style={styles.chatMessages}>
+                <ScrollView style={styles.chatMessages}>
                     {mostrarMensajes()}
-                </View>
+                </ScrollView>
                 <View style={styles.chatSendContainer}>
                     <TextInput onChangeText={ (mensaje) => { 
                         if (mensaje.length === 0) return setHabilitarEnviar(false);
@@ -136,9 +135,9 @@ const styles = StyleSheet.create({
         alignItems: "baseline",
     },
     chatMessages: {
-        height: "80%",
+        height: "70%",
         flex: 1,
-        flexDirection: "column-reverse",
+        flexDirection: "column",
         alignContent: "center"
     },
     chatMessage: {
