@@ -29,7 +29,7 @@ const MenuMozo = () => {
     }
 
     const NavegarChat = () => {
-      //navigate
+      navigation.navigate( 'Carga', { siguientePantalla: 'Chat' } )
     }
     
   return (

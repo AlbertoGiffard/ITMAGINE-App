@@ -167,7 +167,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         //aca debe ir la logica de escanear la mesa
         const tipo = JSON.parse(data.data).qr;
         const valor = JSON.parse(data.data);
-
+        console.log(valor)
         setEscanear(!escanear);
         
         switch (tipo) {
