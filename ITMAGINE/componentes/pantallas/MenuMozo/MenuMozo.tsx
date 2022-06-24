@@ -1,13 +1,16 @@
 
 
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator } from "react-native";
 import {auth} from '../../../firebase'
 import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { useNavigation } from '@react-navigation/native';
-
+import firebase from '../../../utils/firebase';
+import { COLECCION_CHAT_MOZO_CLIENTE } from '../../../services/colecciones';
+import { IChatMozoCliente } from '../../../definiciones/IChatMozoCliente';
+import { crearNotificacion } from '../../../services/pushNotification';
 
 
 export const windowWidth = Dimensions.get('window').width;
@@ -21,8 +24,22 @@ const MenuMozo = () => {
     const [errorMsgInicio, setErrorMsgInicio] = useState(false);
     let errorMessage;
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
+    const DBChat = firebase.firestore().collection(COLECCION_CHAT_MOZO_CLIENTE);
 
-    
+    useEffect( () => {
+      DBChat.onSnapshot(
+        (snapshot) => {
+          const chats = snapshot.docs.map( doc => doc.data() as IChatMozoCliente );
+
+          chats.forEach( (chat) => {
+            if (!chat.emailMozo) {
+              return crearNotificacion( `Consulta de Mesa ${chat.mesa.numero}`, "Hay una nueva consulta para responder!" )
+            }
+          } );
+
+        }
+      )
+    }, [] );
 
     const NavegarPedidos = () => {
       navigation.navigate( 'Carga', { siguientePantalla: 'PedidosMozo' } )

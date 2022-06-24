@@ -25,7 +25,7 @@ export const Chat = () => {
         if ( usuario instanceof String ) setIdUsuario(usuario as string);
         else setIdUsuario(usuario.email);
 
-        DBChat.onSnapshot( 
+        return DBChat.onSnapshot( 
             (snapshot) => {
                 setErrorMsg("");
                 snapshot.docs
@@ -40,8 +40,9 @@ export const Chat = () => {
                             setErrorMsg("No hay preguntas!")
                             return
                         }
-
-                        setChat( chatsNoAsignados[0] );
+                        const nuevoChat = chatsNoAsignados[0];
+                        nuevoChat.emailMozo = usuario.email;
+                        setChat( nuevoChat );
                         return
                     }
 
@@ -56,6 +57,7 @@ export const Chat = () => {
 
             }
         )
+
     }, [] );
 
     useEffect( () => {
@@ -70,6 +72,13 @@ export const Chat = () => {
             return
         }
 
+        if ( chat && usuario.CUIL ) {
+            DBChat.doc( chat.id ).get()
+                .then( doc => doc.data() as IChatMozoCliente )
+                .then( data => data.emailMozo === undefined )
+                .then( noTieneEmail => noTieneEmail ? DBChat.doc( chat.id ).update(chat) : undefined );
+        }
+
     }, [chat] );
 
     const mostrarMensajes = () => {
@@ -79,9 +88,9 @@ export const Chat = () => {
 
         return chat.mensajes
             .sort( (m1, m2) => m1.fecha.seconds - m2.fecha.seconds )
-            .map( (mensaje) => {
+            .map( (mensaje, index) => {
                 
-                return <View style={ mensaje.emisor === idUsuario ? styles.chatMessagePropio : styles.chatMessage }>
+                return <View key={index} style={ mensaje.emisor === idUsuario ? styles.chatMessagePropio : styles.chatMessage }>
                     <Title>{mensaje.emisor}</Title>
                     <Text>{mensaje.mensaje}</Text>
                     <Text>{ (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString() }</Text>
