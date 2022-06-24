@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { View } from "react-native-animatable";
 import { Title } from "react-native-paper";
+import { black } from "react-native-paper/lib/typescript/styles/colors";
 import { AppContext } from "../../../context/AppContext";
 import { IChatMozoCliente } from "../../../definiciones/IChatMozoCliente";
-import { PRIMARY_COLOR_DISABLED, windowHeight, windowWidth } from "../../../estilos/globalStyle";
+import { PRIMARY_COLOR, PRIMARY_COLOR_DISABLED, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
 import { COLECCION_CHAT_MOZO_CLIENTE } from "../../../services/colecciones";
 import firebase from "../../../utils/firebase";
 
@@ -15,6 +16,7 @@ export const Chat = () => {
     const [chat, setChat] = useState<IChatMozoCliente | undefined>();
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [mensaje, setMensaje] = useState<string>("");
+    //let mensaje:string = "";
     const [idUsuario, setIdUsuario] = useState<string>("");
     const [habilitarEnviar, setHabilitarEnviar] = useState<boolean>(false);
     const {usuario, mesa} = useContext(AppContext);
@@ -82,9 +84,9 @@ export const Chat = () => {
             .map( (mensaje) => {
                 
                 return <View style={ mensaje.emisor === idUsuario ? styles.chatMessagePropio : styles.chatMessage }>
-                    <Title>{mensaje.emisor}</Title>
-                    <Text>{mensaje.mensaje}</Text>
-                    <Text>{ (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString() }</Text>
+                    {mensaje.emisor != idUsuario && <Title style={styles.userOtro} >{mensaje.emisor}</Title>}
+                    <Text style={ mensaje.emisor === idUsuario ? styles.messagePropio : styles.message }>{mensaje.mensaje}</Text>
+                    <Text style={styles.hora}>{ (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString() }</Text>
                 </View>
 
             } )
@@ -97,6 +99,8 @@ export const Chat = () => {
         chat.mensajes.push({ mensaje, emisor: idUsuario, fecha });
 
         DBChat.doc( chat.id ).set(chat);
+
+       setMensaje("");
     }
 
     return (
@@ -107,12 +111,11 @@ export const Chat = () => {
                     {mostrarMensajes()}
                 </ScrollView>
                 <View style={styles.chatSendContainer}>
-                    <TextInput onChangeText={ (mensaje) => { 
-                        if (mensaje.length === 0) return setHabilitarEnviar(false);
-                        setMensaje(mensaje);
-                        setHabilitarEnviar(true);
-                     } } style={styles.input}/>
-                    <TouchableOpacity disabled={!habilitarEnviar} onPress={ enviarMensaje } style={styles.button}>
+                    <TextInput 
+                      value={mensaje}
+                      onChangeText={(text) => setMensaje(text)}
+                      style={styles.input}/>
+                    <TouchableOpacity onPress={ enviarMensaje } style={styles.button}>
                         <Text style={styles.textUsers}>Enviar</Text>
                     </TouchableOpacity>
                 </View>
@@ -133,30 +136,55 @@ const styles = StyleSheet.create({
         width: windowWidth,
         flexDirection:"row",
         alignItems: "baseline",
+        height: windowHeight * 0.15,
     },
     chatMessages: {
-        height: "70%",
+        maxHeight: windowHeight * 0.85,
         flex: 1,
-        flexDirection: "column",
-        alignContent: "center"
-    },
-    chatMessage: {
+        alignContent: "center",
+        marginTop: windowHeight * 0.05
+      },
+      chatMessage: {
         borderRadius: 50,
-        width: windowWidth * 0.9,
-        backgroundColor: PRIMARY_COLOR_DISABLED,
+        backgroundColor: PRIMARY_COLOR,
         padding: 10,
-        margin: 5
+        margin: 5,
+        paddingLeft: 16,
+        marginRight: windowWidth * 0.15,
+    },
+    userOtro:{
+      textAlign:"left",
+      paddingLeft: windowWidth * 0.04,
+      fontWeight: "bold"
     },
     chatMessagePropio: {
         borderRadius: 50,
-        width: windowWidth * 0.9,
-        backgroundColor: "#FFFFFFB5",
+        backgroundColor: SECONDARY_COLOR,
         padding: 10,
-        margin: 5
+        marginVertical: 2.5,
+        textAlign: "right",
+        marginLeft: windowWidth * 0.15,
+
+    },
+    messagePropio:{
+      textAlign:"left",
+      paddingLeft: windowWidth * 0.04,
+      fontSize: 17
+    },
+    message:{
+      textAlign:"left",
+      paddingLeft: windowWidth * 0.04,
+      fontSize: 17
+    },
+    hora:{
+      textAlign: "right",
+      marginTop: windowWidth * 0.03,
+      marginRight: windowWidth * 0.04,
+      color: "black"
     },
     formMarco: {
       marginHorizontal: 30,
-      height: windowHeight * 0.90,
+      height: windowHeight,
       borderRadius: 40,
       width: windowWidth * 0.99,
       justifyContent: "center",
@@ -165,7 +193,7 @@ const styles = StyleSheet.create({
       shadowOpacity: 1,
       elevation: 250,
       shadowOffset: { width: 0, height: 0 },
-      flex: 1
+      flex: 1,
     },
     form: {
       marginHorizontal: 30,
