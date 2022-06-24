@@ -6,6 +6,7 @@ import { DBService } from '../../../services/DBService';
 import CardCliente from '../../Cards/cardCliente';
 import { ICliente } from '../../../definiciones/ICliente';
 import { COLECCION_CLIENTES } from '../../../services/colecciones';
+import { crearNotificacion } from '../../../services/pushNotification';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -25,6 +26,8 @@ const ListadoCliente = () => {
                 if(data != undefined){
                     const auxClientes = data.docs.map((doc:any) => doc.data());
                     setClientes(auxClientes);
+                    
+                    crearNotificacion( "Nuevos clientes para aceptar!", "Hay clientes que requieren ser validados!" )
                 }
               },
               (error:any) => console.log(error)
