@@ -97,7 +97,7 @@ const MenuProducto = () => {
     }
     
     const NavegarChat = () => {
-        navigation.navigate( 'Carga', {siguientePantalla: 'ListadoPedido' } )
+        navigation.navigate( 'Carga', {siguientePantalla: 'Chat' } )
     }
 
   return (
