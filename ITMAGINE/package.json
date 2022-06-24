@@ -35,7 +35,8 @@
     "react-native-table-component": "^1.2.2",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "react-native-safe-area-context": "3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

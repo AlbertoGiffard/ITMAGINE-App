@@ -1,8 +1,6 @@
-import { IMesa } from "./IMesa";
 
 export declare interface IMensaje {
     fecha : string,
-    emailMozo : string,
-    mesa : IMesa,
-    mensaje : string
+    mensaje : string,
+    emisor: string // Nro Mesa o email mozo
 }
