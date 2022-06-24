@@ -26,7 +26,7 @@ const CheckoutPedido = () => {
             setPedido(context.pedido);
         } 
 
-        const pedidoPrueba = {
+        /* const pedidoPrueba = {
             id: 21,
             cliente: {
                 email: 'junior.prueba@gmail.com',
@@ -78,7 +78,7 @@ const CheckoutPedido = () => {
             total: 1500
         }
 
-        setPedido(pedidoPrueba);
+        setPedido(pedidoPrueba); */
     }, []);
 
     const regresar = () => {

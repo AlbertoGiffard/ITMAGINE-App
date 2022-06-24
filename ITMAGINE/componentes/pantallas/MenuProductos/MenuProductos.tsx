@@ -75,7 +75,8 @@ const MenuProducto = () => {
         }
     }
 
-    const EnviarPedido = () => {        
+    const EnviarPedido = () => {     
+          
         
         if(context != null){ 
             
@@ -92,6 +93,7 @@ const MenuProducto = () => {
                     total: total,
                     tiempoProm: tiempo
         }}
+
 
         navigation.navigate( 'Carga', {siguientePantalla: 'ListadoPedido' } )
     }

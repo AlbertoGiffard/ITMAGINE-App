@@ -73,52 +73,71 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const numero = valor.numero;
         const estado = valor.estadoAtencion;
         const tipo = valor.tipo;
-        const nombreCliente = valor.nombreCliente;  
-        
-        console.log(estado);
+        //const nombreCliente = valor.nombreCliente; 
+        const nombreCliente = "LEANDRO GASTN"; 
+        console.log(context.pedido);
+        usuario.nombre = "LEANDRO GASTN";
+        console.log(usuario.nombre);
         console.log(nombreCliente);
         
-
-        if (estado == 'ocupado' && nombreCliente == usuario.nombre) {
-            if (context != null) {
-                if (context.pedido == null || context.pedido == undefined) {
-                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
-                } else {
-                    navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+         
+        
+        servicioMesa.getById(numero.toString()).then((mesa) => {
+            if (mesa.estadoAtencion == 'ocupado' && nombreCliente == usuario.nombre) {
+                if (context != null) {
+                    if (context.pedido == null || context.pedido == undefined) {
+                        navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                    } else {
+                        navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+                    }
                 }
             }
-        }
-        else if (estado == 'libre') {
-            if (usuario.estado != 'en mesa') {
-                const mesa: IMesa = {
-                    estadoAtencion: 'ocupado',
-                    nombreCliente: usuario.nombre,
-                    numero: numero,
-                    tipo: tipo,
-                    cantidadComensales: 1
-                }
-
-                usuario.estado = 'en mesa';
-                setUsuario(usuario);
-                //actualiza mesa y usuario en context
-                if (context != null) {
-                    context.mesa = mesa;
-                    context.usuario = usuario;
-                }
-                //si tiene email actualiza en fb
-                if (usuario.email) {
-                    servicioCliente.updateOne(usuario, usuario.email);
+            else if (mesa.estadoAtencion == 'libre') {
+                if (usuario.estado != 'en mesa') {
+                    const mesa: IMesa = {
+                        estadoAtencion: 'ocupado',
+                        nombreCliente: usuario.nombre,
+                        numero: numero,
+                        tipo: tipo,
+                        cantidadComensales: 1
+                    }
+    
+                    usuario.estado = 'en mesa';
+                    setUsuario(usuario);
+                    //actualiza mesa y usuario en context
+                    if (context != null) {
+                        context.mesa = mesa;
+                        context.usuario = usuario;
+                    }
+                    //si tiene email actualiza en fb
+                    if (usuario.email) {
+                        servicioCliente.updateOne(usuario, usuario.email);
+                    } else {
+                        servicioCliente.insertOne(usuario, usuario.nombre);
+                    }
+                    //redirige a la pagina de productos
+                    servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
+                        navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                    });
                 } else {
-                    servicioCliente.insertOne(usuario, usuario.nombre);
+                    Alert.alert(
+                        'Error',
+                        'Usted ya se encuentra asignado a una mesa',
+                        [
+                            {
+                                text: 'Entendido',
+                                style: 'cancel',
+                            },
+                        ],
+                        {
+                            cancelable: true,
+                        }
+                    );
                 }
-                //redirige a la pagina de productos
-                servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
-                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
-                });
             } else {
                 Alert.alert(
                     'Error',
-                    'Usted ya se encuentra asignado a una mesa',
+                    'La mesa se encuentra ocupada',
                     [
                         {
                             text: 'Entendido',
@@ -130,21 +149,9 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                     }
                 );
             }
-        } else {
-            Alert.alert(
-                'Error',
-                'La mesa se encuentra ocupada',
-                [
-                    {
-                        text: 'Entendido',
-                        style: 'cancel',
-                    },
-                ],
-                {
-                    cancelable: true,
-                }
-            );
-        }
+        });
+
+
 
     }
 
@@ -165,12 +172,11 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     const escanearQR = (data: any) => {
         //aca debe ir la logica de escanear la mesa
-        const tipo = JSON.parse(data.data).qr;
         const valor = JSON.parse(data.data);
         console.log(valor)
         setEscanear(!escanear);
         
-        switch (tipo) {
+        switch (valor.qr) {
             case 'listaEspera':
                 if (context?.pedido != null) {
                     //aca va la navegacion hasta el listado de encuestas

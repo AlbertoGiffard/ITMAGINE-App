@@ -90,8 +90,8 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     useEffect(() => {
         if (pedido.id != undefined) {
             servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
-                //var estado = data.data().estado; //real
-                var estado = 'confirmado'; //test
+                var estado = data.data().estado; //real
+                //var estado = 'confirmado'; //test
 
                 setEstadoPedido(estado); //prod
 

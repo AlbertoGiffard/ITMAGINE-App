@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
         margin: 5,
         paddingLeft: 16,
         marginRight: windowWidth * 0.15,
+        width: windowWidth * 0.80
     },
     userOtro:{
       textAlign:"left",
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
         marginVertical: 2.5,
         textAlign: "right",
         marginLeft: windowWidth * 0.15,
-
+        width: windowWidth * 0.80
     },
     messagePropio:{
       textAlign:"left",
