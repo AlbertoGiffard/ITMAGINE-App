@@ -13,7 +13,6 @@ import PedidosMozo from './componentes/pantallas/PedidosMozo/PedidosMozo';
 import { AppContext } from './context/AppContext';
 import { settearHandlerDeNotificacion } from './services/pushNotification';
 
-LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage", "Non-serializable values were found in the navigation state.", "VirtualizedList: missing keys for items, make sure to specify a key or id property on each item or provide a custom keyExtractor.", "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.", "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.", "Unhandled promise rejection: TypeError: _n7.indexOf is not a function. (In '_n7.indexOf('//')', '_n7.indexOf' is undefined)"]);
 LogBox.ignoreAllLogs();
 
 export default function App() {

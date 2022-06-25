@@ -73,10 +73,8 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const numero = valor.numero;
         const estado = valor.estadoAtencion;
         const tipo = valor.tipo;
-        //const nombreCliente = valor.nombreCliente; 
-        const nombreCliente = "LEANDRO GASTN"; 
+        const nombreCliente = valor.nombreCliente; 
         console.log(context.pedido);
-        usuario.nombre = "LEANDRO GASTN";
         console.log(usuario.nombre);
         console.log(nombreCliente);
         

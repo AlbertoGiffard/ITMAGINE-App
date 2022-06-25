@@ -57,9 +57,10 @@ const LoginScreen = () => {
       console.log(email, password);
       
       console.log('valor ', valor);
-      if (valor.password == password) {
+      if (valor.password == password && valor.validacion === "aprobado") {
         setLoading(false);
         setErrorMsgInicio(true);
+        errorMessage = ""; 
 
         if (context != null) {
           context.usuario = valor;
@@ -91,6 +92,7 @@ const LoginScreen = () => {
         }
       } else {
         setErrorMsgInicio(true);
+        errorMessage = "No ha sido aprobado!";
         setLoading(false);
         throw new Error;
       }
