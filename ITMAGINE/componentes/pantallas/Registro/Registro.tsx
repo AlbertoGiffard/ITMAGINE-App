@@ -62,12 +62,14 @@ const PantallaRegistro = () => {
     }
 
     const settearFotoUrl = ( fotoUrl : string ) => {
-      
+      setHabilitarBotonRegistro(false);
+      console.log(habilitarBotonRegistro)
       setSacandoFoto(false);
       setSacarFoto(false);
       
       uploadImage( fotoUrl, email )
-        .then( url => { setFotoUrl( url ); setGeneralErrorMessage(''); return url } );
+        .then( url => { setFotoUrl( url ); setGeneralErrorMessage(''); return url } )
+        .then( url => {setHabilitarBotonRegistro(true); return url} );
     }
 
     const settearEmail = ( email : string ) => {
@@ -219,7 +221,7 @@ const PantallaRegistro = () => {
             </ScrollView>
             <View  style = {styles.buttonUsers}>
               <Text style={styles.errorMessage}>{generalErrorMsg}</Text>
-              <TouchableOpacity disabled={!habilitarBotonRegistro} style={ {...styles.button, backgroundColor: (habilitarBotonSacarFoto) ? PRIMARY_COLOR : PRIMARY_COLOR_DISABLED} } onPress={handleSignUp}>
+              <TouchableOpacity disabled={!habilitarBotonRegistro} style={ {...styles.button, backgroundColor: (habilitarBotonSacarFoto) ? "#0000" : PRIMARY_COLOR_DISABLED} } onPress={handleSignUp}>
                   <Text style={{fontWeight: 'bold', color: SECONDARY_COLOR, fontSize: 18}}>Registrarse</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

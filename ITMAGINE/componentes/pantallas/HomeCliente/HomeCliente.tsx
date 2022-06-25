@@ -9,8 +9,10 @@ import { AppContext } from '../../../context/AppContext';
 import { ICliente } from '../../../definiciones/ICliente';
 import { IMesa } from '../../../definiciones/IMesa';
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
-import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA, COLECCION_MESAS } from '../../../services/colecciones';
+import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA, COLECCION_MESAS, COLECCION_PEDIDOS } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
+import { TipoMesa } from '../../../definiciones/IMesa';
+import { IPedido } from '../../../definiciones/IPedido';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
@@ -25,6 +27,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     const servicioEspera = new DBService<IEspera>(COLECCION_COLA_ESPERA);
     const servicioMesa = new DBService<IMesa>(COLECCION_MESAS);
     const servicioCliente = new DBService<ICliente>(COLECCION_CLIENTES);
+    const servicioPedidos  = new DBService<IPedido>(COLECCION_PEDIDOS);
 
     useEffect(() => {
         if (context?.usuario) {
@@ -73,71 +76,79 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
         const numero = valor.numero;
         const estado = valor.estadoAtencion;
         const tipo = valor.tipo;
-        const nombreCliente = valor.nombreCliente; 
-        //const nombreCliente = "LEANDRO GASTN"; 
-        console.log(context.pedido);
-        //usuario.nombre = "LEANDRO GASTN";
-        console.log(usuario.nombre);
-        console.log(nombreCliente);
-        
-         
+        const nombreCliente = valor.nombreCliente;
         
         servicioMesa.getById(numero.toString()).then((mesa) => {
-            if (mesa.estadoAtencion == 'ocupado' && nombreCliente == usuario.nombre) {
-                if (context != null) {
-                    if (context.pedido == null || context.pedido == undefined) {
-                        navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
-                    } else {
-                        navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+            servicioPedidos.getAll()
+                .then( pedidos => pedidos.find( pedido => {
+
+                    if ( pedido.estado === 'pagado' ) {
+                        return false
                     }
+
+                    if ( pedido.cliente.nombre && context.usuario.nombre ) {
+                        return pedido.cliente.nombre === context.usuario.nombre
+                    }
+
+                    if ( pedido.cliente.email && context.usuario.email ) {
+                        return pedido.cliente.email === context.usuario.email
+                    }
+
+                    return false;
+                } ) )
+                .then( pedido => {
+                    if (pedido) {
+                        context.pedido = pedido;
+                        navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
+                        return
+                    }
+                    mesaFoo(mesa, numero, tipo);
+                } )
+        });
+
+    }
+
+    const mesaFoo = (mesa : any, numero : number, tipo : TipoMesa) => {
+        if (mesa.estadoAtencion == 'ocupado' && mesa.nombreCliente == usuario.nombre) {
+            if (context != null) {
+                if (context.pedido == null || context.pedido == undefined) {
+                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                } else {
+                    navigation.navigate('Carga', { siguientePantalla: 'ClienteEnMesa' });
                 }
             }
-            else if (mesa.estadoAtencion == 'libre') {
-                if (usuario.estado != 'en mesa') {
-                    const mesa: IMesa = {
-                        estadoAtencion: 'ocupado',
-                        nombreCliente: usuario.nombre,
-                        numero: numero,
-                        tipo: tipo,
-                        cantidadComensales: 1
-                    }
-    
-                    usuario.estado = 'en mesa';
-                    setUsuario(usuario);
-                    //actualiza mesa y usuario en context
-                    if (context != null) {
-                        context.mesa = mesa;
-                        context.usuario = usuario;
-                    }
-                    //si tiene email actualiza en fb
-                    if (usuario.email) {
-                        servicioCliente.updateOne(usuario, usuario.email);
-                    } else {
-                        servicioCliente.insertOne(usuario, usuario.nombre);
-                    }
-                    //redirige a la pagina de productos
-                    servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
-                        navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
-                    });
-                } else {
-                    Alert.alert(
-                        'Error',
-                        'Usted ya se encuentra asignado a una mesa',
-                        [
-                            {
-                                text: 'Entendido',
-                                style: 'cancel',
-                            },
-                        ],
-                        {
-                            cancelable: true,
-                        }
-                    );
+        }
+        else if (mesa.estadoAtencion == 'libre') {
+            if (usuario.estado != 'en mesa') {
+                const mesa: IMesa = {
+                    estadoAtencion: 'ocupado',
+                    nombreCliente: usuario.nombre,
+                    numero: numero,
+                    tipo: tipo,
+                    cantidadComensales: 1
                 }
+
+                usuario.estado = 'en mesa';
+                setUsuario(usuario);
+                //actualiza mesa y usuario en context
+                if (context != null) {
+                    context.mesa = mesa;
+                    context.usuario = usuario;
+                }
+                //si tiene email actualiza en fb
+                if (usuario.email) {
+                    servicioCliente.updateOne(usuario, usuario.email);
+                } else {
+                    servicioCliente.insertOne(usuario, usuario.nombre);
+                }
+                //redirige a la pagina de productos
+                servicioMesa.insertOne(mesa, mesa.numero.toString()).then(() => {
+                    navigation.navigate('Carga', { siguientePantalla: 'MenuProducto' });
+                });
             } else {
                 Alert.alert(
                     'Error',
-                    'La mesa se encuentra ocupada',
+                    'Usted ya se encuentra asignado a una mesa',
                     [
                         {
                             text: 'Entendido',
@@ -149,10 +160,21 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
                     }
                 );
             }
-        });
-
-
-
+        } else {
+            Alert.alert(
+                'Error',
+                'La mesa se encuentra ocupada',
+                [
+                    {
+                        text: 'Entendido',
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                }
+            );
+        }
     }
 
     const cambiarAListaDeEspera = () => {
@@ -186,7 +208,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
             case 'listaEspera':
                 if (context?.pedido != null) {
                     //aca va la navegacion hasta el listado de encuestas
-                    navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
+                    navigation.navigate('Carga', { siguientePantalla: 'GraficoEncuestas' });
                 } else {
                     cambiarAListaDeEspera();
                 }

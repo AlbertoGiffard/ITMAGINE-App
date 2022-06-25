@@ -1,4 +1,4 @@
-declare type TipoMesa = "vip" | "para discapacitados" | "estandar";
+export declare type TipoMesa = "vip" | "para discapacitados" | "estandar";
 
 /**
  * Estados que puede tomar la mesa respecto a los comensales que puede haber en ella.
@@ -6,7 +6,7 @@ declare type TipoMesa = "vip" | "para discapacitados" | "estandar";
  * ocupado: **
  * reservado: **
  */
- declare type EstadoAtencion = "libre" | "ocupado" | "reservado";
+export declare type EstadoAtencion = "libre" | "ocupado" | "reservado";
 
 export declare interface IMesa {
     numero : number,

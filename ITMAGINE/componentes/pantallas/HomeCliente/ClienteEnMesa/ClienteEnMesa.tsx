@@ -122,7 +122,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 const fechaStr = `${fecha.getFullYear()}/${fecha.getMonth()}/${fecha.getDate()}`;
                 servicioEncuesta.getAll()
                     .then( encuestas => encuestas.find( encuesta => encuesta.email == usuario.email && encuesta.fecha == fechaStr ) )
-                    .then( completo => completo ? mostrarAlert("Lo sentimos!", "Ya registró una encuesta en el día de hoy.") : navigation.navigate('Carga', { siguientePantalla: 'Encuesta' }) )
+                    .then( completo => completo ? navigation.navigate('Carga', { siguientePantalla: 'GraficoEncuestas' }) : navigation.navigate('Carga', { siguientePantalla: 'Encuesta' }) )
                     .catch( err => null );
             } else {
                 Alert.alert(
@@ -193,7 +193,8 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                         context.pedido.estado = pedido.estado;
                     }
                 }
-                servicioPedido.updateOne({ estado: pedido.estado }, pedido.id);
+                console.log(pedido)
+                servicioPedido.updateOne({ estado: pedido.estado }, pedido.id.toString());
             } else {
                 Alert.alert(
                     'Error',

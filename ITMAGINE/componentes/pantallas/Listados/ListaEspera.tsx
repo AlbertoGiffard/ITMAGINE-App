@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
+import { crearNotificacion } from '../../../services/pushNotification';
 //import { DBService } from '../../../services/DBService';
 import CardEspera from '../../Cards/cardEspera';
 
@@ -24,6 +25,10 @@ const ListaEspera = () => {
                 if(data != undefined){
                     const auxClientes = data.docs.map((doc:any) => doc.data());
                     setClientes(auxClientes);
+                    const alMenosUnCliente = auxClientes.find( (obj : any) => obj.cliente.estado == "en espera" );
+                    if (alMenosUnCliente) {
+                        crearNotificacion( "Nuevos clientes para aceptar!", "Hay clientes en lista!" );
+                    }
                 }
             },
             (error:any) => console.log(error)

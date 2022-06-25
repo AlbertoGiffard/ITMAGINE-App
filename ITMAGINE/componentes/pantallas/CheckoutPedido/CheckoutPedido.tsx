@@ -107,7 +107,7 @@ const CheckoutPedido = () => {
         //aca deberia actualizar en firebase
         servicioPedido.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
             return new Promise((resolve, reject) => {
-                context.usuario.estado = "activo";
+                context.usuario.estado = "inactivo";
                 servicioCliente.updateOne( context.usuario, context.usuario.email || context.usuario.nombre )
                 Alert.alert(
                     'Gracias',

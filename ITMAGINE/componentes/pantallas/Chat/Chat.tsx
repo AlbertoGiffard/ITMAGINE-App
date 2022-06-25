@@ -23,7 +23,7 @@ export const Chat = () => {
     if (!mesa && !usuario.CUIL) return <Text>Para utilizar esta funcionalidad se debe encontrar en una mesa...</Text>    
     
     useEffect( () => {
-        if ( usuario instanceof String ) setIdUsuario(usuario as string);
+        if ( usuario.nombre ) setIdUsuario(usuario.nombre);
         else setIdUsuario(usuario.email);
 
         return DBChat.onSnapshot( 
@@ -94,7 +94,7 @@ export const Chat = () => {
                 return <View key={index} style={ mensaje.emisor === idUsuario ? styles.chatMessagePropio : styles.chatMessage }>
                     {mensaje.emisor != idUsuario && <Title style={styles.userOtro} >{mensaje.emisor}</Title>}
                     <Text style={ mensaje.emisor === idUsuario ? styles.messagePropio : styles.message }>{mensaje.mensaje}</Text>
-                    <Text style={styles.hora}>{ (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString() }</Text>
+                    <Text style={styles.hora}>{ (usuario.CUIL && mensaje.emisor != idUsuario ? `Mesa: ${chat.mesa.numero}  -  ` : "") + (new Date(mensaje.fecha.seconds * 1000)).toLocaleTimeString()  }</Text>
                 </View>
 
             } )
@@ -105,7 +105,7 @@ export const Chat = () => {
         const fecha = new Date();
 
         chat.mensajes.push({ mensaje, emisor: idUsuario, fecha });
-
+        console.log(chat);
         DBChat.doc( chat.id ).set(chat);
 
        setMensaje("");

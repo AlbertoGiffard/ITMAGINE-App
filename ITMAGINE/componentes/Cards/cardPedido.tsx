@@ -1,18 +1,21 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { IItemPedido } from '../../definiciones/IItemPedido';
+import { IMesa } from '../../definiciones/IMesa';
 import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR } from '../../estilos/globalStyle';
-import { COLECCION_PEDIDOS } from '../../services/colecciones';
+import { COLECCION_MESAS, COLECCION_PEDIDOS } from '../../services/colecciones';
 import { DBService } from '../../services/DBService';
 
 
 export const windowHeight = Dimensions.get('window').height;
 export const windowWidth = Dimensions.get('window').width;
 
+
 const CardPedidoPendiente = (pend : any) => {
 
     const dataBase = new DBService(COLECCION_PEDIDOS);
     const dbItemsPedidos = new DBService<IItemPedido>("ItemsPedidos");
+    const mesaService = new DBService<IMesa>(COLECCION_MESAS)
 
 
     const AceptarPedido = () => {
@@ -35,6 +38,11 @@ const CardPedidoPendiente = (pend : any) => {
         dataBase.updateOne({estado: "entregado"}, pend.id.toString())
     }
 
+    const confirmarPagoPedido = () => {
+        dataBase.updateOne({estado: "pago confirmado"}, pend.id.toString())
+        mesaService.updateOne( { estadoAtencion: "libre" }, pend.numeroMesa.toString() );
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.vwTop}>
@@ -45,18 +53,21 @@ const CardPedidoPendiente = (pend : any) => {
                     <Text style={styles.textoNombre}> {pend.cliente.nombre} </Text>
                     <Text style={styles.textoMesa}>Mesa: {pend.numeroMesa}</Text>
                 </View>
-                {pend.estado == "pendiente" ?
+                {pend.estado == "pendiente" && 
                 <TouchableOpacity style={styles.vwpendTilde} onPress={AceptarPedido}>
                     <Text style={styles.txtAceptar}>ACEPTAR</Text>
-                </TouchableOpacity> :
+                </TouchableOpacity>}
+                {pend.estado == "preparado" && 
                 <TouchableOpacity style={styles.vwpendTilde} onPress={EntregarPedido}>
                     <Text style={styles.txtAceptar}>ENTREGAR</Text>
-                </TouchableOpacity>
-                }
+                </TouchableOpacity>}
+                {pend.estado == "pagado" && 
+                <TouchableOpacity style={styles.vwpendTilde} onPress={confirmarPagoPedido}>
+                    <Text style={styles.txtAceptar}>CONFIRMAR PAGO</Text>
+                </TouchableOpacity>}
             </View>
             {
                 pend.productos.map((obj:any, index:number) => {
-                    contador++;
                     return( 
                     <View key={index}>
                         <Text style={styles.textoProducto}>{obj.cantidad} {obj.producto.nombre}</Text>

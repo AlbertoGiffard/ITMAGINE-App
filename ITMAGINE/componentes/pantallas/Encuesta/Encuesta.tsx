@@ -56,7 +56,7 @@ export const Encuesta = () => {
             regresaria,
             satisfaccion,
             fotoEncuestaURL,
-            fecha: (new Date()).toDateString()
+            fecha
         }
 
         dbEncuestas.insertOne( encuesta, uuid.v4().toString() )

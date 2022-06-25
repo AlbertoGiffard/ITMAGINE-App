@@ -42,7 +42,7 @@ const PedidosMozo = () => {
   );
 };
 
-const componentes:any = [<ListadoPedidos  estado={"pendiente"} ></ListadoPedidos>, <ListadoPedidos estado={"preparado"}></ListadoPedidos>];
+const componentes:any = [<ListadoPedidos  estado={"pendiente"} ></ListadoPedidos>, <ListadoPedidos estado={"preparado"}></ListadoPedidos>, <ListadoPedidos estado={"pagado"}></ListadoPedidos>];
 
 export default PedidosMozo
 
