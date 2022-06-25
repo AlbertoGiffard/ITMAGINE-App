@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar } from "react-native";
-import { Button, Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
-import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Icon } from 'react-native-elements';
 import { DataTable } from 'react-native-paper';
 import { AppContext } from '../../../context/AppContext';
-import { DBService } from '../../../services/DBService';
-import { COLECCION_PEDIDOS } from '../../../services/colecciones';
 import { IPedido } from '../../../definiciones/IPedido';
+import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
+import { COLECCION_PEDIDOS } from '../../../services/colecciones';
+import { DBService } from '../../../services/DBService';
 
 const ListadoPedido = () => {
     const [pedido, setPedido] = useState<IPedido | any>({});

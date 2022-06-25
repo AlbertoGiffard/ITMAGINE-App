@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert } from "react-native";
-import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
-import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
+import React, { useContext, useState } from 'react';
+import { Alert, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Icon, Input } from 'react-native-elements';
 import { AppContext } from '../../../context/AppContext';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
 
 const IngresoAnonimo = () => {
     const [nombre, setNombre] = useState('');

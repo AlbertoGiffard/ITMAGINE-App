@@ -5,12 +5,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Alert, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'react-native-elements';
-import { ICliente } from '../../../definiciones/ICliente';
-import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
 import { AppContext } from '../../../context/AppContext';
-import { DBService } from '../../../services/DBService';
-import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA, COLECCION_MESAS } from '../../../services/colecciones';
+import { ICliente } from '../../../definiciones/ICliente';
 import { IMesa } from '../../../definiciones/IMesa';
+import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../estilos/globalStyle';
+import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA, COLECCION_MESAS } from '../../../services/colecciones';
+import { DBService } from '../../../services/DBService';
 
 const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }; }) => {
     const [usuario, setUsuario] = useState<ICliente | any>({ estado: '' });
@@ -45,7 +45,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     useEffect(() => {
         if (cambioEstado) {
-            servicioEspera.getListaEspera(usuario.nombre, (data: any) => {
+            return servicioEspera.getListaEspera(usuario.nombre, (data: any) => {
                 console.log('lista de espera: ', data.data());
                 if (data.data().cliente.estado == 'en mesa') {
                     usuario.estado = 'en mesa';

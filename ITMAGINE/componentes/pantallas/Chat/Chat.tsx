@@ -2,10 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { View } from "react-native-animatable";
 import { Title } from "react-native-paper";
-import { black } from "react-native-paper/lib/typescript/styles/colors";
 import { AppContext } from "../../../context/AppContext";
 import { IChatMozoCliente } from "../../../definiciones/IChatMozoCliente";
-import { PRIMARY_COLOR, PRIMARY_COLOR_DISABLED, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
+import { PRIMARY_COLOR, SECONDARY_COLOR, windowHeight, windowWidth } from "../../../estilos/globalStyle";
 import { COLECCION_CHAT_MOZO_CLIENTE } from "../../../services/colecciones";
 import firebase from "../../../utils/firebase";
 

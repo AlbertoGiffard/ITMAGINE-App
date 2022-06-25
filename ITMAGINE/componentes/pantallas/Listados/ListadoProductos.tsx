@@ -1,11 +1,11 @@
 
    
-import React, {useEffect, useState} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { IItemPedido } from '../../../definiciones/IItemPedido';
-import { IPedido } from '../../../definiciones/IPedido';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
 import { DBService } from '../../../services/DBService';
+import { crearNotificacion } from '../../../services/pushNotification';
 import CardProductoItem from '../../Cards/cardProductoItem';
 
 export const windowWidth = Dimensions.get('window').width;
@@ -19,12 +19,13 @@ const ListadoProductos = ( {estado, tipo}:{estado:string, tipo:string} ) => {
     const [productos, setProductos] = useState([])
 
     useEffect(() => {
-        dbItemPedidos.GetItems(estado, tipo, 
+        return dbItemPedidos.GetItems(estado, tipo, 
             (data:any) => {
                 
                 if(data != undefined){
                     const auxproductos = data.docs.map((doc:any) => doc.data());
                     setProductos(auxproductos);
+                    crearNotificacion( `Nuevo Pedido!`, "Hay nuevos pedidos para preparar!" )
                 }
             },
             (error:any) => console.log(error)

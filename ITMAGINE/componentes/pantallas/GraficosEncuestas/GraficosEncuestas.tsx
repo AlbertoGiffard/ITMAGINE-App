@@ -17,7 +17,7 @@ export const GraficoEncuestas = () => {
     const [promediosComida, setPromediosComida] = useState<number[]>([]);
 
     useEffect( () => {
-        firestore.collection( COLECCION_ENCUESTAS_CLIENTES ).onSnapshot(
+        return firestore.collection( COLECCION_ENCUESTAS_CLIENTES ).onSnapshot(
             (snapshot) => {
                 const datosEncuestas = snapshot.docs.map( doc => doc.data() as IEncuestaCliente );
                 

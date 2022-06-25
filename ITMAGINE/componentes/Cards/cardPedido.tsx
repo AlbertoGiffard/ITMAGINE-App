@@ -1,17 +1,13 @@
-import {Dimensions, StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpacity, Image, ActivityIndicator, ImageBackground} from 'react-native'
-import React, {useEffect, useState} from 'react'
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
-import { DBService } from '../../services/DBService';
-import { pedirPermisoDeNotifacion } from '../../services/pushNotification';
-import { COLECCION_PEDIDOS } from '../../services/colecciones';
-import { productName } from 'expo-device';
+import React from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { IItemPedido } from '../../definiciones/IItemPedido';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR } from '../../estilos/globalStyle';
+import { COLECCION_PEDIDOS } from '../../services/colecciones';
+import { DBService } from '../../services/DBService';
 
 
 export const windowHeight = Dimensions.get('window').height;
 export const windowWidth = Dimensions.get('window').width;
-
-let contador = 0;
 
 const CardPedidoPendiente = (pend : any) => {
 

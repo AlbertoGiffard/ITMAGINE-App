@@ -69,31 +69,32 @@ export class DBService<T> {
         return firestore.collection( this.coleccion ).doc( id ).update( obj as any );
     }
 
-    async GetClientesPorValidacion( validacion:string, onResult:any, onError:any){
-        return await firestore.collection(this.coleccion).where("validacion", "==", validacion).onSnapshot(onResult, onError);
+    GetClientesPorValidacion( validacion:string, onResult:any, onError:any){
+        return firestore.collection(this.coleccion).where("validacion", "==", validacion).onSnapshot(onResult, onError);
     }
 
-    async GetClientesEnEspera( onResult:any, onError:any){
-        return await firestore.collection(this.coleccion).where("cliente.estado", "==", "en espera").onSnapshot(onResult, onError);
+    GetClientesEnEspera( onResult:any, onError:any){
+        return firestore.collection(this.coleccion).where("cliente.estado", "==", "en espera").onSnapshot(onResult, onError);
     }
 
-    async GetPedidosPorEstado( estado:string, onResult:any, onError:any){
-        return await firestore.collection(this.coleccion).where("estado", "==", estado).onSnapshot(onResult, onError);
+    GetPedidosPorEstado( estado:string, onResult:any, onError:any){
+        return firestore.collection(this.coleccion).where("estado", "==", estado).onSnapshot(onResult, onError);
     }
 
-    async GetItems( estado:string,tipo:string, onResult:any, onError:any){
-        return await firestore.collection(this.coleccion).where("estado", "==", estado).where("tipo", "==", tipo).onSnapshot(onResult, onError);
+    GetItems( estado:string,tipo:string, onResult:any, onError:any){
+        return firestore.collection(this.coleccion).where("estado", "==", estado).where("tipo", "==", tipo).onSnapshot(onResult, onError);
     }
-    public async getUsuario (doc: string, onResult:any, onError:any) {
-        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
-    }
-
-    public async getListaEspera (doc: string, onResult:any, onError:any) {
-        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    
+    getUsuario (doc: string, onResult:any, onError:any) {
+        return firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
     }
 
-    public async getPedido (doc: string, onResult:any, onError:any) {
-        return await firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    getListaEspera (doc: string, onResult:any, onError:any) {
+        return firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
+    }
+
+    getPedido (doc: string, onResult:any, onError:any) {
+        return firestore.collection(this.coleccion).doc(doc).onSnapshot(onResult, onError);
     }
 
 }

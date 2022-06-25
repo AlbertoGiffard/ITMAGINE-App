@@ -2,12 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FAB } from 'react-native-paper';
 import { AppContext } from '../../../context/AppContext';
 import { ICliente } from '../../../definiciones/ICliente';
 import { IStaff } from '../../../definiciones/IStaff';
 import { COLECCION_CLIENTES, COLECCION_DUENIO, COLECCION_EMPLEADOS } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
-import { FAB } from 'react-native-paper';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -57,9 +57,10 @@ const LoginScreen = () => {
       console.log(email, password);
       
       console.log('valor ', valor);
-      if (valor.password == password) {
+      if (valor.password == password && valor.validacion === "aprobado") {
         setLoading(false);
         setErrorMsgInicio(true);
+        errorMessage = ""; 
 
         if (context != null) {
           context.usuario = valor;
@@ -91,6 +92,7 @@ const LoginScreen = () => {
         }
       } else {
         setErrorMsgInicio(true);
+        errorMessage = "No ha sido aprobado!";
         setLoading(false);
         throw new Error;
       }

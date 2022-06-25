@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, StatusBar, Text } from "react-native";
+import { StatusBar, View } from "react-native";
 import * as Animatable from 'react-native-animatable';
-import { BG_COLOR, TERCIARY_COLOR, SECONDARY_COLOR } from "../../../estilos/globalStyle";
+import { BG_COLOR, SECONDARY_COLOR, TERCIARY_COLOR } from "../../../estilos/globalStyle";
 
 export default class PantallaSplash extends Component {
     componentDidMount() {

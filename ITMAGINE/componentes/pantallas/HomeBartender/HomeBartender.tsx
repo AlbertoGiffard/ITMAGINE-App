@@ -1,7 +1,7 @@
 
    
 import React from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import { Animated, Dimensions, FlatList, ScrollView, StyleSheet, View } from 'react-native';
 //import { DBService } from '../../../services/DBService';
 import ListadoProductos from '../Listados/ListadoProductos';
 

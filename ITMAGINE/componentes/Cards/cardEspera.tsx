@@ -1,9 +1,9 @@
-import {Dimensions, StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpacity, Image, ActivityIndicator, ImageBackground} from 'react-native'
-import React, {useEffect, useState} from 'react'
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../estilos/globalStyle';
-import { DBService } from '../../services/DBService';
-import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA } from '../../services/colecciones';
+import React from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ICliente } from '../../definiciones/ICliente';
+import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR } from '../../estilos/globalStyle';
+import { COLECCION_CLIENTES, COLECCION_COLA_ESPERA } from '../../services/colecciones';
+import { DBService } from '../../services/DBService';
 
 
 export const windowHeight = Dimensions.get('window').height;

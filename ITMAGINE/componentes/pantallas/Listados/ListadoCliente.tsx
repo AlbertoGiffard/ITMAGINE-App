@@ -1,12 +1,12 @@
 
    
-import React, {useEffect, useState} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
-import { DBService } from '../../../services/DBService';
-import CardCliente from '../../Cards/cardCliente';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ICliente } from '../../../definiciones/ICliente';
 import { COLECCION_CLIENTES } from '../../../services/colecciones';
+import { DBService } from '../../../services/DBService';
 import { crearNotificacion } from '../../../services/pushNotification';
+import CardCliente from '../../Cards/cardCliente';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -19,7 +19,7 @@ const ListadoCliente = () => {
     const dbService = new DBService<ICliente>(COLECCION_CLIENTES);
 
     useEffect(() => {
-        dbService.GetClientesPorValidacion(
+        return dbService.GetClientesPorValidacion(
             "en proceso",
             (data:any) => {
                 
