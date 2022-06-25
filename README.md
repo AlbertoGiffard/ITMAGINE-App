@@ -153,5 +153,15 @@ Se avanzó bastante de forma global en la app, desde el circuito de pantallas qu
 <img src="./imagesReadme/logica.png" width="600">
 
 ## Semana 4
-Se hace la subida del video mostrando los distintos componentes del sistema integrado en el desarrollo realizado entre todas las partes desarrolladas por el equipo.
+Se hace la subida de los videos preliminares con gran parte de la funcionalidad.
 <br>
+
+## Semana 5
+Se realizó los videos finales donde se incorporan las distitnas funcionalidades desde el punto 1. al punto 13. abarcando toda la aplicación propuesta para esta entrega cubriendo la totalidad de lo pedido; se sumaron distintos detalles como: notificaciones push, listados, encuestas, verificaciones y graficos.
+
+De esta forma queda lista la App Itmagine de la mano de:
+<br>
+
+* Leandro Varela
+* Agustin Clas
+* Alberto Giffard
