@@ -24,7 +24,7 @@ const MenuMozo = () => {
     const DBChat = firebase.firestore().collection(COLECCION_CHAT_MOZO_CLIENTE);
 
     useEffect( () => {
-      DBChat.onSnapshot(
+      return DBChat.onSnapshot(
         (snapshot) => {
           const chats = snapshot.docs.map( doc => doc.data() as IChatMozoCliente );
 

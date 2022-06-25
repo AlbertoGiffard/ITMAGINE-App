@@ -18,7 +18,7 @@ const ListaEspera = () => {
     const dbService = new DBService<IEspera>(COLECCION_COLA_ESPERA);
 
     useEffect(() => {
-        dbService.GetClientesEnEspera(
+        return dbService.GetClientesEnEspera(
             (data:any) => {
                 
                 if(data != undefined){

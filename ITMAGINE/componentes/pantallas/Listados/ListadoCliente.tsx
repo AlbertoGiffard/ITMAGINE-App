@@ -19,7 +19,7 @@ const ListadoCliente = () => {
     const dbService = new DBService<ICliente>(COLECCION_CLIENTES);
 
     useEffect(() => {
-        dbService.GetClientesPorValidacion(
+        return dbService.GetClientesPorValidacion(
             "en proceso",
             (data:any) => {
                 

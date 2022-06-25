@@ -19,7 +19,7 @@ const ListadoProductos = ( {estado, tipo}:{estado:string, tipo:string} ) => {
     const [productos, setProductos] = useState([])
 
     useEffect(() => {
-        dbItemPedidos.GetItems(estado, tipo, 
+        return dbItemPedidos.GetItems(estado, tipo, 
             (data:any) => {
                 
                 if(data != undefined){

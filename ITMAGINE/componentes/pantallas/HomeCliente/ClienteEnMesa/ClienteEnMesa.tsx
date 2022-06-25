@@ -8,7 +8,7 @@ import { AppContext } from '../../../../context/AppContext';
 import { ICliente } from '../../../../definiciones/ICliente';
 import { IPedido } from '../../../../definiciones/IPedido';
 import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../../estilos/globalStyle';
-import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
+import { COLECCION_ENCUESTAS_CLIENTES, COLECCION_PEDIDOS } from '../../../../services/colecciones';
 import { DBService } from '../../../../services/DBService';
 
 const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
@@ -21,6 +21,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const [escanear, setEscanear] = useState(false);
     const [escanearPropina, setEscanearPropina] = useState(false);
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
+    const servicioEncuesta = new DBService<IEncuestaCliente>(COLECCION_ENCUESTAS_CLIENTES);
     const context = useContext(AppContext);
 
     //alert personalizado
@@ -88,7 +89,7 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
 
     useEffect(() => {
         if (pedido.id != undefined) {
-            servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
+            return servicioPedido.getPedido(pedido.id.toString(), (data: any) => {
                 var estado = data.data().estado; //real
                 //var estado = 'confirmado'; //test
 
@@ -117,7 +118,12 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const pantallaEncuesta = () => {
         if (usuario != null) {
             if (usuario.email != null || usuario.email != undefined) {
-                navigation.navigate('Carga', { siguientePantalla: 'Encuesta' });
+                const fecha = new Date();
+                const fechaStr = `${fecha.getFullYear()}/${fecha.getMonth()}/${fecha.getDate()}`;
+                servicioEncuesta.getAll()
+                    .then( encuestas => encuestas.find( encuesta => encuesta.email == usuario.email && encuesta.fecha == fechaStr ) )
+                    .then( completo => completo ? mostrarAlert("Lo sentimos!", "Ya registró una encuesta en el día de hoy.") : navigation.navigate('Carga', { siguientePantalla: 'Encuesta' }) )
+                    .catch( err => null );
             } else {
                 Alert.alert(
                     'Lo Sentimos!',
@@ -134,6 +140,22 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 );
             }
         }
+    }
+
+    const mostrarAlert = (titulo : string, texto : string) => {
+        Alert.alert(
+            titulo,
+            texto,
+            [
+                {
+                    text: 'Entendido',
+                    style: 'cancel',
+                },
+            ],
+            {
+                cancelable: true,
+            }
+        );
     }
 
     const checkoutPedido = () => {

@@ -45,7 +45,7 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
 
     useEffect(() => {
         if (cambioEstado) {
-            servicioEspera.getListaEspera(usuario.nombre, (data: any) => {
+            return servicioEspera.getListaEspera(usuario.nombre, (data: any) => {
                 console.log('lista de espera: ', data.data());
                 if (data.data().cliente.estado == 'en mesa') {
                     usuario.estado = 'en mesa';

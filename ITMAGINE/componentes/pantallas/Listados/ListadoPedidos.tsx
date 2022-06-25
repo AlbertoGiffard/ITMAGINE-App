@@ -20,7 +20,7 @@ const ListadoPedidos = ( {estado}:{estado:string} ) => {
     const [pedidos, setPedidos] = useState([])
 
     useEffect(() => {
-        dbPedidos.GetPedidosPorEstado(estado, 
+        return dbPedidos.GetPedidosPorEstado(estado, 
             (data:any) => {
                 
                 if(data != undefined){
