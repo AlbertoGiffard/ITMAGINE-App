@@ -8,8 +8,9 @@ import { windowWidth, windowHeight } from "../../../estilos/globalStyle";
 import { DataTable } from 'react-native-paper';
 import { IPedido } from '../../../definiciones/IPedido';
 import { DBService } from '../../../services/DBService';
-import { COLECCION_PEDIDOS } from '../../../services/colecciones';
+import { COLECCION_CLIENTES, COLECCION_PEDIDOS } from '../../../services/colecciones';
 import { AppContext } from '../../../context/AppContext';
+import { ICliente } from '../../../definiciones/ICliente';
 
 const CheckoutPedido = () => {
     const navigation =  useNavigation<NativeStackNavigationProp<any>>();
@@ -18,6 +19,7 @@ const CheckoutPedido = () => {
     var totalSinDescuento = 0;
     var totalDescuento = 0;
     const servicioPedido = new DBService<IPedido>(COLECCION_PEDIDOS);
+    const servicioCliente = new DBService<ICliente>(COLECCION_CLIENTES);
     const context = useContext(AppContext);
 
     useEffect(() => {
@@ -105,11 +107,13 @@ const CheckoutPedido = () => {
         //aca deberia actualizar en firebase
         servicioPedido.insertOne(pedidoFinal, pedidoFinal.id.toString()).then(() => {
             return new Promise((resolve, reject) => {
+                context.usuario.estado = "activo";
+                servicioCliente.updateOne( context.usuario, context.usuario.email || context.usuario.nombre )
                 Alert.alert(
                     'Gracias',
                     'Nos alegra que haya venido a ITMAGINE, vuelva pronto.',
                     [
-                        {text: 'Claro que si', onPress: () => resolve(navigation.navigate( 'Carga', { siguientePantalla: 'Login' } )) },
+                        {text: 'Claro que si', onPress: () => resolve(navigation.navigate( 'Carga', { siguientePantalla: 'HomeCliente' } )) },
                     ],
                     { cancelable: false }
                 )

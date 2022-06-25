@@ -156,6 +156,12 @@ const HomeCliente = (props: { route: { params: { usuario: any; pedido: any; }; }
     }
 
     const cambiarAListaDeEspera = () => {
+
+        if ( context.pedido?.estado == 'pagado' ) {
+            navigation.navigate( 'Carga', { siguientePantalla: 'GraficoEncuestas' } )
+            return
+        }
+
         usuario.estado = 'en espera';
         setUsuario(usuario);
         const fecha = new Date();
