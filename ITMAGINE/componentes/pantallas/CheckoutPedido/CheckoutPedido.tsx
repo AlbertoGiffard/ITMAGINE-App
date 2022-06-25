@@ -118,9 +118,9 @@ const CheckoutPedido = () => {
     }
 
     const sumarTotal = (precio:any, cantidad:any) => {
-        totalConDescuento += (precio * cantidad);
-        totalDescuento = 10 * totalConDescuento / 100;
-        totalSinDescuento = totalConDescuento + totalDescuento;
+        totalSinDescuento += (precio * cantidad);
+        totalDescuento = 10 * totalSinDescuento / 100;
+        totalConDescuento = totalSinDescuento - totalDescuento;
         //setTotal(aux);
     }
     

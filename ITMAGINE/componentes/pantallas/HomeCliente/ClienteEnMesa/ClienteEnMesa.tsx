@@ -222,9 +222,9 @@ const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
                 }
             }
             //version en prod
-            /* servicioPedido.updateOne({ total: pedido.total }, pedido.id).then(() => {
+            servicioPedido.updateOne({ total: pedido.total }, pedido.id).then(() => {
                 navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
-            }); */
+            });
             navigation.navigate('Carga', { siguientePantalla: 'CheckoutPedido' });
         } else {
             Alert.alert(
