@@ -1,9 +1,8 @@
 
    
-import React, {useEffect, useState} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { IItemPedido } from '../../../definiciones/IItemPedido';
-import { IPedido } from '../../../definiciones/IPedido';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
 import { DBService } from '../../../services/DBService';
 import { crearNotificacion } from '../../../services/pushNotification';

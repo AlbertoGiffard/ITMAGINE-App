@@ -1,7 +1,7 @@
 
    
-import React, {useEffect, useState} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { IPedido } from '../../../definiciones/IPedido';
 import { PRIMARY_COLOR } from '../../../estilos/globalStyle';
 import { COLECCION_PEDIDOS } from '../../../services/colecciones';

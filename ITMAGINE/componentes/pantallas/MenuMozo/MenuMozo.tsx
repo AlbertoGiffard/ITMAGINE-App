@@ -1,16 +1,13 @@
 
 
-import React, { useEffect, useState} from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator } from "react-native";
-import {auth} from '../../../firebase'
-import { createUserWithEmailAndPassword,  signInWithEmailAndPassword } from "firebase/auth";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 import { useNavigation } from '@react-navigation/native';
-import firebase from '../../../utils/firebase';
-import { COLECCION_CHAT_MOZO_CLIENTE } from '../../../services/colecciones';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, Image, KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IChatMozoCliente } from '../../../definiciones/IChatMozoCliente';
+import { COLECCION_CHAT_MOZO_CLIENTE } from '../../../services/colecciones';
 import { crearNotificacion } from '../../../services/pushNotification';
+import firebase from '../../../utils/firebase';
 
 
 export const windowWidth = Dimensions.get('window').width;

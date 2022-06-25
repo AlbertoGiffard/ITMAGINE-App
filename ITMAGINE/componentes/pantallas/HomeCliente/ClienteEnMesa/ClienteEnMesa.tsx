@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, TouchableOpacity, StatusBar, Dimensions, KeyboardAvoidingView, ActivityIndicator, Alert, Button, Pressable, ScrollView } from "react-native";
-import { Icon, Input } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../../estilos/globalStyle';
-import { windowWidth, windowHeight } from "../../../../estilos/globalStyle";
-import { DBService } from '../../../../services/DBService';
-import { IPedido } from '../../../../definiciones/IPedido';
-import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
-import { AppContext } from '../../../../context/AppContext';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Icon } from 'react-native-elements';
+import { AppContext } from '../../../../context/AppContext';
 import { ICliente } from '../../../../definiciones/ICliente';
+import { IPedido } from '../../../../definiciones/IPedido';
+import { BG_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, windowHeight, windowWidth } from '../../../../estilos/globalStyle';
+import { COLECCION_PEDIDOS } from '../../../../services/colecciones';
+import { DBService } from '../../../../services/DBService';
 
 const ClienteEnMesa = (props: { route: { params: { pedido: any; }; }; }) => {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();

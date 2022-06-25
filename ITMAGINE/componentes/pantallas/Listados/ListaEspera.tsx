@@ -1,7 +1,7 @@
 
    
-import React, {useState, useEffect} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { COLECCION_COLA_ESPERA } from '../../../services/colecciones';
 import { DBService } from '../../../services/DBService';
 //import { DBService } from '../../../services/DBService';

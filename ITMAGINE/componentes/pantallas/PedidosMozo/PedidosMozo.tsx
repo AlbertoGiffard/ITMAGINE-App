@@ -1,8 +1,7 @@
 
    
 import React from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text } from 'react-native';
-import { Card } from 'react-native-paper';
+import { Animated, Dimensions, FlatList, ScrollView, StyleSheet, View } from 'react-native';
 //import { DBService } from '../../../services/DBService';
 import ListadoPedidos from '../Listados/ListadoPedidos';
 

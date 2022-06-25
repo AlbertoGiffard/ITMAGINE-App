@@ -2,11 +2,11 @@
    
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, {useState, useEffect, useContext} from 'react';
-import { Animated, FlatList, View, ScrollView, Dimensions, StyleSheet, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Animated, Dimensions, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppContext } from '../../../context/AppContext';
+import { PRIMARY_COLOR, TERCIARY_COLOR } from '../../../estilos/globalStyle';
 import CardProducto from '../../Cards/cardProducto';
-import { PRIMARY_COLOR, SECONDARY_COLOR, TERCIARY_COLOR, BG_COLOR } from '../../../estilos/globalStyle';
 
 
 export const windowWidth = Dimensions.get('window').width;

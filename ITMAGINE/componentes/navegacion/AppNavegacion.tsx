@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Chat } from '../pantallas/Chat/Chat';
 
 import CheckoutPedido from '../pantallas/CheckoutPedido/CheckoutPedido';
